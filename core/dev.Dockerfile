@@ -1,15 +1,27 @@
-FROM maven:3.9.5-eclipse-temurin-21
+# ===========================
+# Etapa de build
+# ===========================
+FROM maven:3.9.5-eclipse-temurin-21 AS build
+WORKDIR /app
 
-ENV LANG=C.UTF-8
+# Copia o pom.xml e baixa dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Criação de diretórios separados para cache e projeto
-RUN mkdir -p /home/.m2 \
-    && mkdir -p /home/app-pg \
-    && chown -R 1000:1000 /home
+# Copia o código fonte e compila
+COPY src ./src
+RUN mvn clean package -DskipTests -Dquarkus.package.type=uber-jar
 
-WORKDIR /home/app-pg
+# ===========================
+# Etapa de execução
+# ===========================
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
 
-USER 1000
+# Copia qualquer JAR gerado pelo build
+COPY --from=build /app/target/*.jar /app/app.jar
 
-# Executa o Quarkus em modo dev com porta e home do usuário separados
-CMD [ "mvn", "-Duser.home=/home", "quarkus:dev", "-Ddebug", "-DdebugHost=0.0.0.0", "-Dquarkus.http.port=3001" ]
+EXPOSE 3000
+EXPOSE 5005
+
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "app.jar"]

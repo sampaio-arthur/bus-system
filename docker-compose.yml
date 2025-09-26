@@ -1,53 +1,41 @@
-version: "3.9"
-
 services:
-  # ==========================
-  # BANCO DE DADOS
-  # ==========================
   db:
     image: mysql:8.0
-    command: --default-authentication-plugin=caching_sha2_password --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION --lc-time-names=pt_BR
+    container_name: mysql-bus-system
+    restart: always
     environment:
-      - TZ=America/Sao_Paulo
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 10s
-      retries: 10
-    init: true
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: ${TZ}
     ports:
       - "${DB_EXTERNAL_PORT}:3306"
-    restart: on-failure
     volumes:
-      - db:/var/lib/mysql
+      - db_data:/var/lib/mysql
 
-  core:
+  app:
     build:
       context: ./core
       dockerfile: dev.Dockerfile
+    container_name: quarkus-bus-system
+    restart: always
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     environment:
-      - TZ=America/Sao_Paulo
-      - MAVEN_CONFIG=/home/.m2
-      - DB_DATABASE=${DB_DATABASE}
-      - DB_USER=${DB_USER}
-      - DB_PASSWORD=${DB_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - JAVA_TOOL_OPTIONS=-Duser.language=pt -Duser.country=BR
-    init: true
-    user: "${UID}:${GID}"
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_EXTERNAL_PORT: 3306
+      SERVER_EXTERNAL_PORT: ${SERVER_EXTERNAL_PORT}
+      SERVER_DEBUG_PORT: ${SERVER_DEBUG_PORT}
+      CLIENT_EXTERNAL_PORT: ${CLIENT_EXTERNAL_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      TZ: ${TZ}
     ports:
-      - "${SERVER_EXTERNAL_PORT}:3000"
-      - "${SERVER_DEBUG_PORT}:5005"
-    restart: on-failure
-    volumes:
-      - ./core:/home/app
-      - maven-repo:/home/.m2
+      - "${SERVER_EXTERNAL_PORT}:${SERVER_EXTERNAL_PORT}"
+      - "${SERVER_DEBUG_PORT}:${SERVER_DEBUG_PORT}"
+    command: >
+      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}
+      -jar app.jar
 
 volumes:
-  db:
-  maven-repo:
+  db_data:
