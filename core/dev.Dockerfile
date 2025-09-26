@@ -10,7 +10,7 @@ RUN mvn dependency:go-offline
 
 # Copia o código fonte e compila
 COPY src ./src
-RUN mvn clean package -DskipTests -Dquarkus.package.type=uber-jar
+RUN mvn clean package -DskipTests -Dquarkus.package.jar.type=uber-jar
 
 # ===========================
 # Etapa de execução
