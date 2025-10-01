@@ -37,7 +37,8 @@ nb-configuration.xml
 *.rej
 
 # Local environment
-#.env
+.env
+docker-compose.yml
 
 # Plugin directory
 /.quarkus/cli/plugins/
