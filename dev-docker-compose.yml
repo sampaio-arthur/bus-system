@@ -1,0 +1,41 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-bus-system
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      TZ: ${TZ}
+    ports:
+      - "${DB_EXTERNAL_PORT}:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build:
+      context: ./core
+      dockerfile: dev.Dockerfile
+    container_name: quarkus-bus-system
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_EXTERNAL_PORT: 3306
+      SERVER_EXTERNAL_PORT: ${SERVER_EXTERNAL_PORT}
+      SERVER_DEBUG_PORT: ${SERVER_DEBUG_PORT}
+      CLIENT_EXTERNAL_PORT: ${CLIENT_EXTERNAL_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      TZ: ${TZ}
+    ports:
+      - "${SERVER_EXTERNAL_PORT}:${SERVER_EXTERNAL_PORT}"
+      - "${SERVER_DEBUG_PORT}:${SERVER_DEBUG_PORT}"
+    command: >
+      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}
+      -jar app.jar
+
+volumes:
+  db_data:
