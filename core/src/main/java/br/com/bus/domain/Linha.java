@@ -63,7 +63,15 @@ public class Linha extends PanacheEntityBase {
     @Version
     private int version;
 
-    public Long getId() {
+    public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
+
+	public Long getId() {
         return id;
     }
 

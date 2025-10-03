@@ -1,6 +1,6 @@
 package br.com.bus.application.dto;
 
-public class CarroDTO {
+public class CarroDTO extends VeiculoDTO {
 
     private String categoria;
 
