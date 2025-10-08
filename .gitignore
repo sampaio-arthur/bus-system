@@ -40,6 +40,10 @@ nb-configuration.xml
 .env
 docker-compose.yml
 
+# Node
+node_modules/
+
+
 # Plugin directory
 /.quarkus/cli/plugins/
 # TLS Certificates
