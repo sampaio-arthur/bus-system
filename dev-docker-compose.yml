@@ -1,17 +1,25 @@
 services:
+  # 🗄️ Banco de dados
   db:
-    image: mysql:8.0
-    container_name: mysql-bus-system
+    image: postgres:16
+    container_name: postgres-bus-system
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
       TZ: ${TZ}
     ports:
-      - "${DB_EXTERNAL_PORT}:3306"
+      - "${DB_EXTERNAL_PORT}:5432"
     volumes:
-      - db_data:/var/lib/mysql
+      - bus_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # ☕ Quarkus
   app:
     build:
       context: ./core
@@ -19,23 +27,54 @@ services:
     container_name: quarkus-bus-system
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
-      DB_EXTERNAL_PORT: 3306
+      DB_EXTERNAL_PORT: ${DB_EXTERNAL_PORT}
       SERVER_EXTERNAL_PORT: ${SERVER_EXTERNAL_PORT}
       SERVER_DEBUG_PORT: ${SERVER_DEBUG_PORT}
-      CLIENT_EXTERNAL_PORT: ${CLIENT_EXTERNAL_PORT}
       JWT_SECRET: ${JWT_SECRET}
       TZ: ${TZ}
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}"
+      OLLAMA_URL: ${OLLAMA_URL}
     ports:
       - "${SERVER_EXTERNAL_PORT}:${SERVER_EXTERNAL_PORT}"
       - "${SERVER_DEBUG_PORT}:${SERVER_DEBUG_PORT}"
-    command: >
-      java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}
-      -jar app.jar
+
+  # 🧠 Ollama (modelo local)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "${OLLAMA_PORT}:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    runtime: nvidia
+    environment:
+      - OLLAMA_KEEP_ALIVE=5m
+
+  # 🔌 MCP Shim
+  mcp-shim:
+    build: ./mcp
+    container_name: mcp-shim
+    ports:
+      - "${MCP_SHIM_PORT}:5151"
+    environment:
+      - MCP_SHIM_PORT=${MCP_SHIM_PORT}
+      - SERVER_EXTERNAL_PORT=${SERVER_EXTERNAL_PORT}
+      - SERVER_HOST=app
+    depends_on:
+      - app
+      - ollama
 
 volumes:
-  db_data:
+  bus_pgdata:
+  ollama_models:
