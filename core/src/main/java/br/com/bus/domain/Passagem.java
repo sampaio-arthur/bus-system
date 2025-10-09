@@ -11,9 +11,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "passagem")
@@ -23,54 +23,61 @@ public class Passagem extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "data_compra", nullable = false)
-    private LocalDateTime dataCompra;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_viagem", nullable = false)
+    private Viagem viagem;
 
-    @NotNull
-    @Column(nullable = false, precision = 10, scale = 2)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa", nullable = false)
+    private Pessoa passageiro;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_passagem", nullable = false)
+    private TipoPassagem tipoPassagem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_metodo_pagamento", nullable = false)
+    private MetodoPagamento metodoPagamento;
+
+    @Column(name = "valor", nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
 
-    @Column(name = "desconto_aplicado", precision = 10, scale = 2)
-    private BigDecimal descontoAplicado;
+    @Column(name = "data_emissao", nullable = false)
+    private LocalDateTime dataEmissao;
 
-    @NotNull
-    @Column(nullable = false)
-    private Boolean ativo = true;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Passageiro passageiro;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Viagem viagem;
+    @Column(name = "numero_assento", length = 10)
+    private String numeroAssento;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getDataCompra() { return dataCompra; }
-    public void setDataCompra(LocalDateTime dataCompra) { this.dataCompra = dataCompra; }
+    public Viagem getViagem() { return viagem; }
+    public void setViagem(Viagem viagem) { this.viagem = viagem; }
+
+    public Pessoa getPassageiro() { return passageiro; }
+    public void setPassageiro(Pessoa passageiro) { this.passageiro = passageiro; }
+
+    public TipoPassagem getTipoPassagem() { return tipoPassagem; }
+    public void setTipoPassagem(TipoPassagem tipoPassagem) { this.tipoPassagem = tipoPassagem; }
+
+    public MetodoPagamento getMetodoPagamento() { return metodoPagamento; }
+    public void setMetodoPagamento(MetodoPagamento metodoPagamento) { this.metodoPagamento = metodoPagamento; }
 
     public BigDecimal getValor() { return valor; }
     public void setValor(BigDecimal valor) { this.valor = valor; }
 
-    public BigDecimal getDescontoAplicado() { return descontoAplicado; }
-    public void setDescontoAplicado(BigDecimal descontoAplicado) { this.descontoAplicado = descontoAplicado; }
+    public LocalDateTime getDataEmissao() { return dataEmissao; }
+    public void setDataEmissao(LocalDateTime dataEmissao) { this.dataEmissao = dataEmissao; }
 
-    public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
-
-    public Passageiro getPassageiro() { return passageiro; }
-    public void setPassageiro(Passageiro passageiro) { this.passageiro = passageiro; }
-
-    public Viagem getViagem() { return viagem; }
-    public void setViagem(Viagem viagem) { this.viagem = viagem; }
+    public String getNumeroAssento() { return numeroAssento; }
+    public void setNumeroAssento(String numeroAssento) { this.numeroAssento = numeroAssento; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Passagem)) return false;
-        Passagem that = (Passagem) o;
-        return id != null && id.equals(that.id);
+        Passagem passagem = (Passagem) o;
+        return id != null && Objects.equals(id, passagem.id);
     }
 
     @Override

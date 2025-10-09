@@ -14,8 +14,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tipo_veiculo")
-public class TipoVeiculo extends PanacheEntityBase {
+@Table(name = "metodo_pagamento")
+public class MetodoPagamento extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +24,8 @@ public class TipoVeiculo extends PanacheEntityBase {
     @Column(name = "descricao", nullable = false, length = 120)
     private String descricao;
 
-    @OneToMany(mappedBy = "tipo")
-    private List<Veiculo> veiculos = new ArrayList<>();
+    @OneToMany(mappedBy = "metodoPagamento")
+    private List<Passagem> passagens = new ArrayList<>();
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -33,14 +33,14 @@ public class TipoVeiculo extends PanacheEntityBase {
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public List<Veiculo> getVeiculos() { return veiculos; }
-    public void setVeiculos(List<Veiculo> veiculos) { this.veiculos = veiculos; }
+    public List<Passagem> getPassagens() { return passagens; }
+    public void setPassagens(List<Passagem> passagens) { this.passagens = passagens; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TipoVeiculo)) return false;
-        TipoVeiculo that = (TipoVeiculo) o;
+        if (!(o instanceof MetodoPagamento)) return false;
+        MetodoPagamento that = (MetodoPagamento) o;
         return id != null && Objects.equals(id, that.id);
     }
 

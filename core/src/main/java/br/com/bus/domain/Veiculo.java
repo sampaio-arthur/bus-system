@@ -5,91 +5,83 @@ import java.util.List;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "veiculo")
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo_veiculo")
-public abstract class Veiculo extends PanacheEntityBase {
+public class Veiculo extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false, unique = true)
-    private String placa;
+    @Column(name = "chassi", nullable = false, length = 30, unique = true)
+    private String chassi;
 
-    private String modelo;
+    @Column(name = "ano_fabricacao")
+    private Integer anoFabricacao;
 
-    private Integer ano;
-
-    @NotNull
-    @Column(nullable = false)
+    @Column(name = "capacidade")
     private Integer capacidade;
 
-    @NotNull
-    @Column(nullable = false)
-    private Boolean ativo = true;
+    @Column(name = "modelo", length = 80)
+    private String modelo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private TipoVeiculo tipoVeiculo;
+    @Column(name = "placa", length = 10, unique = true)
+    private String placa;
 
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_tipo_veiculo", nullable = false)
+    private TipoVeiculo tipo;
+
+    @OneToMany(mappedBy = "veiculo")
+    private List<Manutencao> manutencoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "veiculo")
     private List<Viagem> viagens = new ArrayList<>();
-
-    @Version
-    private int version;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getPlaca() { return placa; }
-    public void setPlaca(String placa) { this.placa = placa; }
+    public String getChassi() { return chassi; }
+    public void setChassi(String chassi) { this.chassi = chassi; }
 
-    public String getModelo() { return modelo; }
-    public void setModelo(String modelo) { this.modelo = modelo; }
-
-    public Integer getAno() { return ano; }
-    public void setAno(Integer ano) { this.ano = ano; }
+    public Integer getAnoFabricacao() { return anoFabricacao; }
+    public void setAnoFabricacao(Integer anoFabricacao) { this.anoFabricacao = anoFabricacao; }
 
     public Integer getCapacidade() { return capacidade; }
     public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
 
-    public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+    public String getModelo() { return modelo; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
 
-    public TipoVeiculo getTipoVeiculo() { return tipoVeiculo; }
-    public void setTipoVeiculo(TipoVeiculo tipoVeiculo) { this.tipoVeiculo = tipoVeiculo; }
+    public String getPlaca() { return placa; }
+    public void setPlaca(String placa) { this.placa = placa; }
+
+    public TipoVeiculo getTipo() { return tipo; }
+    public void setTipo(TipoVeiculo tipo) { this.tipo = tipo; }
+
+    public List<Manutencao> getManutencoes() { return manutencoes; }
+    public void setManutencoes(List<Manutencao> manutencoes) { this.manutencoes = manutencoes; }
 
     public List<Viagem> getViagens() { return viagens; }
     public void setViagens(List<Viagem> viagens) { this.viagens = viagens; }
-
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Veiculo)) return false;
         Veiculo veiculo = (Veiculo) o;
-        return id != null && id.equals(veiculo.id);
+        return id != null && Objects.equals(id, veiculo.id);
     }
 
     @Override
