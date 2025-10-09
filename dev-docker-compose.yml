@@ -60,6 +60,13 @@ services:
     runtime: nvidia
     environment:
       - OLLAMA_KEEP_ALIVE=5m
+    command: >
+      sh -c "
+        ollama serve & 
+        sleep 5 && 
+        ollama list | grep -q 'phi3:mini' || ollama pull phi3:mini &&
+        wait
+      "
 
   # 🔌 MCP Shim
   mcp-shim:
