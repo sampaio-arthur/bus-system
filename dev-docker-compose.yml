@@ -63,7 +63,7 @@ services:
 
   # 🔌 MCP Shim
   mcp-shim:
-    build: ./bot/mcp-shim
+    build: ./mcp
     container_name: mcp-shim
     ports:
       - "${MCP_SHIM_PORT}:5151"
