@@ -14,19 +14,19 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tipo_veiculo")
-public class TipoVeiculo extends PanacheEntityBase {
+@Table(name = "metodo_pagamento")
+public class MetodoPagamento extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_tipo_veiculo")
+    @Column(name = "id_metodo_pagamento")
     private Integer id;
 
-    @Column(name = "descricao", length = 255, nullable = false)
+    @Column(name = "descricao", length = 255)
     private String descricao;
 
-    @OneToMany(mappedBy = "tipoVeiculo", fetch = FetchType.LAZY)
-    private Set<Veiculo> veiculos = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "metodoPagamento", fetch = FetchType.LAZY)
+    private Set<Passagem> passagens = new LinkedHashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -44,12 +44,12 @@ public class TipoVeiculo extends PanacheEntityBase {
 		this.descricao = descricao;
 	}
 
-	public Set<Veiculo> getVeiculos() {
-		return veiculos;
+	public Set<Passagem> getPassagens() {
+		return passagens;
 	}
 
-	public void setVeiculos(Set<Veiculo> veiculos) {
-		this.veiculos = veiculos;
+	public void setPassagens(Set<Passagem> passagens) {
+		this.passagens = passagens;
 	}
     
 }

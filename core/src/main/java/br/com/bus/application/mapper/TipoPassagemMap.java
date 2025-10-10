@@ -5,19 +5,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import br.com.bus.application.dto.LinhaDTO;
-import br.com.bus.domain.Linha;
+import br.com.bus.application.dto.TipoPassagemDTO;
+import br.com.bus.domain.TipoPassagem;
 
-public final class LinhaMap {
+public final class TipoPassagemMap {
 
-    private LinhaMap() {
+    private TipoPassagemMap() {
     }
 
-    public static Linha toEntity(LinhaDTO dto) {
+    public static TipoPassagem toEntity(TipoPassagemDTO dto) {
         if (dto == null) {
             return null;
         }
-        Linha entity = new Linha();
+        TipoPassagem entity = new TipoPassagem();
         if (dto.getId() != null) {
             entity.setId(dto.getId());
         }
@@ -25,70 +25,65 @@ public final class LinhaMap {
         return entity;
     }
 
-    public static LinhaDTO toDTO(Linha entity) {
+    public static TipoPassagemDTO toDTO(TipoPassagem entity) {
         if (entity == null) {
             return null;
         }
-        LinhaDTO dto = new LinhaDTO();
+        TipoPassagemDTO dto = new TipoPassagemDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setCodigo(entity.getCodigo());
-        dto.setCronograma(CronogramaMap.toSummary(entity.getCronograma()));
-        dto.setItinerarios(ItinerarioMap.toDTOSet(entity.getItinerarios()));
-        dto.setViagens(ViagemMap.toSummarySet(entity.getViagens()));
+        dto.setDescricao(entity.getDescricao());
+        dto.setPassagens(PassagemMap.toSummarySet(entity.getPassagens()));
         return dto;
     }
 
-    public static void updateEntityFromDTO(LinhaDTO dto, Linha entity) {
+    public static void updateEntityFromDTO(TipoPassagemDTO dto, TipoPassagem entity) {
         if (entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
-    private static void entityFromDTO(LinhaDTO dto, Linha entity) {
+    private static void entityFromDTO(TipoPassagemDTO dto, TipoPassagem entity) {
         if (dto == null || entity == null) {
             return;
         }
-        entity.setNome(dto.getNome());
-        entity.setCodigo(dto.getCodigo());
+        entity.setDescricao(dto.getDescricao());
     }
 
-    public static LinhaDTO toSummary(Linha entity) {
+    public static TipoPassagemDTO toSummary(TipoPassagem entity) {
         if (entity == null) {
             return null;
         }
-        LinhaDTO dto = new LinhaDTO();
+        TipoPassagemDTO dto = new TipoPassagemDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setCodigo(entity.getCodigo());
+        dto.setDescricao(entity.getDescricao());
         return dto;
     }
 
-    public static Set<LinhaDTO> toDTOSet(Set<Linha> entities) {
+    public static Set<TipoPassagemDTO> toDTOSet(Set<TipoPassagem> entities) {
         if (entities == null || entities.isEmpty()) {
             return Collections.emptySet();
         }
         return entities.stream()
-                .map(LinhaMap::toDTO)
+                .map(TipoPassagemMap::toDTO)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public static Set<Linha> toEntitySet(Set<LinhaDTO> dtos) {
+    public static Set<TipoPassagem> toEntitySet(Set<TipoPassagemDTO> dtos) {
         if (dtos == null || dtos.isEmpty()) {
             return Collections.emptySet();
         }
         return dtos.stream()
-                .map(LinhaMap::toEntity)
+                .map(TipoPassagemMap::toEntity)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public static Set<LinhaDTO> toSummarySet(Set<Linha> entities) {
+    public static Set<TipoPassagemDTO> toSummarySet(Set<TipoPassagem> entities) {
         if (entities == null || entities.isEmpty()) {
             return Collections.emptySet();
         }
         return entities.stream()
-                .map(LinhaMap::toSummary)
+                .map(TipoPassagemMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

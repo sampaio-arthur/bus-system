@@ -1,18 +1,13 @@
 package br.com.bus.application.mapper;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import br.com.bus.application.dto.CarroDTO;
-import br.com.bus.application.dto.OnibusDTO;
-import br.com.bus.application.dto.VanDTO;
 import br.com.bus.application.dto.VeiculoDTO;
-import br.com.bus.application.dto.ViagemDTO;
-import br.com.bus.domain.Carro;
-import br.com.bus.domain.Onibus;
-import br.com.bus.domain.Van;
+import br.com.bus.domain.TipoVeiculo;
 import br.com.bus.domain.Veiculo;
-import br.com.bus.domain.Viagem;
 
 public final class VeiculoMap {
 
@@ -23,94 +18,94 @@ public final class VeiculoMap {
         if (dto == null) {
             return null;
         }
-        if (dto instanceof CarroDTO) {
-            return CarroMap.toEntity((CarroDTO) dto);
+        Veiculo entity = new Veiculo();
+        if (dto.getId() != null) {
+            entity.setId(dto.getId());
         }
-        if (dto instanceof OnibusDTO) {
-            return OnibusMap.toEntity((OnibusDTO) dto);
-        }
-        if (dto instanceof VanDTO) {
-            return VanMap.toEntity((VanDTO) dto);
-        }
-        throw new IllegalArgumentException("Tipo de DTO de veículo desconhecido: " + dto.getClass());
+        entityFromDTO(dto, entity);
+        return entity;
     }
 
     public static VeiculoDTO toDTO(Veiculo entity) {
         if (entity == null) {
             return null;
         }
-        if (entity instanceof Carro) {
-            return CarroMap.toDTO((Carro) entity);
-        }
-        if (entity instanceof Onibus) {
-            return OnibusMap.toDTO((Onibus) entity);
-        }
-        if (entity instanceof Van) {
-            return VanMap.toDTO((Van) entity);
-        }
         VeiculoDTO dto = new VeiculoDTO();
-        populateDTO(entity, dto);
+        dto.setId(entity.getId());
+        dto.setTipoVeiculo(TipoVeiculoMap.toSummary(entity.getTipoVeiculo()));
+        dto.setChassi(entity.getChassi());
+        dto.setAnoFabricacao(entity.getAnoFabricacao());
+        dto.setCapacidade(entity.getCapacidade());
+        dto.setModelo(entity.getModelo());
+        dto.setPlaca(entity.getPlaca());
+        dto.setManutencoes(ManutencaoMap.toSummarySet(entity.getManutencoes()));
+        dto.setViagens(ViagemMap.toSummarySet(entity.getViagens()));
         return dto;
     }
 
     public static void updateEntityFromDTO(VeiculoDTO dto, Veiculo entity) {
-        if (dto == null || entity == null) {
+        if (entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
-    static void entityFromDTO(VeiculoDTO dto, Veiculo entity) {
-        VeiculoMapperHelper.copyToEntity(dto, entity);
-        if (dto.getViagens() != null) {
-            List<Viagem> viagens = dto.getViagens().stream()
-                    .map(ViagemMap::toEntity)
-                    .collect(Collectors.toList());
-            entity.setViagens(viagens);
+    private static void entityFromDTO(VeiculoDTO dto, Veiculo entity) {
+        if (dto == null || entity == null) {
+            return;
         }
-    }
-
-    static void populateDTO(Veiculo entity, VeiculoDTO dto) {
-        VeiculoMapperHelper.copyToDTO(entity, dto);
-        if (entity.getViagens() != null) {
-            List<ViagemDTO> viagens = entity.getViagens().stream()
-                    .map(ViagemMap::toSummary)
-                    .collect(Collectors.toList());
-            dto.setViagens(viagens);
+        if (dto.getTipoVeiculo() != null && dto.getTipoVeiculo().getId() != null) {
+            TipoVeiculo tipoVeiculo = entity.getTipoVeiculo();
+            if (tipoVeiculo == null) {
+                tipoVeiculo = new TipoVeiculo();
+            }
+            tipoVeiculo.setId(dto.getTipoVeiculo().getId());
+            entity.setTipoVeiculo(tipoVeiculo);
+        } else {
+            entity.setTipoVeiculo(null);
         }
+        entity.setChassi(dto.getChassi());
+        entity.setAnoFabricacao(dto.getAnoFabricacao());
+        entity.setCapacidade(dto.getCapacidade());
+        entity.setModelo(dto.getModelo());
+        entity.setPlaca(dto.getPlaca());
     }
 
     public static VeiculoDTO toSummary(Veiculo entity) {
         if (entity == null) {
             return null;
         }
-        if (entity instanceof Carro) {
-            return CarroMap.toSummary((Carro) entity);
-        }
-        if (entity instanceof Onibus) {
-            return OnibusMap.toSummary((Onibus) entity);
-        }
-        if (entity instanceof Van) {
-            return VanMap.toSummary((Van) entity);
-        }
         VeiculoDTO dto = new VeiculoDTO();
-        VeiculoMapperHelper.copySummary(entity, dto);
+        dto.setId(entity.getId());
+        dto.setModelo(entity.getModelo());
+        dto.setPlaca(entity.getPlaca());
         return dto;
     }
 
-    public static Veiculo fromSummary(VeiculoDTO dto) {
-        if (dto == null) {
-            return null;
+    public static Set<VeiculoDTO> toDTOSet(Set<Veiculo> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
         }
-        if (dto instanceof CarroDTO) {
-            return CarroMap.fromSummary((CarroDTO) dto);
+        return entities.stream()
+                .map(VeiculoMap::toDTO)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<Veiculo> toEntitySet(Set<VeiculoDTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return Collections.emptySet();
         }
-        if (dto instanceof OnibusDTO) {
-            return OnibusMap.fromSummary((OnibusDTO) dto);
+        return dtos.stream()
+                .map(VeiculoMap::toEntity)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<VeiculoDTO> toSummarySet(Set<Veiculo> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
         }
-        if (dto instanceof VanDTO) {
-            return VanMap.fromSummary((VanDTO) dto);
-        }
-        throw new IllegalArgumentException("Tipo de DTO de veículo desconhecido: " + dto.getClass());
+        return entities.stream()
+                .map(VeiculoMap::toSummary)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

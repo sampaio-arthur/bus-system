@@ -5,19 +5,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import br.com.bus.application.dto.LinhaDTO;
-import br.com.bus.domain.Linha;
+import br.com.bus.application.dto.PecaDTO;
+import br.com.bus.domain.Peca;
 
-public final class LinhaMap {
+public final class PecaMap {
 
-    private LinhaMap() {
+    private PecaMap() {
     }
 
-    public static Linha toEntity(LinhaDTO dto) {
+    public static Peca toEntity(PecaDTO dto) {
         if (dto == null) {
             return null;
         }
-        Linha entity = new Linha();
+        Peca entity = new Peca();
         if (dto.getId() != null) {
             entity.setId(dto.getId());
         }
@@ -25,70 +25,73 @@ public final class LinhaMap {
         return entity;
     }
 
-    public static LinhaDTO toDTO(Linha entity) {
+    public static PecaDTO toDTO(Peca entity) {
         if (entity == null) {
             return null;
         }
-        LinhaDTO dto = new LinhaDTO();
+        PecaDTO dto = new PecaDTO();
         dto.setId(entity.getId());
+        dto.setValorUnitario(entity.getValorUnitario());
         dto.setNome(entity.getNome());
-        dto.setCodigo(entity.getCodigo());
-        dto.setCronograma(CronogramaMap.toSummary(entity.getCronograma()));
-        dto.setItinerarios(ItinerarioMap.toDTOSet(entity.getItinerarios()));
-        dto.setViagens(ViagemMap.toSummarySet(entity.getViagens()));
+        dto.setFabricante(entity.getFabricante());
+        dto.setQuantidade(entity.getQuantidade());
+        dto.setManutencoes(ManutencaoPecaMap.toDTOSet(entity.getManutencoes()));
         return dto;
     }
 
-    public static void updateEntityFromDTO(LinhaDTO dto, Linha entity) {
+    public static void updateEntityFromDTO(PecaDTO dto, Peca entity) {
         if (entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
-    private static void entityFromDTO(LinhaDTO dto, Linha entity) {
+    private static void entityFromDTO(PecaDTO dto, Peca entity) {
         if (dto == null || entity == null) {
             return;
         }
+        entity.setValorUnitario(dto.getValorUnitario());
         entity.setNome(dto.getNome());
-        entity.setCodigo(dto.getCodigo());
+        entity.setFabricante(dto.getFabricante());
+        entity.setQuantidade(dto.getQuantidade());
     }
 
-    public static LinhaDTO toSummary(Linha entity) {
+    public static PecaDTO toSummary(Peca entity) {
         if (entity == null) {
             return null;
         }
-        LinhaDTO dto = new LinhaDTO();
+        PecaDTO dto = new PecaDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setCodigo(entity.getCodigo());
+        dto.setFabricante(entity.getFabricante());
+        dto.setValorUnitario(entity.getValorUnitario());
         return dto;
     }
 
-    public static Set<LinhaDTO> toDTOSet(Set<Linha> entities) {
+    public static Set<PecaDTO> toDTOSet(Set<Peca> entities) {
         if (entities == null || entities.isEmpty()) {
             return Collections.emptySet();
         }
         return entities.stream()
-                .map(LinhaMap::toDTO)
+                .map(PecaMap::toDTO)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public static Set<Linha> toEntitySet(Set<LinhaDTO> dtos) {
+    public static Set<Peca> toEntitySet(Set<PecaDTO> dtos) {
         if (dtos == null || dtos.isEmpty()) {
             return Collections.emptySet();
         }
         return dtos.stream()
-                .map(LinhaMap::toEntity)
+                .map(PecaMap::toEntity)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public static Set<LinhaDTO> toSummarySet(Set<Linha> entities) {
+    public static Set<PecaDTO> toSummarySet(Set<Peca> entities) {
         if (entities == null || entities.isEmpty()) {
             return Collections.emptySet();
         }
         return entities.stream()
-                .map(LinhaMap::toSummary)
+                .map(PecaMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
