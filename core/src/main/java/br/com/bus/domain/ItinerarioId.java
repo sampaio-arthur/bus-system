@@ -1,4 +1,4 @@
-package br.com.bus.domain.temp;
+package br.com.bus.domain;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,15 +12,39 @@ public class ItinerarioId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "ordem")
-    public Short ordem;
+    private Short ordem;
 
     @Column(name = "id_linha")
-    public Integer idLinha;
+    private Integer idLinha;
 
     @Column(name = "id_ponto_parada")
-    public Integer idPontoParada;
+    private Integer idPontoParada;
+    
+    public Short getOrdem() {
+		return ordem;
+	}
 
-    @Override
+	public void setOrdem(Short ordem) {
+		this.ordem = ordem;
+	}
+
+	public Integer getIdLinha() {
+		return idLinha;
+	}
+
+	public void setIdLinha(Integer idLinha) {
+		this.idLinha = idLinha;
+	}
+
+	public Integer getIdPontoParada() {
+		return idPontoParada;
+	}
+
+	public void setIdPontoParada(Integer idPontoParada) {
+		this.idPontoParada = idPontoParada;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

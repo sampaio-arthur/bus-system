@@ -1,6 +1,5 @@
 package br.com.bus.domain;
 
-import br.com.bus.domain.temp.ItinerarioId;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

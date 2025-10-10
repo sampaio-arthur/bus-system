@@ -2,7 +2,6 @@ package br.com.bus.domain;
 
 import java.math.BigDecimal;
 
-import br.com.bus.domain.temp.ManutencaoPecaId;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
