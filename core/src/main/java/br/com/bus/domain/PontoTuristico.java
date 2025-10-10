@@ -20,14 +20,47 @@ public class PontoTuristico extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_ponto_turistico")
-    public Integer id;
+    private Integer id;
 
     @Column(name = "nome", length = 255)
-    public String nome;
+    private String nome;
 
     @Column(name = "descricao", length = 255)
-    public String descricao;
+    private String descricao;
 
     @OneToMany(mappedBy = "pontoTuristico", fetch = FetchType.LAZY)
-    public Set<PontoParadaTuristico> pontosParada = new LinkedHashSet<>();
+    private Set<PontoParadaTuristico> pontosParada = new LinkedHashSet<>();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Set<PontoParadaTuristico> getPontosParada() {
+		return pontosParada;
+	}
+
+	public void setPontosParada(Set<PontoParadaTuristico> pontosParada) {
+		this.pontosParada = pontosParada;
+	}
+    
 }

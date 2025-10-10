@@ -1,4 +1,4 @@
-package br.com.bus.domain;
+package br.com.bus.domain.itinerario;
 
 import java.io.Serializable;
 import java.util.Objects;

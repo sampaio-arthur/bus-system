@@ -20,15 +20,48 @@ public class Cronograma extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cronograma")
-    public Integer id;
+    private Integer id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_linha", nullable = false, unique = true)
-    public Linha linha;
+    private Linha linha;
 
     @Column(name = "hora_partida")
-    public LocalTime horaPartida;
+    private LocalTime horaPartida;
 
     @Column(name = "tipo_dia")
-    public Short tipoDia;
+    private Short tipoDia;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Linha getLinha() {
+		return linha;
+	}
+
+	public void setLinha(Linha linha) {
+		this.linha = linha;
+	}
+
+	public LocalTime getHoraPartida() {
+		return horaPartida;
+	}
+
+	public void setHoraPartida(LocalTime horaPartida) {
+		this.horaPartida = horaPartida;
+	}
+
+	public Short getTipoDia() {
+		return tipoDia;
+	}
+
+	public void setTipoDia(Short tipoDia) {
+		this.tipoDia = tipoDia;
+	}
+    
 }

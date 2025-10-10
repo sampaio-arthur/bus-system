@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.com.bus.domain.progressoViagem.ProgressoViagem;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,38 +24,127 @@ public class Viagem extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_viagem")
-    public Integer id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pessoa", nullable = false)
-    public Pessoa motorista;
+    private Pessoa motorista;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_linha", nullable = false)
-    public Linha linha;
+    private Linha linha;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_veiculo", nullable = false)
-    public Veiculo veiculo;
+    private Veiculo veiculo;
 
     @Column(name = "data_partida_prevista")
-    public LocalDateTime dataPartidaPrevista;
+    private LocalDateTime dataPartidaPrevista;
 
     @Column(name = "data_chegada_prevista")
-    public LocalDateTime dataChegadaPrevista;
+    private LocalDateTime dataChegadaPrevista;
 
     @Column(name = "data_partida_real")
-    public LocalDateTime dataPartidaReal;
+    private LocalDateTime dataPartidaReal;
 
     @Column(name = "data_chegada_real")
-    public LocalDateTime dataChegadaReal;
+    private LocalDateTime dataChegadaReal;
 
     @Column(name = "status")
-    public Short status;
+    private Short status;
 
     @OneToMany(mappedBy = "viagem", fetch = FetchType.LAZY)
-    public Set<ProgressoViagem> progresso = new LinkedHashSet<>();
+    private Set<ProgressoViagem> progresso = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "viagem", fetch = FetchType.LAZY)
-    public Set<Passagem> passagens = new LinkedHashSet<>();
+    private Set<Passagem> passagens = new LinkedHashSet<>();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Pessoa getMotorista() {
+		return motorista;
+	}
+
+	public void setMotorista(Pessoa motorista) {
+		this.motorista = motorista;
+	}
+
+	public Linha getLinha() {
+		return linha;
+	}
+
+	public void setLinha(Linha linha) {
+		this.linha = linha;
+	}
+
+	public Veiculo getVeiculo() {
+		return veiculo;
+	}
+
+	public void setVeiculo(Veiculo veiculo) {
+		this.veiculo = veiculo;
+	}
+
+	public LocalDateTime getDataPartidaPrevista() {
+		return dataPartidaPrevista;
+	}
+
+	public void setDataPartidaPrevista(LocalDateTime dataPartidaPrevista) {
+		this.dataPartidaPrevista = dataPartidaPrevista;
+	}
+
+	public LocalDateTime getDataChegadaPrevista() {
+		return dataChegadaPrevista;
+	}
+
+	public void setDataChegadaPrevista(LocalDateTime dataChegadaPrevista) {
+		this.dataChegadaPrevista = dataChegadaPrevista;
+	}
+
+	public LocalDateTime getDataPartidaReal() {
+		return dataPartidaReal;
+	}
+
+	public void setDataPartidaReal(LocalDateTime dataPartidaReal) {
+		this.dataPartidaReal = dataPartidaReal;
+	}
+
+	public LocalDateTime getDataChegadaReal() {
+		return dataChegadaReal;
+	}
+
+	public void setDataChegadaReal(LocalDateTime dataChegadaReal) {
+		this.dataChegadaReal = dataChegadaReal;
+	}
+
+	public Short getStatus() {
+		return status;
+	}
+
+	public void setStatus(Short status) {
+		this.status = status;
+	}
+
+	public Set<ProgressoViagem> getProgresso() {
+		return progresso;
+	}
+
+	public void setProgresso(Set<ProgressoViagem> progresso) {
+		this.progresso = progresso;
+	}
+
+	public Set<Passagem> getPassagens() {
+		return passagens;
+	}
+
+	public void setPassagens(Set<Passagem> passagens) {
+		this.passagens = passagens;
+	}
+    
 }

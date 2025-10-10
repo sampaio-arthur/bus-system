@@ -20,30 +20,95 @@ public class Passagem extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_passagem")
-    public Integer id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pessoa", nullable = false)
-    public Pessoa passageiro;
+    private Pessoa passageiro;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_viagem", nullable = false)
-    public Viagem viagem;
+    private Viagem viagem;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_metodo_pagamento", nullable = false)
-    public MetodoPagamento metodoPagamento;
+    private MetodoPagamento metodoPagamento;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_tipo_passagem", nullable = false)
-    public TipoPassagem tipoPassagem;
+    private TipoPassagem tipoPassagem;
 
     @Column(name = "valor")
-    public BigDecimal valor;
+    private BigDecimal valor;
 
     @Column(name = "data_emissao", length = 255)
-    public String dataEmissao;
+    private String dataEmissao;
 
     @Column(name = "numero_assento")
-    public Short numeroAssento;
+    private Short numeroAssento;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Pessoa getPassageiro() {
+		return passageiro;
+	}
+
+	public void setPassageiro(Pessoa passageiro) {
+		this.passageiro = passageiro;
+	}
+
+	public Viagem getViagem() {
+		return viagem;
+	}
+
+	public void setViagem(Viagem viagem) {
+		this.viagem = viagem;
+	}
+
+	public MetodoPagamento getMetodoPagamento() {
+		return metodoPagamento;
+	}
+
+	public void setMetodoPagamento(MetodoPagamento metodoPagamento) {
+		this.metodoPagamento = metodoPagamento;
+	}
+
+	public TipoPassagem getTipoPassagem() {
+		return tipoPassagem;
+	}
+
+	public void setTipoPassagem(TipoPassagem tipoPassagem) {
+		this.tipoPassagem = tipoPassagem;
+	}
+
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+
+	public String getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(String dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+
+	public Short getNumeroAssento() {
+		return numeroAssento;
+	}
+
+	public void setNumeroAssento(Short numeroAssento) {
+		this.numeroAssento = numeroAssento;
+	}
+    
 }

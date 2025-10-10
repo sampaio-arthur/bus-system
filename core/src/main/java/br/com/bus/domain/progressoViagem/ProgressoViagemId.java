@@ -1,4 +1,4 @@
-package br.com.bus.domain;
+package br.com.bus.domain.progressoViagem;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -20,32 +20,32 @@ public class ProgressoViagemId implements Serializable {
 
     @Column(name = "id_viagem")
     private Integer idViagem;
-    
+
     public LocalDateTime getData() {
-		return data;
-	}
+        return data;
+    }
 
-	public void setData(LocalDateTime data) {
-		this.data = data;
-	}
+    public void setData(LocalDateTime data) {
+        this.data = data;
+    }
 
-	public Integer getIdPontoParada() {
-		return idPontoParada;
-	}
+    public Integer getIdPontoParada() {
+        return idPontoParada;
+    }
 
-	public void setIdPontoParada(Integer idPontoParada) {
-		this.idPontoParada = idPontoParada;
-	}
+    public void setIdPontoParada(Integer idPontoParada) {
+        this.idPontoParada = idPontoParada;
+    }
 
-	public Integer getIdViagem() {
-		return idViagem;
-	}
+    public Integer getIdViagem() {
+        return idViagem;
+    }
 
-	public void setIdViagem(Integer idViagem) {
-		this.idViagem = idViagem;
-	}
+    public void setIdViagem(Integer idViagem) {
+        this.idViagem = idViagem;
+    }
 
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -20,11 +20,36 @@ public class TipoPassagem extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_passagem")
-    public Integer id;
+    private Integer id;
 
     @Column(name = "descricao", length = 255)
-    public String descricao;
+    private String descricao;
 
     @OneToMany(mappedBy = "tipoPassagem", fetch = FetchType.LAZY)
-    public Set<Passagem> passagens = new LinkedHashSet<>();
+    private Set<Passagem> passagens = new LinkedHashSet<>();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public Set<Passagem> getPassagens() {
+		return passagens;
+	}
+
+	public void setPassagens(Set<Passagem> passagens) {
+		this.passagens = passagens;
+	}
+    
 }

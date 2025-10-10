@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.com.bus.domain.manutencaoPeca.ManutencaoPeca;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,20 +22,69 @@ public class Peca extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_peca")
-    public Integer id;
+    private Integer id;
 
     @Column(name = "valor_unitario")
-    public BigDecimal valorUnitario;
+    private BigDecimal valorUnitario;
 
     @Column(name = "nome", length = 255)
-    public String nome;
+    private String nome;
 
     @Column(name = "fabricante", length = 255)
-    public String fabricante;
+    private String fabricante;
 
     @Column(name = "quantidade")
-    public Integer quantidade;
+    private Integer quantidade;
 
     @OneToMany(mappedBy = "peca", fetch = FetchType.LAZY)
-    public Set<ManutencaoPeca> manutencoes = new LinkedHashSet<>();
+    private Set<ManutencaoPeca> manutencoes = new LinkedHashSet<>();
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public BigDecimal getValorUnitario() {
+		return valorUnitario;
+	}
+
+	public void setValorUnitario(BigDecimal valorUnitario) {
+		this.valorUnitario = valorUnitario;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getFabricante() {
+		return fabricante;
+	}
+
+	public void setFabricante(String fabricante) {
+		this.fabricante = fabricante;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Integer quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public Set<ManutencaoPeca> getManutencoes() {
+		return manutencoes;
+	}
+
+	public void setManutencoes(Set<ManutencaoPeca> manutencoes) {
+		this.manutencoes = manutencoes;
+	}
+    
 }
