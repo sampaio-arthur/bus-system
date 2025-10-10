@@ -14,20 +14,17 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ponto_turistico")
-public class PontoTuristico extends PanacheEntityBase {
+@Table(name = "tipo_passagem")
+public class TipoPassagem extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ponto_turistico")
+    @Column(name = "id_tipo_passagem")
     public Integer id;
-
-    @Column(name = "nome", length = 255)
-    public String nome;
 
     @Column(name = "descricao", length = 255)
     public String descricao;
 
-    @OneToMany(mappedBy = "pontoTuristico", fetch = FetchType.LAZY)
-    public Set<PontoParadaTuristico> pontosParada = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "tipoPassagem", fetch = FetchType.LAZY)
+    public Set<Passagem> passagens = new LinkedHashSet<>();
 }

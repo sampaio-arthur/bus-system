@@ -1,12 +1,10 @@
 package br.com.bus.domain;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,8 +15,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "viagem")
@@ -26,80 +22,39 @@ public class Viagem extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_viagem")
+    public Integer id;
 
-    @NotNull
-    @Column(name = "data_hora_saida", nullable = false)
-    private LocalDateTime dataHoraSaida;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_pessoa", nullable = false)
+    public Pessoa motorista;
 
-    @Column(name = "data_hora_chegada_prevista")
-    private LocalDateTime dataHoraChegadaPrevista;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_linha", nullable = false)
+    public Linha linha;
 
-    @Column(name = "data_hora_chegada_real")
-    private LocalDateTime dataHoraChegadaReal;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_veiculo", nullable = false)
+    public Veiculo veiculo;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rota_id")
-    private Rota rota;
+    @Column(name = "data_partida_prevista")
+    public LocalDateTime dataPartidaPrevista;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "veiculo_id")
-    private Veiculo veiculo;
+    @Column(name = "data_chegada_prevista")
+    public LocalDateTime dataChegadaPrevista;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "motorista_id")
-    private Motorista motorista;
+    @Column(name = "data_partida_real")
+    public LocalDateTime dataPartidaReal;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_viagem_id")
-    private StatusViagem statusViagem;
+    @Column(name = "data_chegada_real")
+    public LocalDateTime dataChegadaReal;
 
-    @OneToMany(mappedBy = "viagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Passagem> passagens = new ArrayList<>();
+    @Column(name = "status")
+    public Short status;
 
-    @Version
-    private int version;
+    @OneToMany(mappedBy = "viagem", fetch = FetchType.LAZY)
+    public Set<ProgressoViagem> progresso = new LinkedHashSet<>();
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public LocalDateTime getDataHoraSaida() { return dataHoraSaida; }
-    public void setDataHoraSaida(LocalDateTime dataHoraSaida) { this.dataHoraSaida = dataHoraSaida; }
-
-    public LocalDateTime getDataHoraChegadaPrevista() { return dataHoraChegadaPrevista; }
-    public void setDataHoraChegadaPrevista(LocalDateTime dataHoraChegadaPrevista) { this.dataHoraChegadaPrevista = dataHoraChegadaPrevista; }
-
-    public LocalDateTime getDataHoraChegadaReal() { return dataHoraChegadaReal; }
-    public void setDataHoraChegadaReal(LocalDateTime dataHoraChegadaReal) { this.dataHoraChegadaReal = dataHoraChegadaReal; }
-
-    public Rota getRota() { return rota; }
-    public void setRota(Rota rota) { this.rota = rota; }
-
-    public Veiculo getVeiculo() { return veiculo; }
-    public void setVeiculo(Veiculo veiculo) { this.veiculo = veiculo; }
-
-    public Motorista getMotorista() { return motorista; }
-    public void setMotorista(Motorista motorista) { this.motorista = motorista; }
-
-    public StatusViagem getStatusViagem() { return statusViagem; }
-    public void setStatusViagem(StatusViagem statusViagem) { this.statusViagem = statusViagem; }
-
-    public List<Passagem> getPassagens() { return passagens; }
-    public void setPassagens(List<Passagem> passagens) { this.passagens = passagens; }
-
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Viagem)) return false;
-        Viagem viagem = (Viagem) o;
-        return id != null && id.equals(viagem.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    @OneToMany(mappedBy = "viagem", fetch = FetchType.LAZY)
+    public Set<Passagem> passagens = new LinkedHashSet<>();
 }

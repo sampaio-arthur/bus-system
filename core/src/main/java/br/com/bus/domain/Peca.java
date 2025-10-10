@@ -1,5 +1,6 @@
 package br.com.bus.domain;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,20 +15,26 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "ponto_turistico")
-public class PontoTuristico extends PanacheEntityBase {
+@Table(name = "peca")
+public class Peca extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ponto_turistico")
+    @Column(name = "id_peca")
     public Integer id;
+
+    @Column(name = "valor_unitario")
+    public BigDecimal valorUnitario;
 
     @Column(name = "nome", length = 255)
     public String nome;
 
-    @Column(name = "descricao", length = 255)
-    public String descricao;
+    @Column(name = "fabricante", length = 255)
+    public String fabricante;
 
-    @OneToMany(mappedBy = "pontoTuristico", fetch = FetchType.LAZY)
-    public Set<PontoParadaTuristico> pontosParada = new LinkedHashSet<>();
+    @Column(name = "quantidade")
+    public Integer quantidade;
+
+    @OneToMany(mappedBy = "peca", fetch = FetchType.LAZY)
+    public Set<ManutencaoPeca> manutencoes = new LinkedHashSet<>();
 }
