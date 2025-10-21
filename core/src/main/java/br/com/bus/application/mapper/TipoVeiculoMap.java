@@ -1,12 +1,12 @@
 package br.com.bus.application.mapper;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.bus.application.dto.TipoVeiculoDTO;
-import br.com.bus.application.dto.VeiculoDTO;
 import br.com.bus.domain.TipoVeiculo;
-import br.com.bus.domain.Veiculo;
 
 public final class TipoVeiculoMap {
 
@@ -18,7 +18,9 @@ public final class TipoVeiculoMap {
             return null;
         }
         TipoVeiculo entity = new TipoVeiculo();
-        entity.setId(dto.getId());
+        if (dto.getId() != null) {
+            entity.setId(dto.getId());
+        }
         entityFromDTO(dto, entity);
         return entity;
     }
@@ -29,39 +31,23 @@ public final class TipoVeiculoMap {
         }
         TipoVeiculoDTO dto = new TipoVeiculoDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setCapacidadePassageiros(entity.getCapacidadePassageiros());
-        dto.setCombustivel(entity.getCombustivel());
-        dto.setAtivo(entity.getAtivo());
-        dto.setVersion(entity.getVersion());
-        if (entity.getVeiculos() != null) {
-            List<VeiculoDTO> veiculos = entity.getVeiculos().stream()
-                    .map(VeiculoMap::toSummary)
-                    .collect(Collectors.toList());
-            dto.setVeiculos(veiculos);
-        }
+        dto.setDescricao(entity.getDescricao());
+        dto.setVeiculos(VeiculoMap.toSummarySet(entity.getVeiculos()));
         return dto;
     }
 
     public static void updateEntityFromDTO(TipoVeiculoDTO dto, TipoVeiculo entity) {
-        if (dto == null || entity == null) {
+        if (entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
     private static void entityFromDTO(TipoVeiculoDTO dto, TipoVeiculo entity) {
-        entity.setNome(dto.getNome());
-        entity.setCapacidadePassageiros(dto.getCapacidadePassageiros());
-        entity.setCombustivel(dto.getCombustivel());
-        entity.setAtivo(dto.getAtivo());
-        entity.setVersion(dto.getVersion());
-        if (dto.getVeiculos() != null) {
-            List<Veiculo> veiculos = dto.getVeiculos().stream()
-                    .map(VeiculoMap::toEntity)
-                    .collect(Collectors.toList());
-            entity.setVeiculos(veiculos);
+        if (dto == null || entity == null) {
+            return;
         }
+        entity.setDescricao(dto.getDescricao());
     }
 
     public static TipoVeiculoDTO toSummary(TipoVeiculo entity) {
@@ -70,17 +56,34 @@ public final class TipoVeiculoMap {
         }
         TipoVeiculoDTO dto = new TipoVeiculoDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
+        dto.setDescricao(entity.getDescricao());
         return dto;
     }
 
-    public static TipoVeiculo fromSummary(TipoVeiculoDTO dto) {
-        if (dto == null) {
-            return null;
+    public static Set<TipoVeiculoDTO> toDTOSet(Set<TipoVeiculo> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
         }
-        TipoVeiculo entity = new TipoVeiculo();
-        entity.setId(dto.getId());
-        entity.setNome(dto.getNome());
-        return entity;
+        return entities.stream()
+                .map(TipoVeiculoMap::toDTO)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<TipoVeiculo> toEntitySet(Set<TipoVeiculoDTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return dtos.stream()
+                .map(TipoVeiculoMap::toEntity)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<TipoVeiculoDTO> toSummarySet(Set<TipoVeiculo> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return entities.stream()
+                .map(TipoVeiculoMap::toSummary)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

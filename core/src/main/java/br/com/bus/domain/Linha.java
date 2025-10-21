@@ -1,11 +1,10 @@
 package br.com.bus.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import br.com.bus.domain.itinerario.Itinerario;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,11 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Version;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "linha")
@@ -25,152 +21,70 @@ public class Linha extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_linha")
+    private Integer id;
 
-    @NotBlank(message = "Nome da linha é obrigatório")
-    @Size(max = 100)
-    @Column(nullable = false)
+    @Column(name = "nome", length = 255, nullable = false)
     private String nome;
 
-    @NotBlank(message = "Código da linha é obrigatório")
-    @Column(nullable = false, unique = true)
+    @Column(name = "codigo", length = 255, nullable = false)
     private String codigo;
 
-    @Column(length = 7)
-    private String cor;
+    @OneToOne(mappedBy = "linha", fetch = FetchType.LAZY)
+    private Cronograma cronograma;
 
-    @NotNull
-    @Column(nullable = false)
-    private Boolean ativo = true;
+    @OneToMany(mappedBy = "linha", fetch = FetchType.LAZY)
+    private Set<Itinerario> itinerarios = new LinkedHashSet<>();
 
-    private Integer tempoPercursoEstimado;
+    @OneToMany(mappedBy = "linha", fetch = FetchType.LAZY)
+    private Set<Viagem> viagens = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Rota> rotas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParadaLinha> paradasLinha = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Horario> horarios = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Tarifa> tarifas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<FeedbackPassageiro> feedbacks = new ArrayList<>();
-
-    @Version
-    private int version;
-
-    public int getVersion() {
-		return version;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setVersion(int version) {
-		this.version = version;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
-	public Long getId() {
-        return id;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public String getCodigo() {
+		return codigo;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
 
-    public String getCodigo() {
-        return codigo;
-    }
+	public Cronograma getCronograma() {
+		return cronograma;
+	}
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
+	public void setCronograma(Cronograma cronograma) {
+		this.cronograma = cronograma;
+	}
 
-    public String getCor() {
-        return cor;
-    }
+	public Set<Itinerario> getItinerarios() {
+		return itinerarios;
+	}
 
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
+	public void setItinerarios(Set<Itinerario> itinerarios) {
+		this.itinerarios = itinerarios;
+	}
 
-    public Boolean getAtivo() {
-        return ativo;
-    }
+	public Set<Viagem> getViagens() {
+		return viagens;
+	}
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public Integer getTempoPercursoEstimado() {
-        return tempoPercursoEstimado;
-    }
-
-    public void setTempoPercursoEstimado(Integer tempoPercursoEstimado) {
-        this.tempoPercursoEstimado = tempoPercursoEstimado;
-    }
-
-    public List<Rota> getRotas() {
-        return rotas;
-    }
-
-    public void setRotas(List<Rota> rotas) {
-        this.rotas = rotas;
-    }
-
-    public List<ParadaLinha> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinha> paradasLinha) {
-        this.paradasLinha = paradasLinha;
-    }
-
-    public List<Horario> getHorarios() {
-        return horarios;
-    }
-
-    public void setHorarios(List<Horario> horarios) {
-        this.horarios = horarios;
-    }
-
-    public List<Tarifa> getTarifas() {
-        return tarifas;
-    }
-
-    public void setTarifas(List<Tarifa> tarifas) {
-        this.tarifas = tarifas;
-    }
-
-    public List<FeedbackPassageiro> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<FeedbackPassageiro> feedbacks) {
-        this.feedbacks = feedbacks;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Linha))
-            return false;
-        Linha linha = (Linha) o;
-        return id != null && id.equals(linha.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+	public void setViagens(Set<Viagem> viagens) {
+		this.viagens = viagens;
+	}
+    
 }
