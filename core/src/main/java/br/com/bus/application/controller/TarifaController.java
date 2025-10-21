@@ -3,8 +3,8 @@ package br.com.bus.application.controller;
 import java.net.URI;
 import java.util.List;
 
-import br.com.bus.application.dto.CarroDTO;
-import br.com.bus.application.service.CarroService;
+import br.com.bus.application.dto.TarifaDTO;
+import br.com.bus.application.service.TarifaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -19,17 +19,17 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/carros")
+@Path("/tarifas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class CarroController {
+public class TarifaController {
 
     @Inject
-    CarroService service;
+    TarifaService service;
 
     @GET
-    public List<CarroDTO> listar(@QueryParam("page") Integer page,
-                                 @QueryParam("size") Integer size) {
+    public List<TarifaDTO> listar(@QueryParam("page") Integer page,
+                                  @QueryParam("size") Integer size) {
         int p = page == null || page < 0 ? 0 : page;
         int s = size == null || size <= 0 ? 20 : size;
         return service.listar(p, s);
@@ -37,23 +37,17 @@ public class CarroController {
 
     @GET
     @Path("/{id}")
-    public CarroDTO buscarPorId(@PathParam("id") Long id) {
-        return service.buscarPorId(id);
-    }
+    public TarifaDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
 
     @POST
-    public Response criar(@Valid CarroDTO dto) {
-        CarroDTO created = service.criar(dto);
-        return Response.created(URI.create("/carros/" + created.getId()))
-                .entity(created)
-                .build();
+    public Response criar(@Valid TarifaDTO dto) {
+        TarifaDTO created = service.criar(dto);
+        return Response.created(URI.create("/tarifas/" + created.getId())).entity(created).build();
     }
 
     @PUT
     @Path("/{id}")
-    public CarroDTO atualizar(@PathParam("id") Long id, @Valid CarroDTO dto) {
-        return service.atualizar(id, dto);
-    }
+    public TarifaDTO atualizar(@PathParam("id") Long id, @Valid TarifaDTO dto) { return service.atualizar(id, dto); }
 
     @DELETE
     @Path("/{id}")
@@ -62,3 +56,4 @@ public class CarroController {
         return Response.noContent().build();
     }
 }
+
