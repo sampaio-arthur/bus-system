@@ -1,5 +1,10 @@
 package br.com.bus.application.mapper;
 
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import br.com.bus.application.dto.PassagemDTO;
 import br.com.bus.domain.Passagem;
 
@@ -68,5 +73,32 @@ public final class PassagemMap {
         Passagem entity = new Passagem();
         entity.setId(dto.getId());
         return entity;
+    }
+
+    public static Set<PassagemDTO> toDTOSet(Set<Passagem> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return entities.stream()
+                .map(PassagemMap::toDTO)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<Passagem> toEntitySet(Set<PassagemDTO> dtos) {
+        if (dtos == null || dtos.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return dtos.stream()
+                .map(PassagemMap::toEntity)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public static Set<PassagemDTO> toSummarySet(Set<Passagem> entities) {
+        if (entities == null || entities.isEmpty()) {
+            return Collections.emptySet();
+        }
+        return entities.stream()
+                .map(PassagemMap::toSummary)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }

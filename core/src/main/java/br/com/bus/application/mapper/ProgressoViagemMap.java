@@ -32,6 +32,7 @@ public final class ProgressoViagemMap {
         ProgressoViagemDTO dto = new ProgressoViagemDTO();
         ProgressoViagemId id = entity.getId();
         if (id != null) {
+            dto.setData(id.getData());
             dto.setIdViagem(id.getIdViagem());
             dto.setIdPontoParada(id.getIdPontoParada());
         }
@@ -62,6 +63,7 @@ public final class ProgressoViagemMap {
             id = new ProgressoViagemId();
             entity.setId(id);
         }
+        id.setData(dto.getData());
         id.setIdViagem(dto.getIdViagem());
         id.setIdPontoParada(dto.getIdPontoParada());
 

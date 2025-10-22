@@ -12,32 +12,32 @@ public class ManutencaoPecaId implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Column(name = "id_manutencao")
-    private Integer idManutencao;
+    private Long idManutencao;
 
     @Column(name = "id_peca")
-    private Integer idPeca;
+    private Long idPeca;
 
     public ManutencaoPecaId() {
     }
 
-    public ManutencaoPecaId(Integer idManutencao, Integer idPeca) {
+    public ManutencaoPecaId(Long idManutencao, Long idPeca) {
         this.idManutencao = idManutencao;
         this.idPeca = idPeca;
     }
 
-    public Integer getIdManutencao() {
+    public Long getIdManutencao() {
         return idManutencao;
     }
 
-    public void setIdManutencao(Integer idManutencao) {
+    public void setIdManutencao(Long idManutencao) {
         this.idManutencao = idManutencao;
     }
 
-    public Integer getIdPeca() {
+    public Long getIdPeca() {
         return idPeca;
     }
 
-    public void setIdPeca(Integer idPeca) {
+    public void setIdPeca(Long idPeca) {
         this.idPeca = idPeca;
     }
 

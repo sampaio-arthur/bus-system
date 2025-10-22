@@ -4,26 +4,26 @@ import java.math.BigDecimal;
 
 public class ManutencaoPecaDTO {
 
-    private Integer idManutencao;
-    private Integer idPeca;
+    private Long idManutencao;
+    private Long idPeca;
     private Integer quantidadeUtilizada;
     private BigDecimal valorUnitario;
     private String nomePeca;
     private String nomeManutencao;
 
-    public Integer getIdManutencao() {
+    public Long getIdManutencao() {
         return idManutencao;
     }
 
-    public void setIdManutencao(Integer idManutencao) {
+    public void setIdManutencao(Long idManutencao) {
         this.idManutencao = idManutencao;
     }
 
-    public Integer getIdPeca() {
+    public Long getIdPeca() {
         return idPeca;
     }
 
-    public void setIdPeca(Integer idPeca) {
+    public void setIdPeca(Long idPeca) {
         this.idPeca = idPeca;
     }
 

@@ -16,10 +16,10 @@ public class ProgressoViagemId implements Serializable {
     private LocalDateTime data;
 
     @Column(name = "id_ponto_parada")
-    private Integer idPontoParada;
+    private Long idPontoParada;
 
     @Column(name = "id_viagem")
-    private Integer idViagem;
+    private Long idViagem;
 
     public LocalDateTime getData() {
         return data;
@@ -29,19 +29,19 @@ public class ProgressoViagemId implements Serializable {
         this.data = data;
     }
 
-    public Integer getIdPontoParada() {
+    public Long getIdPontoParada() {
         return idPontoParada;
     }
 
-    public void setIdPontoParada(Integer idPontoParada) {
+    public void setIdPontoParada(Long idPontoParada) {
         this.idPontoParada = idPontoParada;
     }
 
-    public Integer getIdViagem() {
+    public Long getIdViagem() {
         return idViagem;
     }
 
-    public void setIdViagem(Integer idViagem) {
+    public void setIdViagem(Long idViagem) {
         this.idViagem = idViagem;
     }
 

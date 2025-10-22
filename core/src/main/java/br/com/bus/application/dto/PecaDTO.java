@@ -6,17 +6,17 @@ import java.util.Set;
 
 public class PecaDTO {
 
-	private Integer id;
+	private Long id;
 	private BigDecimal valorUnitario;
 	private String nome;
 	private String fabricante;
 	private Integer quantidade;
 	private Set<ManutencaoPecaDTO> manutencoes = new LinkedHashSet<>();
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public BigDecimal getValorUnitario() {

@@ -15,10 +15,10 @@ public class ItinerarioId implements Serializable {
     private Short ordem;
 
     @Column(name = "id_linha")
-    private Integer idLinha;
+    private Long idLinha;
 
     @Column(name = "id_ponto_parada")
-    private Integer idPontoParada;
+    private Long idPontoParada;
     
     public Short getOrdem() {
 		return ordem;
@@ -28,19 +28,19 @@ public class ItinerarioId implements Serializable {
 		this.ordem = ordem;
 	}
 
-	public Integer getIdLinha() {
+	public Long getIdLinha() {
 		return idLinha;
 	}
 
-	public void setIdLinha(Integer idLinha) {
+	public void setIdLinha(Long idLinha) {
 		this.idLinha = idLinha;
 	}
 
-	public Integer getIdPontoParada() {
+	public Long getIdPontoParada() {
 		return idPontoParada;
 	}
 
-	public void setIdPontoParada(Integer idPontoParada) {
+	public void setIdPontoParada(Long idPontoParada) {
 		this.idPontoParada = idPontoParada;
 	}
 

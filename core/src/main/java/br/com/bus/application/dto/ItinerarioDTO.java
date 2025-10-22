@@ -2,24 +2,24 @@ package br.com.bus.application.dto;
 
 public class ItinerarioDTO {
 
-    private Integer idLinha;
-    private Integer idPontoParada;
+    private Long idLinha;
+    private Long idPontoParada;
     private String nomeLinha;
     private String nomePontoParada;
 
-    public Integer getIdLinha() {
+    public Long getIdLinha() {
         return idLinha;
     }
 
-    public void setIdLinha(Integer idLinha) {
+    public void setIdLinha(Long idLinha) {
         this.idLinha = idLinha;
     }
 
-    public Integer getIdPontoParada() {
+    public Long getIdPontoParada() {
         return idPontoParada;
     }
 
-    public void setIdPontoParada(Integer idPontoParada) {
+    public void setIdPontoParada(Long idPontoParada) {
         this.idPontoParada = idPontoParada;
     }
 
