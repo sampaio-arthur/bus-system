@@ -17,7 +17,7 @@ public class AtualizarItinerario {
     ItinerarioRepository repository;
 
     @Transactional
-    public ItinerarioDTO executar(Integer idLinha, Integer idPontoParada, ItinerarioDTO dto) {
+    public ItinerarioDTO executar(Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
         ItinerarioId id = new ItinerarioId();
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);

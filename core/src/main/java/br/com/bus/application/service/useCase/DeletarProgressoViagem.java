@@ -16,7 +16,7 @@ public class DeletarProgressoViagem {
     ProgressoViagemRepository repository;
 
     @Transactional
-    public void executar(LocalDateTime data, Integer idViagem, Integer idPontoParada) {
+    public void executar(LocalDateTime data, Long idViagem, Long idPontoParada) {
         ProgressoViagemId id = new ProgressoViagemId();
         id.setData(data);
         id.setIdViagem(idViagem);

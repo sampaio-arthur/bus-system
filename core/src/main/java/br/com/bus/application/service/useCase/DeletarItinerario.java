@@ -14,7 +14,7 @@ public class DeletarItinerario {
     ItinerarioRepository repository;
 
     @Transactional
-    public void executar(Integer idLinha, Integer idPontoParada) {
+    public void executar(Long idLinha, Long idPontoParada) {
         ItinerarioId id = new ItinerarioId();
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);

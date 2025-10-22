@@ -18,7 +18,7 @@ public class BuscaManutencaoPeca {
     @Inject
     ManutencaoPecaRepository repository;
 
-    public ManutencaoPecaDTO porId(Integer idManutencao, Integer idPeca) {
+    public ManutencaoPecaDTO porId(Long idManutencao, Long idPeca) {
         ManutencaoPecaId id = new ManutencaoPecaId(idManutencao, idPeca);
         return ManutencaoPecaMap.toDTO(
                 repository.findByIdOptional(id)

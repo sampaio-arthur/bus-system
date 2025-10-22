@@ -19,7 +19,7 @@ public class AtualizarProgressoViagem {
     ProgressoViagemRepository repository;
 
     @Transactional
-    public ProgressoViagemDTO executar(LocalDateTime data, Integer idViagem, Integer idPontoParada, ProgressoViagemDTO dto) {
+    public ProgressoViagemDTO executar(LocalDateTime data, Long idViagem, Long idPontoParada, ProgressoViagemDTO dto) {
         ProgressoViagemId id = new ProgressoViagemId();
         id.setData(data);
         id.setIdViagem(idViagem);

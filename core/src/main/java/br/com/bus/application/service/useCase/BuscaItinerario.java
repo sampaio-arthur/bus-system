@@ -18,7 +18,7 @@ public class BuscaItinerario {
     @Inject
     ItinerarioRepository repository;
 
-    public ItinerarioDTO porId(Integer idLinha, Integer idPontoParada) {
+    public ItinerarioDTO porId(Long idLinha, Long idPontoParada) {
         ItinerarioId id = new ItinerarioId();
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);

@@ -26,10 +26,10 @@ public class ManutencaoPecaService {
     DeletarManutencaoPeca deletar;
 
     public List<ManutencaoPecaDTO> listar(int page, int size) { return busca.listar(page, size); }
-    public ManutencaoPecaDTO buscarPorId(Integer idManutencao, Integer idPeca) { return busca.porId(idManutencao, idPeca); }
+    public ManutencaoPecaDTO buscarPorId(Long idManutencao, Long idPeca) { return busca.porId(idManutencao, idPeca); }
     public ManutencaoPecaDTO criar(ManutencaoPecaDTO dto) { return criar.executar(dto); }
-    public ManutencaoPecaDTO atualizar(Integer idManutencao, Integer idPeca, ManutencaoPecaDTO dto) {
+    public ManutencaoPecaDTO atualizar(Long idManutencao, Long idPeca, ManutencaoPecaDTO dto) {
         return atualizar.executar(idManutencao, idPeca, dto);
     }
-    public void deletar(Integer idManutencao, Integer idPeca) { deletar.executar(idManutencao, idPeca); }
+    public void deletar(Long idManutencao, Long idPeca) { deletar.executar(idManutencao, idPeca); }
 }

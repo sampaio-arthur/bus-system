@@ -17,7 +17,7 @@ public class AtualizarManutencaoPeca {
     ManutencaoPecaRepository repository;
 
     @Transactional
-    public ManutencaoPecaDTO executar(Integer idManutencao, Integer idPeca, ManutencaoPecaDTO dto) {
+    public ManutencaoPecaDTO executar(Long idManutencao, Long idPeca, ManutencaoPecaDTO dto) {
         ManutencaoPecaId id = new ManutencaoPecaId(idManutencao, idPeca);
         ManutencaoPeca entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException(

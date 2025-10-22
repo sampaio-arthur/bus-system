@@ -14,7 +14,7 @@ public class DeletarManutencaoPeca {
     ManutencaoPecaRepository repository;
 
     @Transactional
-    public void executar(Integer idManutencao, Integer idPeca) {
+    public void executar(Long idManutencao, Long idPeca) {
         ManutencaoPecaId id = new ManutencaoPecaId(idManutencao, idPeca);
         boolean deleted = repository.deleteById(id);
         if (!deleted) {

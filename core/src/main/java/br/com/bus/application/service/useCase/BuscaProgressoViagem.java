@@ -19,7 +19,7 @@ public class BuscaProgressoViagem {
     @Inject
     ProgressoViagemRepository repository;
 
-    public ProgressoViagemDTO porId(LocalDateTime data, Integer idViagem, Integer idPontoParada) {
+    public ProgressoViagemDTO porId(LocalDateTime data, Long idViagem, Long idPontoParada) {
         ProgressoViagemId id = new ProgressoViagemId();
         id.setData(data);
         id.setIdViagem(idViagem);

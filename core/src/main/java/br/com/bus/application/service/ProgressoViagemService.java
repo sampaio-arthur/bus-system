@@ -27,14 +27,14 @@ public class ProgressoViagemService {
     DeletarProgressoViagem deletar;
 
     public List<ProgressoViagemDTO> listar(int page, int size) { return busca.listar(page, size); }
-    public ProgressoViagemDTO buscarPorId(LocalDateTime data, Integer idViagem, Integer idPontoParada) {
+    public ProgressoViagemDTO buscarPorId(LocalDateTime data, Long idViagem, Long idPontoParada) {
         return busca.porId(data, idViagem, idPontoParada);
     }
     public ProgressoViagemDTO criar(ProgressoViagemDTO dto) { return criar.executar(dto); }
-    public ProgressoViagemDTO atualizar(LocalDateTime data, Integer idViagem, Integer idPontoParada, ProgressoViagemDTO dto) {
+    public ProgressoViagemDTO atualizar(LocalDateTime data, Long idViagem, Long idPontoParada, ProgressoViagemDTO dto) {
         return atualizar.executar(data, idViagem, idPontoParada, dto);
     }
-    public void deletar(LocalDateTime data, Integer idViagem, Integer idPontoParada) {
+    public void deletar(LocalDateTime data, Long idViagem, Long idPontoParada) {
         deletar.executar(data, idViagem, idPontoParada);
     }
 }
