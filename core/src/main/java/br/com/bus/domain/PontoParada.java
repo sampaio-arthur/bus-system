@@ -1,11 +1,12 @@
 package br.com.bus.domain;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import br.com.bus.domain.itinerario.Itinerario;
-import br.com.bus.domain.progressoViagem.ProgressoViagem;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,10 +14,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ponto_parada")
@@ -24,93 +30,157 @@ public class PontoParada extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_ponto_parada")
-    private Integer id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cidade", nullable = false)
-    private Cidade cidade;
-
-    @Column(name = "nome", length = 255)
+    @NotBlank(message = "Nome não pode ser vazio")
+    @Size(max = 100)
+    @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Column(name = "long", length = 255)
-    private String longitude;
+    @Size(max = 200)
+    @Column(name = "endereco", length = 200)
+    private String endereco;
 
-    @Column(name = "lat", length = 255)
-    private String latitude;
+    @NotNull
+    @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
+    private BigDecimal latitude;
 
-    @OneToOne(mappedBy = "pontoParada", fetch = FetchType.LAZY)
-    private PontoParadaTuristico pontoParadaTuristico;
+    @NotNull
+    @Column(name = "longitude", precision = 11, scale = 8, nullable = false)
+    private BigDecimal longitude;
 
-    @OneToMany(mappedBy = "pontoParada", fetch = FetchType.LAZY)
-    private Set<Itinerario> itinerarios = new LinkedHashSet<>();
+    @Column(name = "tem_cobertura")
+    private Boolean temCobertura;
 
-    @OneToMany(mappedBy = "pontoParada", fetch = FetchType.LAZY)
-    private Set<ProgressoViagem> progressos = new LinkedHashSet<>();
+    @Column(name = "tem_banco")
+    private Boolean temBanco;
 
-	public Integer getId() {
-		return id;
-	}
+    @NotNull
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cidade_id", nullable = false)
+    private Cidade cidade;
 
-	public Cidade getCidade() {
-		return cidade;
-	}
+    @OneToMany(mappedBy = "pontoParada", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<ParadaLinha> paradasLinha = new ArrayList<>();
 
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
-	}
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "ponto_parada_ponto_turistico", joinColumns = @JoinColumn(name = "ponto_parada_id"), inverseJoinColumns = @JoinColumn(name = "ponto_turistico_id"))
+    private List<PontoTuristico> pontosTuristicosProximos = new ArrayList<>();
 
-	public String getNome() {
-		return nome;
-	}
+    @Version
+    private int version;
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getLongitude() {
-		return longitude;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setLongitude(String longitude) {
-		this.longitude = longitude;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public String getLatitude() {
-		return latitude;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public void setLatitude(String latitude) {
-		this.latitude = latitude;
-	}
+    public String getEndereco() {
+        return endereco;
+    }
 
-	public PontoParadaTuristico getPontoParadaTuristico() {
-		return pontoParadaTuristico;
-	}
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
 
-	public void setPontoParadaTuristico(PontoParadaTuristico pontoParadaTuristico) {
-		this.pontoParadaTuristico = pontoParadaTuristico;
-	}
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
 
-	public Set<Itinerario> getItinerarios() {
-		return itinerarios;
-	}
+    public void setLatitude(BigDecimal latitude) {
+        this.latitude = latitude;
+    }
 
-	public void setItinerarios(Set<Itinerario> itinerarios) {
-		this.itinerarios = itinerarios;
-	}
+    public BigDecimal getLongitude() {
+        return longitude;
+    }
 
-	public Set<ProgressoViagem> getProgressos() {
-		return progressos;
-	}
+    public void setLongitude(BigDecimal longitude) {
+        this.longitude = longitude;
+    }
 
-	public void setProgressos(Set<ProgressoViagem> progressos) {
-		this.progressos = progressos;
-	}
-    
+    public Boolean getTemCobertura() {
+        return temCobertura;
+    }
+
+    public void setTemCobertura(Boolean temCobertura) {
+        this.temCobertura = temCobertura;
+    }
+
+    public Boolean getTemBanco() {
+        return temBanco;
+    }
+
+    public void setTemBanco(Boolean temBanco) {
+        this.temBanco = temBanco;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
+    }
+
+    public List<ParadaLinha> getParadasLinha() {
+        return paradasLinha;
+    }
+
+    public void setParadasLinha(List<ParadaLinha> paradasLinha) {
+        this.paradasLinha = paradasLinha;
+    }
+
+    public List<PontoTuristico> getPontosTuristicosProximos() {
+        return pontosTuristicosProximos;
+    }
+
+    public void setPontosTuristicosProximos(List<PontoTuristico> pontosTuristicosProximos) {
+        this.pontosTuristicosProximos = pontosTuristicosProximos;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof PontoParada))
+            return false;
+        PontoParada that = (PontoParada) o;
+        return id != null && id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

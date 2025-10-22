@@ -1,7 +1,7 @@
 package br.com.bus.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -13,64 +13,69 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "passagem")
-public class Passagem extends PanacheEntityBase {
+@Table(name = "tarifa")
+public class Tarifa extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(name = "data_compra", nullable = false)
-    private LocalDateTime dataCompra;
-
-    @NotNull
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
 
-    @Column(name = "desconto_aplicado", precision = 10, scale = 2)
-    private BigDecimal descontoAplicado;
+    private String descricao;
 
     @NotNull
     @Column(nullable = false)
     private Boolean ativo = true;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Passageiro passageiro;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDate dataInicio;
+
+    private LocalDate dataFim;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Viagem viagem;
+    private Linha linha;
+
+    @Version
+    private int version;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getDataCompra() { return dataCompra; }
-    public void setDataCompra(LocalDateTime dataCompra) { this.dataCompra = dataCompra; }
-
     public BigDecimal getValor() { return valor; }
     public void setValor(BigDecimal valor) { this.valor = valor; }
 
-    public BigDecimal getDescontoAplicado() { return descontoAplicado; }
-    public void setDescontoAplicado(BigDecimal descontoAplicado) { this.descontoAplicado = descontoAplicado; }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-    public Passageiro getPassageiro() { return passageiro; }
-    public void setPassageiro(Passageiro passageiro) { this.passageiro = passageiro; }
+    public LocalDate getDataInicio() { return dataInicio; }
+    public void setDataInicio(LocalDate dataInicio) { this.dataInicio = dataInicio; }
 
-    public Viagem getViagem() { return viagem; }
-    public void setViagem(Viagem viagem) { this.viagem = viagem; }
+    public LocalDate getDataFim() { return dataFim; }
+    public void setDataFim(LocalDate dataFim) { this.dataFim = dataFim; }
+
+    public Linha getLinha() { return linha; }
+    public void setLinha(Linha linha) { this.linha = linha; }
+
+    public int getVersion() { return version; }
+    public void setVersion(int version) { this.version = version; }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Passagem)) return false;
-        Passagem that = (Passagem) o;
-        return id != null && id.equals(that.id);
+        if (!(o instanceof Tarifa)) return false;
+        Tarifa tarifa = (Tarifa) o;
+        return id != null && id.equals(tarifa.id);
     }
 
     @Override

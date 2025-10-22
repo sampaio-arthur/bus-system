@@ -17,42 +17,38 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "cidade")
-public class Cidade extends PanacheEntityBase {
+@Table(name = "empresa_transporte")
+public class EmpresaTransporte extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Nome não pode ser vazio")
-    @Size(max = 100)
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
-    @NotBlank(message = "Estado não pode ser vazio")
-    @Size(min = 2, max = 2)
-    @Column(name = "estado", nullable = false, length = 2)
-    private String estado;
+    @NotBlank(message = "CNPJ não pode ser vazio")
+    @Column(name = "cnpj", nullable = false, unique = true)
+    private String cnpj;
 
-    @Size(max = 9)
-    @Column(name = "cep", length = 9)
-    private String cep;
+    @Column(name = "telefone", length = 15)
+    private String telefone;
 
-    @Column(name = "populacao")
-    private Long populacao;
+    @Column(name = "endereco", length = 200)
+    private String endereco;
 
     @NotNull
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 
-    @OneToMany(mappedBy = "cidade", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PontoParada> pontosParada = new ArrayList<>();
-
     @Version
     private int version;
+
+    @OneToMany(mappedBy = "empresa", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Motorista> motoristas = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -70,28 +66,28 @@ public class Cidade extends PanacheEntityBase {
         this.nome = nome;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
-    public String getCep() {
-        return cep;
+    public String getTelefone() {
+        return telefone;
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
 
-    public Long getPopulacao() {
-        return populacao;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setPopulacao(Long populacao) {
-        this.populacao = populacao;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
     }
 
     public Boolean getAtivo() {
@@ -102,14 +98,6 @@ public class Cidade extends PanacheEntityBase {
         this.ativo = ativo;
     }
 
-    public List<PontoParada> getPontosParada() {
-        return pontosParada;
-    }
-
-    public void setPontosParada(List<PontoParada> pontosParada) {
-        this.pontosParada = pontosParada;
-    }
-
     public int getVersion() {
         return version;
     }
@@ -118,13 +106,21 @@ public class Cidade extends PanacheEntityBase {
         this.version = version;
     }
 
+    public List<Motorista> getMotoristas() {
+        return motoristas;
+    }
+
+    public void setMotoristas(List<Motorista> motoristas) {
+        this.motoristas = motoristas;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Cidade))
+        if (!(o instanceof EmpresaTransporte))
             return false;
-        Cidade that = (Cidade) o;
+        EmpresaTransporte that = (EmpresaTransporte) o;
         return id != null && id.equals(that.id);
     }
 

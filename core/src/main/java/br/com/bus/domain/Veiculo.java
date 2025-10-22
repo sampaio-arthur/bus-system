@@ -1,124 +1,99 @@
 package br.com.bus.domain;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "veiculo")
-public class Veiculo extends PanacheEntityBase {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "tipo_veiculo")
+public abstract class Veiculo extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_veiculo")
-    private Integer id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_veiculo", nullable = false)
-    private TipoVeiculo tipoVeiculo;
-
-    @Column(name = "chassi", length = 17, nullable = false)
-    private String chassi;
-
-    @Column(name = "ano_fabricacao")
-    private Short anoFabricacao;
-
-    @Column(name = "capacidade")
-    private Short capacidade;
-
-    @Column(name = "modelo", length = 255)
-    private String modelo;
-
-    @Column(name = "placa", length = 7)
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String placa;
 
-    @OneToMany(mappedBy = "veiculo", fetch = FetchType.LAZY)
-    private Set<Manutencao> manutencoes = new LinkedHashSet<>();
+    private String modelo;
 
-    @OneToMany(mappedBy = "veiculo", fetch = FetchType.LAZY)
-    private Set<Viagem> viagens = new LinkedHashSet<>();
+    private Integer ano;
 
-	public Integer getId() {
-		return id;
-	}
+    @NotNull
+    @Column(nullable = false)
+    private Integer capacidade;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @NotNull
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
-	public TipoVeiculo getTipoVeiculo() {
-		return tipoVeiculo;
-	}
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private TipoVeiculo tipoVeiculo;
 
-	public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
-		this.tipoVeiculo = tipoVeiculo;
-	}
+    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Viagem> viagens = new ArrayList<>();
 
-	public String getChassi() {
-		return chassi;
-	}
+    @Version
+    private int version;
 
-	public void setChassi(String chassi) {
-		this.chassi = chassi;
-	}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public Short getAnoFabricacao() {
-		return anoFabricacao;
-	}
+    public String getPlaca() { return placa; }
+    public void setPlaca(String placa) { this.placa = placa; }
 
-	public void setAnoFabricacao(Short anoFabricacao) {
-		this.anoFabricacao = anoFabricacao;
-	}
+    public String getModelo() { return modelo; }
+    public void setModelo(String modelo) { this.modelo = modelo; }
 
-	public Short getCapacidade() {
-		return capacidade;
-	}
+    public Integer getAno() { return ano; }
+    public void setAno(Integer ano) { this.ano = ano; }
 
-	public void setCapacidade(Short capacidade) {
-		this.capacidade = capacidade;
-	}
+    public Integer getCapacidade() { return capacidade; }
+    public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
 
-	public String getModelo() {
-		return modelo;
-	}
+    public Boolean getAtivo() { return ativo; }
+    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
+    public TipoVeiculo getTipoVeiculo() { return tipoVeiculo; }
+    public void setTipoVeiculo(TipoVeiculo tipoVeiculo) { this.tipoVeiculo = tipoVeiculo; }
 
-	public String getPlaca() {
-		return placa;
-	}
+    public List<Viagem> getViagens() { return viagens; }
+    public void setViagens(List<Viagem> viagens) { this.viagens = viagens; }
 
-	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
+    public int getVersion() { return version; }
+    public void setVersion(int version) { this.version = version; }
 
-	public Set<Manutencao> getManutencoes() {
-		return manutencoes;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Veiculo)) return false;
+        Veiculo veiculo = (Veiculo) o;
+        return id != null && id.equals(veiculo.id);
+    }
 
-	public void setManutencoes(Set<Manutencao> manutencoes) {
-		this.manutencoes = manutencoes;
-	}
-
-	public Set<Viagem> getViagens() {
-		return viagens;
-	}
-
-	public void setViagens(Set<Viagem> viagens) {
-		this.viagens = viagens;
-	}
-    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
