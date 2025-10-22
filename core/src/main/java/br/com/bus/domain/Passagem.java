@@ -1,6 +1,8 @@
 package br.com.bus.domain;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
@@ -9,9 +11,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "passagem")
@@ -19,96 +21,60 @@ public class Passagem extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_passagem")
-    private Integer id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pessoa", nullable = false)
-    private Pessoa passageiro;
+    @NotNull
+    @Column(name = "data_compra", nullable = false)
+    private LocalDateTime dataCompra;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_viagem", nullable = false)
-    private Viagem viagem;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_metodo_pagamento", nullable = false)
-    private MetodoPagamento metodoPagamento;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_tipo_passagem", nullable = false)
-    private TipoPassagem tipoPassagem;
-
-    @Column(name = "valor")
+    @NotNull
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valor;
 
-    @Column(name = "data_emissao", length = 255)
-    private String dataEmissao;
+    @Column(name = "desconto_aplicado", precision = 10, scale = 2)
+    private BigDecimal descontoAplicado;
 
-    @Column(name = "numero_assento")
-    private Short numeroAssento;
+    @NotNull
+    @Column(nullable = false)
+    private Boolean ativo = true;
 
-	public Integer getId() {
-		return id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Passageiro passageiro;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Viagem viagem;
 
-	public Pessoa getPassageiro() {
-		return passageiro;
-	}
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public void setPassageiro(Pessoa passageiro) {
-		this.passageiro = passageiro;
-	}
+    public LocalDateTime getDataCompra() { return dataCompra; }
+    public void setDataCompra(LocalDateTime dataCompra) { this.dataCompra = dataCompra; }
 
-	public Viagem getViagem() {
-		return viagem;
-	}
+    public BigDecimal getValor() { return valor; }
+    public void setValor(BigDecimal valor) { this.valor = valor; }
 
-	public void setViagem(Viagem viagem) {
-		this.viagem = viagem;
-	}
+    public BigDecimal getDescontoAplicado() { return descontoAplicado; }
+    public void setDescontoAplicado(BigDecimal descontoAplicado) { this.descontoAplicado = descontoAplicado; }
 
-	public MetodoPagamento getMetodoPagamento() {
-		return metodoPagamento;
-	}
+    public Boolean getAtivo() { return ativo; }
+    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-	public void setMetodoPagamento(MetodoPagamento metodoPagamento) {
-		this.metodoPagamento = metodoPagamento;
-	}
+    public Passageiro getPassageiro() { return passageiro; }
+    public void setPassageiro(Passageiro passageiro) { this.passageiro = passageiro; }
 
-	public TipoPassagem getTipoPassagem() {
-		return tipoPassagem;
-	}
+    public Viagem getViagem() { return viagem; }
+    public void setViagem(Viagem viagem) { this.viagem = viagem; }
 
-	public void setTipoPassagem(TipoPassagem tipoPassagem) {
-		this.tipoPassagem = tipoPassagem;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Passagem)) return false;
+        Passagem that = (Passagem) o;
+        return id != null && id.equals(that.id);
+    }
 
-	public BigDecimal getValor() {
-		return valor;
-	}
-
-	public void setValor(BigDecimal valor) {
-		this.valor = valor;
-	}
-
-	public String getDataEmissao() {
-		return dataEmissao;
-	}
-
-	public void setDataEmissao(String dataEmissao) {
-		this.dataEmissao = dataEmissao;
-	}
-
-	public Short getNumeroAssento() {
-		return numeroAssento;
-	}
-
-	public void setNumeroAssento(Short numeroAssento) {
-		this.numeroAssento = numeroAssento;
-	}
-    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

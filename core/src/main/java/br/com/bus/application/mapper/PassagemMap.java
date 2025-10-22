@@ -6,11 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.bus.application.dto.PassagemDTO;
-import br.com.bus.domain.MetodoPagamento;
 import br.com.bus.domain.Passagem;
-import br.com.bus.domain.Pessoa;
-import br.com.bus.domain.TipoPassagem;
-import br.com.bus.domain.Viagem;
 
 public final class PassagemMap {
 
@@ -22,9 +18,7 @@ public final class PassagemMap {
             return null;
         }
         Passagem entity = new Passagem();
-        if (dto.getId() != null) {
-            entity.setId(dto.getId());
-        }
+        entity.setId(dto.getId());
         entityFromDTO(dto, entity);
         return entity;
     }
@@ -35,70 +29,29 @@ public final class PassagemMap {
         }
         PassagemDTO dto = new PassagemDTO();
         dto.setId(entity.getId());
-        dto.setPassageiro(PessoaMap.toSummary(entity.getPassageiro()));
-        dto.setViagem(ViagemMap.toSummary(entity.getViagem()));
-        dto.setMetodoPagamento(MetodoPagamentoMap.toSummary(entity.getMetodoPagamento()));
-        dto.setTipoPassagem(TipoPassagemMap.toSummary(entity.getTipoPassagem()));
+        dto.setDataCompra(entity.getDataCompra());
         dto.setValor(entity.getValor());
-        dto.setDataEmissao(entity.getDataEmissao());
-        dto.setNumeroAssento(entity.getNumeroAssento());
+        dto.setDescontoAplicado(entity.getDescontoAplicado());
+        dto.setAtivo(entity.getAtivo());
+        dto.setPassageiro(PassageiroMap.toSummary(entity.getPassageiro()));
+        dto.setViagem(ViagemMap.toSummary(entity.getViagem()));
         return dto;
     }
 
     public static void updateEntityFromDTO(PassagemDTO dto, Passagem entity) {
-        if (entity == null) {
+        if (dto == null || entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
     private static void entityFromDTO(PassagemDTO dto, Passagem entity) {
-        if (dto == null || entity == null) {
-            return;
-        }
-        if (dto.getPassageiro() != null && dto.getPassageiro().getId() != null) {
-            Pessoa passageiro = entity.getPassageiro();
-            if (passageiro == null) {
-                passageiro = new Pessoa();
-            }
-            passageiro.setId(dto.getPassageiro().getId());
-            entity.setPassageiro(passageiro);
-        } else {
-            entity.setPassageiro(null);
-        }
-        if (dto.getViagem() != null && dto.getViagem().getId() != null) {
-            Viagem viagem = entity.getViagem();
-            if (viagem == null) {
-                viagem = new Viagem();
-            }
-            viagem.setId(dto.getViagem().getId());
-            entity.setViagem(viagem);
-        } else {
-            entity.setViagem(null);
-        }
-        if (dto.getMetodoPagamento() != null && dto.getMetodoPagamento().getId() != null) {
-            MetodoPagamento metodoPagamento = entity.getMetodoPagamento();
-            if (metodoPagamento == null) {
-                metodoPagamento = new MetodoPagamento();
-            }
-            metodoPagamento.setId(dto.getMetodoPagamento().getId());
-            entity.setMetodoPagamento(metodoPagamento);
-        } else {
-            entity.setMetodoPagamento(null);
-        }
-        if (dto.getTipoPassagem() != null && dto.getTipoPassagem().getId() != null) {
-            TipoPassagem tipoPassagem = entity.getTipoPassagem();
-            if (tipoPassagem == null) {
-                tipoPassagem = new TipoPassagem();
-            }
-            tipoPassagem.setId(dto.getTipoPassagem().getId());
-            entity.setTipoPassagem(tipoPassagem);
-        } else {
-            entity.setTipoPassagem(null);
-        }
+        entity.setDataCompra(dto.getDataCompra());
         entity.setValor(dto.getValor());
-        entity.setDataEmissao(dto.getDataEmissao());
-        entity.setNumeroAssento(dto.getNumeroAssento());
+        entity.setDescontoAplicado(dto.getDescontoAplicado());
+        entity.setAtivo(dto.getAtivo());
+        entity.setPassageiro(PassageiroMap.fromSummary(dto.getPassageiro()));
+        entity.setViagem(ViagemMap.fromSummary(dto.getViagem()));
     }
 
     public static PassagemDTO toSummary(Passagem entity) {
@@ -107,10 +60,19 @@ public final class PassagemMap {
         }
         PassagemDTO dto = new PassagemDTO();
         dto.setId(entity.getId());
+        dto.setDataCompra(entity.getDataCompra());
         dto.setValor(entity.getValor());
-        dto.setNumeroAssento(entity.getNumeroAssento());
-        dto.setDataEmissao(entity.getDataEmissao());
+        dto.setAtivo(entity.getAtivo());
         return dto;
+    }
+
+    public static Passagem fromSummary(PassagemDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        Passagem entity = new Passagem();
+        entity.setId(dto.getId());
+        return entity;
     }
 
     public static Set<PassagemDTO> toDTOSet(Set<Passagem> entities) {

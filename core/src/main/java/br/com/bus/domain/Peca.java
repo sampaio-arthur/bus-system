@@ -22,7 +22,7 @@ public class Peca extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_peca")
-    private Integer id;
+    private Long id;
 
     @Column(name = "valor_unitario")
     private BigDecimal valorUnitario;
@@ -39,11 +39,11 @@ public class Peca extends PanacheEntityBase {
     @OneToMany(mappedBy = "peca", fetch = FetchType.LAZY)
     private Set<ManutencaoPeca> manutencoes = new LinkedHashSet<>();
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

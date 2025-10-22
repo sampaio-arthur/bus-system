@@ -5,14 +5,14 @@ import java.util.Set;
 
 public class MetodoPagamentoDTO {
 
-	private Integer id;
+	private Long id;
 	private String descricao;
 	private Set<PassagemDTO> passagens = new LinkedHashSet<>();
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDescricao() {

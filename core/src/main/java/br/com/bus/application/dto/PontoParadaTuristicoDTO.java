@@ -2,13 +2,14 @@ package br.com.bus.application.dto;
 
 public class PontoParadaTuristicoDTO {
 
-	private Integer id;
+	private Long id;
 	private PontoParadaDTO pontoParada;
 	private PontoTuristicoDTO pontoTuristico;
-	public Integer getId() {
+	
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public PontoParadaDTO getPontoParada() {

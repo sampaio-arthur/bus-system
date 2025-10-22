@@ -1,14 +1,11 @@
 package br.com.bus.application.mapper;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.bus.application.dto.PassagemDTO;
 import br.com.bus.application.dto.ViagemDTO;
-import br.com.bus.domain.Linha;
-import br.com.bus.domain.Pessoa;
-import br.com.bus.domain.Veiculo;
+import br.com.bus.domain.Passagem;
 import br.com.bus.domain.Viagem;
 
 public final class ViagemMap {
@@ -21,9 +18,7 @@ public final class ViagemMap {
             return null;
         }
         Viagem entity = new Viagem();
-        if (dto.getId() != null) {
-            entity.setId(dto.getId());
-        }
+        entity.setId(dto.getId());
         entityFromDTO(dto, entity);
         return entity;
     }
@@ -34,65 +29,45 @@ public final class ViagemMap {
         }
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
-        dto.setMotorista(PessoaMap.toSummary(entity.getMotorista()));
-        dto.setLinha(LinhaMap.toSummary(entity.getLinha()));
+        dto.setDataHoraSaida(entity.getDataHoraSaida());
+        dto.setDataHoraChegadaPrevista(entity.getDataHoraChegadaPrevista());
+        dto.setDataHoraChegadaReal(entity.getDataHoraChegadaReal());
+        dto.setRota(RotaMap.toSummary(entity.getRota()));
         dto.setVeiculo(VeiculoMap.toSummary(entity.getVeiculo()));
-        dto.setDataPartidaPrevista(entity.getDataPartidaPrevista());
-        dto.setDataChegadaPrevista(entity.getDataChegadaPrevista());
-        dto.setDataPartidaReal(entity.getDataPartidaReal());
-        dto.setDataChegadaReal(entity.getDataChegadaReal());
-        dto.setStatus(entity.getStatus());
-        dto.setProgresso(ProgressoViagemMap.toDTOSet(entity.getProgresso()));
-        dto.setPassagens(PassagemMap.toSummarySet(entity.getPassagens()));
+        dto.setMotorista(MotoristaMap.toSummary(entity.getMotorista()));
+        dto.setStatusViagem(StatusViagemMap.toSummary(entity.getStatusViagem()));
+        dto.setVersion(entity.getVersion());
+        if (entity.getPassagens() != null) {
+            List<PassagemDTO> passagens = entity.getPassagens().stream()
+                    .map(PassagemMap::toDTO)
+                    .collect(Collectors.toList());
+            dto.setPassagens(passagens);
+        }
         return dto;
     }
 
     public static void updateEntityFromDTO(ViagemDTO dto, Viagem entity) {
-        if (entity == null) {
+        if (dto == null || entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
     private static void entityFromDTO(ViagemDTO dto, Viagem entity) {
-        if (dto == null || entity == null) {
-            return;
+        entity.setDataHoraSaida(dto.getDataHoraSaida());
+        entity.setDataHoraChegadaPrevista(dto.getDataHoraChegadaPrevista());
+        entity.setDataHoraChegadaReal(dto.getDataHoraChegadaReal());
+        entity.setRota(RotaMap.fromSummary(dto.getRota()));
+        entity.setVeiculo(VeiculoMap.fromSummary(dto.getVeiculo()));
+        entity.setMotorista(MotoristaMap.fromSummary(dto.getMotorista()));
+        entity.setStatusViagem(StatusViagemMap.fromSummary(dto.getStatusViagem()));
+        entity.setVersion(dto.getVersion());
+        if (dto.getPassagens() != null) {
+            List<Passagem> passagens = dto.getPassagens().stream()
+                    .map(PassagemMap::toEntity)
+                    .collect(Collectors.toList());
+            entity.setPassagens(passagens);
         }
-        if (dto.getMotorista() != null && dto.getMotorista().getId() != null) {
-            Pessoa motorista = entity.getMotorista();
-            if (motorista == null) {
-                motorista = new Pessoa();
-            }
-            motorista.setId(dto.getMotorista().getId());
-            entity.setMotorista(motorista);
-        } else {
-            entity.setMotorista(null);
-        }
-        if (dto.getLinha() != null && dto.getLinha().getId() != null) {
-            Linha linha = entity.getLinha();
-            if (linha == null) {
-                linha = new Linha();
-            }
-            linha.setId(dto.getLinha().getId());
-            entity.setLinha(linha);
-        } else {
-            entity.setLinha(null);
-        }
-        if (dto.getVeiculo() != null && dto.getVeiculo().getId() != null) {
-            Veiculo veiculo = entity.getVeiculo();
-            if (veiculo == null) {
-                veiculo = new Veiculo();
-            }
-            veiculo.setId(dto.getVeiculo().getId());
-            entity.setVeiculo(veiculo);
-        } else {
-            entity.setVeiculo(null);
-        }
-        entity.setDataPartidaPrevista(dto.getDataPartidaPrevista());
-        entity.setDataChegadaPrevista(dto.getDataChegadaPrevista());
-        entity.setDataPartidaReal(dto.getDataPartidaReal());
-        entity.setDataChegadaReal(dto.getDataChegadaReal());
-        entity.setStatus(dto.getStatus());
     }
 
     public static ViagemDTO toSummary(Viagem entity) {
@@ -101,36 +76,20 @@ public final class ViagemMap {
         }
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
-        dto.setStatus(entity.getStatus());
-        dto.setDataPartidaPrevista(entity.getDataPartidaPrevista());
-        dto.setDataChegadaPrevista(entity.getDataChegadaPrevista());
+        dto.setDataHoraSaida(entity.getDataHoraSaida());
+        dto.setStatusViagem(StatusViagemMap.toSummary(entity.getStatusViagem()));
         return dto;
     }
 
-    public static Set<ViagemDTO> toDTOSet(Set<Viagem> entities) {
-        if (entities == null || entities.isEmpty()) {
-            return Collections.emptySet();
+    public static Viagem fromSummary(ViagemDTO dto) {
+        if (dto == null) {
+            return null;
         }
-        return entities.stream()
-                .map(ViagemMap::toDTO)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public static Set<Viagem> toEntitySet(Set<ViagemDTO> dtos) {
-        if (dtos == null || dtos.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return dtos.stream()
-                .map(ViagemMap::toEntity)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public static Set<ViagemDTO> toSummarySet(Set<Viagem> entities) {
-        if (entities == null || entities.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return entities.stream()
-                .map(ViagemMap::toSummary)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        Viagem entity = new Viagem();
+        entity.setId(dto.getId());
+        entity.setDataHoraSaida(dto.getDataHoraSaida());
+        entity.setDataHoraChegadaPrevista(dto.getDataHoraChegadaPrevista());
+        entity.setStatusViagem(StatusViagemMap.fromSummary(dto.getStatusViagem()));
+        return entity;
     }
 }

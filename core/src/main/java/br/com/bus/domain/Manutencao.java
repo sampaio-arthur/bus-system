@@ -25,7 +25,7 @@ public class Manutencao extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_manutencao")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_veiculo", nullable = false)
@@ -50,11 +50,11 @@ public class Manutencao extends PanacheEntityBase {
     @OneToMany(mappedBy = "manutencao", fetch = FetchType.LAZY)
     private Set<ManutencaoPeca> manutencaoPecas = new LinkedHashSet<>();
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

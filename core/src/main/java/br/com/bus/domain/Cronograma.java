@@ -20,7 +20,7 @@ public class Cronograma extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cronograma")
-    private Integer id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_linha", nullable = false, unique = true)
@@ -32,11 +32,11 @@ public class Cronograma extends PanacheEntityBase {
     @Column(name = "tipo_dia")
     private Short tipoDia;
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

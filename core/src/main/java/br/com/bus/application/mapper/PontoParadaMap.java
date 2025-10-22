@@ -1,13 +1,14 @@
 package br.com.bus.application.mapper;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.bus.application.dto.ParadaLinhaDTO;
 import br.com.bus.application.dto.PontoParadaDTO;
-import br.com.bus.domain.Cidade;
+import br.com.bus.application.dto.PontoTuristicoDTO;
+import br.com.bus.domain.ParadaLinha;
 import br.com.bus.domain.PontoParada;
+import br.com.bus.domain.PontoTuristico;
 
 public final class PontoParadaMap {
 
@@ -19,9 +20,7 @@ public final class PontoParadaMap {
             return null;
         }
         PontoParada entity = new PontoParada();
-        if (dto.getId() != null) {
-            entity.setId(dto.getId());
-        }
+        entity.setId(dto.getId());
         entityFromDTO(dto, entity);
         return entity;
     }
@@ -32,40 +31,59 @@ public final class PontoParadaMap {
         }
         PontoParadaDTO dto = new PontoParadaDTO();
         dto.setId(entity.getId());
-        dto.setCidade(CidadeMap.toSummary(entity.getCidade()));
         dto.setNome(entity.getNome());
-        dto.setLongitude(entity.getLongitude());
+        dto.setEndereco(entity.getEndereco());
         dto.setLatitude(entity.getLatitude());
-        dto.setPontoParadaTuristico(PontoParadaTuristicoMap.toSummary(entity.getPontoParadaTuristico()));
-        dto.setItinerarios(ItinerarioMap.toDTOSet(entity.getItinerarios()));
-        dto.setProgressos(ProgressoViagemMap.toDTOSet(entity.getProgressos()));
+        dto.setLongitude(entity.getLongitude());
+        dto.setTemCobertura(entity.getTemCobertura());
+        dto.setTemBanco(entity.getTemBanco());
+        dto.setAtivo(entity.getAtivo());
+        dto.setCidade(CidadeMap.toSummary(entity.getCidade()));
+        dto.setVersion(entity.getVersion());
+        if (entity.getParadasLinha() != null) {
+            List<ParadaLinhaDTO> paradas = entity.getParadasLinha().stream()
+                    .map(ParadaLinhaMap::toSummary)
+                    .collect(Collectors.toList());
+            dto.setParadasLinha(paradas);
+        }
+        if (entity.getPontosTuristicosProximos() != null) {
+            List<PontoTuristicoDTO> pontos = entity.getPontosTuristicosProximos().stream()
+                    .map(PontoTuristicoMap::toSummary)
+                    .collect(Collectors.toList());
+            dto.setPontosTuristicosProximos(pontos);
+        }
         return dto;
     }
 
     public static void updateEntityFromDTO(PontoParadaDTO dto, PontoParada entity) {
-        if (entity == null) {
+        if (dto == null || entity == null) {
             return;
         }
         entityFromDTO(dto, entity);
     }
 
     private static void entityFromDTO(PontoParadaDTO dto, PontoParada entity) {
-        if (dto == null || entity == null) {
-            return;
-        }
-        if (dto.getCidade() != null && dto.getCidade().getId() != null) {
-            Cidade cidade = entity.getCidade();
-            if (cidade == null) {
-                cidade = new Cidade();
-            }
-            cidade.setId(dto.getCidade().getId());
-            entity.setCidade(cidade);
-        } else {
-            entity.setCidade(null);
-        }
         entity.setNome(dto.getNome());
-        entity.setLongitude(dto.getLongitude());
+        entity.setEndereco(dto.getEndereco());
         entity.setLatitude(dto.getLatitude());
+        entity.setLongitude(dto.getLongitude());
+        entity.setTemCobertura(dto.getTemCobertura());
+        entity.setTemBanco(dto.getTemBanco());
+        entity.setAtivo(dto.getAtivo());
+        entity.setCidade(CidadeMap.fromSummary(dto.getCidade()));
+        entity.setVersion(dto.getVersion());
+        if (dto.getParadasLinha() != null) {
+            List<ParadaLinha> paradas = dto.getParadasLinha().stream()
+                    .map(ParadaLinhaMap::toEntity)
+                    .collect(Collectors.toList());
+            entity.setParadasLinha(paradas);
+        }
+        if (dto.getPontosTuristicosProximos() != null) {
+            List<PontoTuristico> pontos = dto.getPontosTuristicosProximos().stream()
+                    .map(PontoTuristicoMap::fromSummary)
+                    .collect(Collectors.toList());
+            entity.setPontosTuristicosProximos(pontos);
+        }
     }
 
     public static PontoParadaDTO toSummary(PontoParada entity) {
@@ -75,35 +93,18 @@ public final class PontoParadaMap {
         PontoParadaDTO dto = new PontoParadaDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setLongitude(entity.getLongitude());
-        dto.setLatitude(entity.getLatitude());
+        dto.setEndereco(entity.getEndereco());
         return dto;
     }
 
-    public static Set<PontoParadaDTO> toDTOSet(Set<PontoParada> entities) {
-        if (entities == null || entities.isEmpty()) {
-            return Collections.emptySet();
+    public static PontoParada fromSummary(PontoParadaDTO dto) {
+        if (dto == null) {
+            return null;
         }
-        return entities.stream()
-                .map(PontoParadaMap::toDTO)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public static Set<PontoParada> toEntitySet(Set<PontoParadaDTO> dtos) {
-        if (dtos == null || dtos.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return dtos.stream()
-                .map(PontoParadaMap::toEntity)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
-
-    public static Set<PontoParadaDTO> toSummarySet(Set<PontoParada> entities) {
-        if (entities == null || entities.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return entities.stream()
-                .map(PontoParadaMap::toSummary)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        PontoParada entity = new PontoParada();
+        entity.setId(dto.getId());
+        entity.setNome(dto.getNome());
+        entity.setEndereco(dto.getEndereco());
+        return entity;
     }
 }

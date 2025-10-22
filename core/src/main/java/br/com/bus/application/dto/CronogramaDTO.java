@@ -4,15 +4,15 @@ import java.time.LocalTime;
 
 public class CronogramaDTO {
 
-	private Integer id;
+	private Long id;
 	private LinhaDTO linha;
 	private LocalTime horaPartida;
 	private Short tipoDia;
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public LinhaDTO getLinha() {
