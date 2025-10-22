@@ -1,7 +1,5 @@
 package br.com.bus.application.service.useCase;
 
-import java.util.Optional;
-
 import br.com.bus.application.dto.CarroDTO;
 import br.com.bus.application.mapper.CarroMap;
 import br.com.bus.domain.Carro;
