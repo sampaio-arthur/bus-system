@@ -1,6 +1,6 @@
-package br.com.bus.bot.service;
+package br.com.bus.utils.bot.service;
 
-import br.com.bus.bot.useCase.ExecutarConsultaNaturalUseCase;
+import br.com.bus.utils.bot.useCase.ExecutarConsultaNaturalUseCase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

@@ -1,4 +1,4 @@
-package br.com.bus.bot.dto;
+package br.com.bus.utils.bot.dto;
 
 public class OllamaMessage {
     public String role;

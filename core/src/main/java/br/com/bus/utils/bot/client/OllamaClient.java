@@ -1,8 +1,8 @@
-package br.com.bus.bot.client;
+package br.com.bus.utils.bot.client;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import br.com.bus.bot.dto.OllamaChatRequest;
+import br.com.bus.utils.bot.dto.OllamaChatRequest;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;

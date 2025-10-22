@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.bus.application.dto.ManutencaoDTO;
+import br.com.bus.application.dto.PessoaDTO;
+import br.com.bus.application.dto.VeiculoDTO;
 import br.com.bus.domain.Manutencao;
 import br.com.bus.domain.Pessoa;
 import br.com.bus.domain.Veiculo;
@@ -54,26 +56,8 @@ public final class ManutencaoMap {
         if (dto == null || entity == null) {
             return;
         }
-        if (dto.getVeiculo() != null && dto.getVeiculo().getId() != null) {
-            Veiculo veiculo = entity.getVeiculo();
-            if (veiculo == null) {
-                veiculo = new Veiculo();
-            }
-            veiculo.setId(dto.getVeiculo().getId());
-            entity.setVeiculo(veiculo);
-        } else {
-            entity.setVeiculo(null);
-        }
-        if (dto.getMecanico() != null && dto.getMecanico().getId() != null) {
-            Pessoa mecanico = entity.getMecanico();
-            if (mecanico == null) {
-                mecanico = new Pessoa();
-            }
-            mecanico.setId(dto.getMecanico().getId());
-            entity.setMecanico(mecanico);
-        } else {
-            entity.setMecanico(null);
-        }
+        entity.setVeiculo(resolveVeiculoReference(dto.getVeiculo(), entity.getVeiculo()));
+        entity.setMecanico(resolvePessoaReference(dto.getMecanico(), entity.getMecanico()));
         entity.setDescricao(dto.getDescricao());
         entity.setCustoTotal(dto.getCustoTotal());
         entity.setDataInicio(dto.getDataInicio());
@@ -117,5 +101,44 @@ public final class ManutencaoMap {
         return entities.stream()
                 .map(ManutencaoMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    private static Veiculo resolveVeiculoReference(VeiculoDTO dto, Veiculo current) {
+        if (dto == null || dto.getId() == null) {
+            return null;
+        }
+        if (current != null) {
+            current.setId(dto.getId());
+            return current;
+        }
+        VeiculoReference reference = new VeiculoReference();
+        reference.setId(dto.getId());
+        return reference;
+    }
+
+    private static Pessoa resolvePessoaReference(PessoaDTO dto, Pessoa current) {
+        if (dto == null || dto.getId() == null) {
+            return null;
+        }
+        if (current != null) {
+            current.setId(dto.getId());
+            return current;
+        }
+        PessoaReference reference = new PessoaReference();
+        reference.setId(dto.getId());
+        return reference;
+    }
+
+    private static final class VeiculoReference extends Veiculo {
+        private static final long serialVersionUID = 1L;
+    }
+
+    private static final class PessoaReference extends Pessoa {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public String getPersonType() {
+            return null;
+        }
     }
 }

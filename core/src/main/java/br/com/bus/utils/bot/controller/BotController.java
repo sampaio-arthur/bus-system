@@ -1,6 +1,6 @@
-package br.com.bus.bot.controller;
+package br.com.bus.utils.bot.controller;
 
-import br.com.bus.bot.service.BotService;
+import br.com.bus.utils.bot.service.BotService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;

@@ -1,12 +1,12 @@
-package br.com.bus.bot.useCase;
+package br.com.bus.utils.bot.useCase;
 
 import java.util.List;
 
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import br.com.bus.bot.client.OllamaClient;
-import br.com.bus.bot.dto.OllamaChatRequest;
-import br.com.bus.bot.dto.OllamaMessage;
+import br.com.bus.utils.bot.client.OllamaClient;
+import br.com.bus.utils.bot.dto.OllamaChatRequest;
+import br.com.bus.utils.bot.dto.OllamaMessage;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
