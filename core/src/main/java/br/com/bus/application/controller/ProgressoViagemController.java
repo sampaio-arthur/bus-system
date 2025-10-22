@@ -40,8 +40,8 @@ public class ProgressoViagemController {
 
     @GET
     @Path("/{idViagem}/{idPontoParada}")
-    public ProgressoViagemDTO buscarPorId(@PathParam("idViagem") Integer idViagem,
-                                          @PathParam("idPontoParada") Integer idPontoParada,
+    public ProgressoViagemDTO buscarPorId(@PathParam("idViagem") Long idViagem,
+                                          @PathParam("idPontoParada") Long idPontoParada,
                                           @QueryParam("data") String data) {
         LocalDateTime instante = parseData(data);
         return service.buscarPorId(instante, idViagem, idPontoParada);
@@ -57,8 +57,8 @@ public class ProgressoViagemController {
 
     @PUT
     @Path("/{idViagem}/{idPontoParada}")
-    public ProgressoViagemDTO atualizar(@PathParam("idViagem") Integer idViagem,
-                                        @PathParam("idPontoParada") Integer idPontoParada,
+    public ProgressoViagemDTO atualizar(@PathParam("idViagem") Long idViagem,
+                                        @PathParam("idPontoParada") Long idPontoParada,
                                         @QueryParam("data") String data,
                                         @Valid ProgressoViagemDTO dto) {
         LocalDateTime instante = parseData(data);
@@ -67,8 +67,8 @@ public class ProgressoViagemController {
 
     @DELETE
     @Path("/{idViagem}/{idPontoParada}")
-    public Response deletar(@PathParam("idViagem") Integer idViagem,
-                            @PathParam("idPontoParada") Integer idPontoParada,
+    public Response deletar(@PathParam("idViagem") Long idViagem,
+                            @PathParam("idPontoParada") Long idPontoParada,
                             @QueryParam("data") String data) {
         LocalDateTime instante = parseData(data);
         service.deletar(instante, idViagem, idPontoParada);

@@ -37,8 +37,8 @@ public class ManutencaoPecaController {
 
     @GET
     @Path("/{idManutencao}/{idPeca}")
-    public ManutencaoPecaDTO buscarPorId(@PathParam("idManutencao") Integer idManutencao,
-                                         @PathParam("idPeca") Integer idPeca) {
+    public ManutencaoPecaDTO buscarPorId(@PathParam("idManutencao") Long idManutencao,
+                                         @PathParam("idPeca") Long idPeca) {
         return service.buscarPorId(idManutencao, idPeca);
     }
 
@@ -52,16 +52,16 @@ public class ManutencaoPecaController {
 
     @PUT
     @Path("/{idManutencao}/{idPeca}")
-    public ManutencaoPecaDTO atualizar(@PathParam("idManutencao") Integer idManutencao,
-                                       @PathParam("idPeca") Integer idPeca,
+    public ManutencaoPecaDTO atualizar(@PathParam("idManutencao") Long idManutencao,
+                                       @PathParam("idPeca") Long idPeca,
                                        @Valid ManutencaoPecaDTO dto) {
         return service.atualizar(idManutencao, idPeca, dto);
     }
 
     @DELETE
     @Path("/{idManutencao}/{idPeca}")
-    public Response deletar(@PathParam("idManutencao") Integer idManutencao,
-                            @PathParam("idPeca") Integer idPeca) {
+    public Response deletar(@PathParam("idManutencao") Long idManutencao,
+                            @PathParam("idPeca") Long idPeca) {
         service.deletar(idManutencao, idPeca);
         return Response.noContent().build();
     }

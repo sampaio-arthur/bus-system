@@ -37,8 +37,8 @@ public class ItinerarioController {
 
     @GET
     @Path("/{idLinha}/{idPontoParada}")
-    public ItinerarioDTO buscarPorId(@PathParam("idLinha") Integer idLinha,
-                                     @PathParam("idPontoParada") Integer idPontoParada) {
+    public ItinerarioDTO buscarPorId(@PathParam("idLinha") Long idLinha,
+                                     @PathParam("idPontoParada") Long idPontoParada) {
         return service.buscarPorId(idLinha, idPontoParada);
     }
 
@@ -52,16 +52,16 @@ public class ItinerarioController {
 
     @PUT
     @Path("/{idLinha}/{idPontoParada}")
-    public ItinerarioDTO atualizar(@PathParam("idLinha") Integer idLinha,
-                                   @PathParam("idPontoParada") Integer idPontoParada,
+    public ItinerarioDTO atualizar(@PathParam("idLinha") Long idLinha,
+                                   @PathParam("idPontoParada") Long idPontoParada,
                                    @Valid ItinerarioDTO dto) {
         return service.atualizar(idLinha, idPontoParada, dto);
     }
 
     @DELETE
     @Path("/{idLinha}/{idPontoParada}")
-    public Response deletar(@PathParam("idLinha") Integer idLinha,
-                            @PathParam("idPontoParada") Integer idPontoParada) {
+    public Response deletar(@PathParam("idLinha") Long idLinha,
+                            @PathParam("idPontoParada") Long idPontoParada) {
         service.deletar(idLinha, idPontoParada);
         return Response.noContent().build();
     }
