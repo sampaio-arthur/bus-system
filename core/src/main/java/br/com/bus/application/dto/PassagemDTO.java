@@ -13,6 +13,7 @@ public class PassagemDTO {
     private PessoaDTO pessoa;
     private ViagemDTO viagem;
     private TipoPassagemDTO tipoPassagem;
+    private MetodoPagamentoDTO metodoPagamento;
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -37,5 +38,8 @@ public class PassagemDTO {
 
     public TipoPassagemDTO getTipoPassagem() { return tipoPassagem; }
     public void setTipoPassagem(TipoPassagemDTO tipoPassagem) { this.tipoPassagem = tipoPassagem; }
+
+    public MetodoPagamentoDTO getMetodoPagamento() { return metodoPagamento; }
+    public void setMetodoPagamento(MetodoPagamentoDTO metodoPagamento) { this.metodoPagamento = metodoPagamento; }
     
 }

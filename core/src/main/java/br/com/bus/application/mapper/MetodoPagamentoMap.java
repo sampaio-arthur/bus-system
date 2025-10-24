@@ -86,4 +86,14 @@ public final class MetodoPagamentoMap {
                 .map(MetodoPagamentoMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
+    public static MetodoPagamento fromSummary(MetodoPagamentoDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        MetodoPagamento entity = new MetodoPagamento();
+        entity.setId(dto.getId());
+        entity.setDescricao(dto.getDescricao());
+        return entity;
+    }
 }

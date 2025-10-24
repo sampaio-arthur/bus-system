@@ -35,6 +35,7 @@ public final class PassagemMap {
         dto.setAtivo(entity.getAtivo());
         dto.setPessoa(PessoaMap.toSummary(entity.getPessoa()));
         dto.setTipoPassagem(TipoPassagemMap.toSummary(entity.getTipoPassagem()));
+        dto.setMetodoPagamento(MetodoPagamentoMap.toSummary(entity.getMetodoPagamento()));
         dto.setViagem(ViagemMap.toSummary(entity.getViagem()));
         return dto;
     }
@@ -53,6 +54,7 @@ public final class PassagemMap {
         entity.setAtivo(dto.getAtivo());
         entity.setPessoa(PessoaMap.fromSummary(dto.getPessoa()));
         entity.setTipoPassagem(TipoPassagemMap.fromSummary(dto.getTipoPassagem()));
+        entity.setMetodoPagamento(MetodoPagamentoMap.fromSummary(dto.getMetodoPagamento()));
         entity.setViagem(ViagemMap.fromSummary(dto.getViagem()));
     }
 

@@ -47,6 +47,9 @@ public class Passagem extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private TipoPassagem tipoPassagem;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private MetodoPagamento metodoPagamento;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -70,6 +73,9 @@ public class Passagem extends PanacheEntityBase {
 
     public TipoPassagem getTipoPassagem() { return tipoPassagem; }
     public void setTipoPassagem(TipoPassagem tipoPassagem) { this.tipoPassagem = tipoPassagem; }
+
+    public MetodoPagamento getMetodoPagamento() { return metodoPagamento; }
+    public void setMetodoPagamento(MetodoPagamento metodoPagamento) { this.metodoPagamento = metodoPagamento; }
 
     @Override
     public boolean equals(Object o) {

@@ -40,7 +40,7 @@ public final class VeiculoMap {
     }
 
     static void entityFromDTO(VeiculoDTO dto, Veiculo entity) {
-        VeiculoMapperHelper.copyToEntity(dto, entity);
+        copyToEntity(dto, entity);
         if (dto.getViagens() != null) {
             List<Viagem> viagens = dto.getViagens().stream()
                     .map(ViagemMap::toEntity)
@@ -50,7 +50,7 @@ public final class VeiculoMap {
     }
 
     static void populateDTO(Veiculo entity, VeiculoDTO dto) {
-        VeiculoMapperHelper.copyToDTO(entity, dto);
+        copyToDTO(entity, dto);
         if (entity.getViagens() != null) {
             List<ViagemDTO> viagens = entity.getViagens().stream()
                     .map(ViagemMap::toSummary)
@@ -64,7 +64,7 @@ public final class VeiculoMap {
             return null;
         }
         VeiculoDTO dto = new VeiculoDTO();
-        VeiculoMapperHelper.copySummary(entity, dto);
+        copySummary(entity, dto);
         return dto;
     }
 
@@ -79,5 +79,34 @@ public final class VeiculoMap {
         entity.setAtivo(dto.getAtivo());
         entity.setTipoVeiculo(TipoVeiculoMap.fromSummary(dto.getTipoVeiculo()));
         return entity;
+    }
+
+    private static void copyToDTO(Veiculo entity, VeiculoDTO dto) {
+        dto.setId(entity.getId());
+        dto.setPlaca(entity.getPlaca());
+        dto.setModelo(entity.getModelo());
+        dto.setAno(entity.getAno());
+        dto.setCapacidade(entity.getCapacidade());
+        dto.setAtivo(entity.getAtivo());
+        dto.setTipoVeiculo(TipoVeiculoMap.toSummary(entity.getTipoVeiculo()));
+        dto.setVersion(entity.getVersion());
+    }
+
+    private static void copyToEntity(VeiculoDTO dto, Veiculo entity) {
+        entity.setPlaca(dto.getPlaca());
+        entity.setModelo(dto.getModelo());
+        entity.setAno(dto.getAno());
+        entity.setCapacidade(dto.getCapacidade());
+        entity.setAtivo(dto.getAtivo());
+        entity.setTipoVeiculo(TipoVeiculoMap.fromSummary(dto.getTipoVeiculo()));
+        entity.setVersion(dto.getVersion());
+    }
+
+    private static void copySummary(Veiculo entity, VeiculoDTO dto) {
+        dto.setId(entity.getId());
+        dto.setPlaca(entity.getPlaca());
+        dto.setModelo(entity.getModelo());
+        dto.setAtivo(entity.getAtivo());
+        dto.setTipoVeiculo(TipoVeiculoMap.toSummary(entity.getTipoVeiculo()));
     }
 }
