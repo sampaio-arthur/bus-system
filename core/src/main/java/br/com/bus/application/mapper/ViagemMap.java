@@ -32,9 +32,9 @@ public final class ViagemMap {
         dto.setDataHoraSaida(entity.getDataHoraSaida());
         dto.setDataHoraChegadaPrevista(entity.getDataHoraChegadaPrevista());
         dto.setDataHoraChegadaReal(entity.getDataHoraChegadaReal());
-        dto.setRota(RotaMap.toSummary(entity.getRota()));
+        dto.setLinha(LinhaMap.toSummary(entity.getLinha()));
         dto.setVeiculo(VeiculoMap.toSummary(entity.getVeiculo()));
-        dto.setMotorista(MotoristaMap.toSummary(entity.getMotorista()));
+        dto.setMotorista(PessoaMap.toSummary(entity.getMotorista()));
         dto.setStatusViagem(StatusViagemMap.toSummary(entity.getStatusViagem()));
         dto.setVersion(entity.getVersion());
         if (entity.getPassagens() != null) {
@@ -57,9 +57,9 @@ public final class ViagemMap {
         entity.setDataHoraSaida(dto.getDataHoraSaida());
         entity.setDataHoraChegadaPrevista(dto.getDataHoraChegadaPrevista());
         entity.setDataHoraChegadaReal(dto.getDataHoraChegadaReal());
-        entity.setRota(RotaMap.fromSummary(dto.getRota()));
+        entity.setLinha(LinhaMap.fromSummary(dto.getLinha()));
         entity.setVeiculo(VeiculoMap.fromSummary(dto.getVeiculo()));
-        entity.setMotorista(MotoristaMap.fromSummary(dto.getMotorista()));
+        entity.setMotorista(PessoaMap.fromSummary(dto.getMotorista()));
         entity.setStatusViagem(StatusViagemMap.fromSummary(dto.getStatusViagem()));
         entity.setVersion(dto.getVersion());
         if (dto.getPassagens() != null) {

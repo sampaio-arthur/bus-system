@@ -86,4 +86,14 @@ public final class TipoPassagemMap {
                 .map(TipoPassagemMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
+    public static TipoPassagem fromSummary(TipoPassagemDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        TipoPassagem entity = new TipoPassagem();
+        entity.setId(dto.getId());
+        entity.setDescricao(dto.getDescricao());
+        return entity;
+    }
 }

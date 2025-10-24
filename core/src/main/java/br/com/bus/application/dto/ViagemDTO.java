@@ -10,9 +10,9 @@ public class ViagemDTO {
     private LocalDateTime dataHoraSaida;
     private LocalDateTime dataHoraChegadaPrevista;
     private LocalDateTime dataHoraChegadaReal;
-    private RotaDTO rota;
+    private LinhaDTO linha;
     private VeiculoDTO veiculo;
-    private MotoristaDTO motorista;
+    private PessoaDTO motorista;
     private StatusViagemDTO statusViagem;
     private List<PassagemDTO> passagens = new ArrayList<>();
     private int version;
@@ -29,14 +29,14 @@ public class ViagemDTO {
     public LocalDateTime getDataHoraChegadaReal() { return dataHoraChegadaReal; }
     public void setDataHoraChegadaReal(LocalDateTime dataHoraChegadaReal) { this.dataHoraChegadaReal = dataHoraChegadaReal; }
 
-    public RotaDTO getRota() { return rota; }
-    public void setRota(RotaDTO rota) { this.rota = rota; }
+    public LinhaDTO getLinha() { return linha; }
+    public void setLinha(LinhaDTO linha) { this.linha = linha; }
 
     public VeiculoDTO getVeiculo() { return veiculo; }
     public void setVeiculo(VeiculoDTO veiculo) { this.veiculo = veiculo; }
 
-    public MotoristaDTO getMotorista() { return motorista; }
-    public void setMotorista(MotoristaDTO motorista) { this.motorista = motorista; }
+    public PessoaDTO getMotorista() { return motorista; }
+    public void setMotorista(PessoaDTO motorista) { this.motorista = motorista; }
 
     public StatusViagemDTO getStatusViagem() { return statusViagem; }
     public void setStatusViagem(StatusViagemDTO statusViagem) { this.statusViagem = statusViagem; }
