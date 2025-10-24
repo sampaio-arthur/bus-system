@@ -11,11 +11,7 @@ public class LinhaDTO {
     private String cor;
     private Boolean ativo = true;
     private Integer tempoPercursoEstimado;
-    private List<RotaDTO> rotas = new ArrayList<>();
     private List<ParadaLinhaDTO> paradasLinha = new ArrayList<>();
-    private List<HorarioDTO> horarios = new ArrayList<>();
-    private List<TarifaDTO> tarifas = new ArrayList<>();
-    private List<FeedbackPassageiroDTO> feedbacks = new ArrayList<>();
     
     public int getVersion() {
 		return version;
@@ -75,44 +71,12 @@ public class LinhaDTO {
         this.tempoPercursoEstimado = tempoPercursoEstimado;
     }
 
-    public List<RotaDTO> getRotas() {
-        return rotas;
-    }
-
-    public void setRotas(List<RotaDTO> rotas) {
-        this.rotas = rotas;
-    }
-
     public List<ParadaLinhaDTO> getParadasLinha() {
         return paradasLinha;
     }
 
     public void setParadasLinha(List<ParadaLinhaDTO> paradasLinha) {
         this.paradasLinha = paradasLinha;
-    }
-
-    public List<HorarioDTO> getHorarios() {
-        return horarios;
-    }
-
-    public void setHorarios(List<HorarioDTO> horarios) {
-        this.horarios = horarios;
-    }
-
-    public List<TarifaDTO> getTarifas() {
-        return tarifas;
-    }
-
-    public void setTarifas(List<TarifaDTO> tarifas) {
-        this.tarifas = tarifas;
-    }
-
-    public List<FeedbackPassageiroDTO> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<FeedbackPassageiroDTO> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
 }

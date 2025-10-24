@@ -55,4 +55,16 @@ public final class PessoaMap {
                 .map(PessoaMap::toSummary)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
+
+    public static Pessoa fromSummary(PessoaDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        Pessoa entity = new Pessoa();
+        entity.setId(dto.getId());
+        entity.setCpf(dto.getCpf());
+        entity.setNome(dto.getNome());
+        entity.setTipoPessoa(dto.getTipoPessoa());
+        return entity;
+    }
 }

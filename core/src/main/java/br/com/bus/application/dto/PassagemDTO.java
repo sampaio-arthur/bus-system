@@ -10,8 +10,9 @@ public class PassagemDTO {
     private BigDecimal valor;
     private BigDecimal descontoAplicado;
     private Boolean ativo = true;
-    private PassageiroDTO passageiro;
+    private PessoaDTO pessoa;
     private ViagemDTO viagem;
+    private TipoPassagemDTO tipoPassagem;
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -28,10 +29,13 @@ public class PassagemDTO {
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-    public PassageiroDTO getPassageiro() { return passageiro; }
-    public void setPassageiro(PassageiroDTO passageiro) { this.passageiro = passageiro; }
+    public PessoaDTO getPessoa() { return pessoa; }
+    public void setPessoa(PessoaDTO pessoa) { this.pessoa = pessoa; }
 
     public ViagemDTO getViagem() { return viagem; }
     public void setViagem(ViagemDTO viagem) { this.viagem = viagem; }
+
+    public TipoPassagemDTO getTipoPassagem() { return tipoPassagem; }
+    public void setTipoPassagem(TipoPassagemDTO tipoPassagem) { this.tipoPassagem = tipoPassagem; }
     
 }

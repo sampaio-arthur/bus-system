@@ -33,7 +33,8 @@ public final class PassagemMap {
         dto.setValor(entity.getValor());
         dto.setDescontoAplicado(entity.getDescontoAplicado());
         dto.setAtivo(entity.getAtivo());
-        dto.setPassageiro(PassageiroMap.toSummary(entity.getPassageiro()));
+        dto.setPessoa(PessoaMap.toSummary(entity.getPessoa()));
+        dto.setTipoPassagem(TipoPassagemMap.toSummary(entity.getTipoPassagem()));
         dto.setViagem(ViagemMap.toSummary(entity.getViagem()));
         return dto;
     }
@@ -50,7 +51,8 @@ public final class PassagemMap {
         entity.setValor(dto.getValor());
         entity.setDescontoAplicado(dto.getDescontoAplicado());
         entity.setAtivo(dto.getAtivo());
-        entity.setPassageiro(PassageiroMap.fromSummary(dto.getPassageiro()));
+        entity.setPessoa(PessoaMap.fromSummary(dto.getPessoa()));
+        entity.setTipoPassagem(TipoPassagemMap.fromSummary(dto.getTipoPassagem()));
         entity.setViagem(ViagemMap.fromSummary(dto.getViagem()));
     }
 

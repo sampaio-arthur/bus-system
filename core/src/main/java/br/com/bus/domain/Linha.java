@@ -46,19 +46,7 @@ public class Linha extends PanacheEntityBase {
     private Integer tempoPercursoEstimado;
 
     @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Rota> rotas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ParadaLinha> paradasLinha = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Horario> horarios = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Tarifa> tarifas = new ArrayList<>();
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<FeedbackPassageiro> feedbacks = new ArrayList<>();
 
     @Version
     private int version;
@@ -119,44 +107,12 @@ public class Linha extends PanacheEntityBase {
         this.tempoPercursoEstimado = tempoPercursoEstimado;
     }
 
-    public List<Rota> getRotas() {
-        return rotas;
-    }
-
-    public void setRotas(List<Rota> rotas) {
-        this.rotas = rotas;
-    }
-
     public List<ParadaLinha> getParadasLinha() {
         return paradasLinha;
     }
 
     public void setParadasLinha(List<ParadaLinha> paradasLinha) {
         this.paradasLinha = paradasLinha;
-    }
-
-    public List<Horario> getHorarios() {
-        return horarios;
-    }
-
-    public void setHorarios(List<Horario> horarios) {
-        this.horarios = horarios;
-    }
-
-    public List<Tarifa> getTarifas() {
-        return tarifas;
-    }
-
-    public void setTarifas(List<Tarifa> tarifas) {
-        this.tarifas = tarifas;
-    }
-
-    public List<FeedbackPassageiro> getFeedbacks() {
-        return feedbacks;
-    }
-
-    public void setFeedbacks(List<FeedbackPassageiro> feedbacks) {
-        this.feedbacks = feedbacks;
     }
 
     @Override

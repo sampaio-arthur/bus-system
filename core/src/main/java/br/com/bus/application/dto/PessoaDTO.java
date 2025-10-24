@@ -12,6 +12,14 @@ public class PessoaDTO {
     private LocalDateTime dataNascimento;
     private String endereco;
     private Boolean ativo = Boolean.TRUE;
+    private String tipoPessoa;
+    private String cnh;
+    private LocalDateTime dataVencimentoCnh;
+    private String categoriaCnh;
+    private Integer anosExperiencia;
+    private String numeroCarteirinha;
+    private Boolean descontoEstudante = Boolean.FALSE;
+    private Boolean descontoIdoso = Boolean.FALSE;
     private int version;
 
     public Long getId() { return id; }
@@ -37,6 +45,30 @@ public class PessoaDTO {
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+
+    public String getTipoPessoa() { return tipoPessoa; }
+    public void setTipoPessoa(String tipoPessoa) { this.tipoPessoa = tipoPessoa; }
+
+    public String getCnh() { return cnh; }
+    public void setCnh(String cnh) { this.cnh = cnh; }
+
+    public LocalDateTime getDataVencimentoCnh() { return dataVencimentoCnh; }
+    public void setDataVencimentoCnh(LocalDateTime dataVencimentoCnh) { this.dataVencimentoCnh = dataVencimentoCnh; }
+
+    public String getCategoriaCnh() { return categoriaCnh; }
+    public void setCategoriaCnh(String categoriaCnh) { this.categoriaCnh = categoriaCnh; }
+
+    public Integer getAnosExperiencia() { return anosExperiencia; }
+    public void setAnosExperiencia(Integer anosExperiencia) { this.anosExperiencia = anosExperiencia; }
+
+    public String getNumeroCarteirinha() { return numeroCarteirinha; }
+    public void setNumeroCarteirinha(String numeroCarteirinha) { this.numeroCarteirinha = numeroCarteirinha; }
+
+    public Boolean getDescontoEstudante() { return descontoEstudante; }
+    public void setDescontoEstudante(Boolean descontoEstudante) { this.descontoEstudante = descontoEstudante; }
+
+    public Boolean getDescontoIdoso() { return descontoIdoso; }
+    public void setDescontoIdoso(Boolean descontoIdoso) { this.descontoIdoso = descontoIdoso; }
 
     public int getVersion() { return version; }
     public void setVersion(int version) { this.version = version; }

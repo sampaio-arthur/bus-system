@@ -39,10 +39,13 @@ public class Passagem extends PanacheEntityBase {
     private Boolean ativo = true;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Passageiro passageiro;
+    private Pessoa pessoa;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Viagem viagem;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private TipoPassagem tipoPassagem;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -59,11 +62,14 @@ public class Passagem extends PanacheEntityBase {
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
-    public Passageiro getPassageiro() { return passageiro; }
-    public void setPassageiro(Passageiro passageiro) { this.passageiro = passageiro; }
+    public Pessoa getPessoa() { return pessoa; }
+    public void setPessoa(Pessoa pessoa) { this.pessoa = pessoa; }
 
     public Viagem getViagem() { return viagem; }
     public void setViagem(Viagem viagem) { this.viagem = viagem; }
+
+    public TipoPassagem getTipoPassagem() { return tipoPassagem; }
+    public void setTipoPassagem(TipoPassagem tipoPassagem) { this.tipoPassagem = tipoPassagem; }
 
     @Override
     public boolean equals(Object o) {

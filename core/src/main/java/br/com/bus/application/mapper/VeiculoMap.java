@@ -3,14 +3,8 @@ package br.com.bus.application.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.bus.application.dto.CarroDTO;
-import br.com.bus.application.dto.OnibusDTO;
-import br.com.bus.application.dto.VanDTO;
 import br.com.bus.application.dto.VeiculoDTO;
 import br.com.bus.application.dto.ViagemDTO;
-import br.com.bus.domain.Carro;
-import br.com.bus.domain.Onibus;
-import br.com.bus.domain.Van;
 import br.com.bus.domain.Veiculo;
 import br.com.bus.domain.Viagem;
 
@@ -23,30 +17,15 @@ public final class VeiculoMap {
         if (dto == null) {
             return null;
         }
-        if (dto instanceof CarroDTO) {
-            return CarroMap.toEntity((CarroDTO) dto);
-        }
-        if (dto instanceof OnibusDTO) {
-            return OnibusMap.toEntity((OnibusDTO) dto);
-        }
-        if (dto instanceof VanDTO) {
-            return VanMap.toEntity((VanDTO) dto);
-        }
-        throw new IllegalArgumentException("Tipo de DTO de veículo desconhecido: " + dto.getClass());
+        Veiculo entity = new Veiculo();
+        entity.setId(dto.getId());
+        entityFromDTO(dto, entity);
+        return entity;
     }
 
     public static VeiculoDTO toDTO(Veiculo entity) {
         if (entity == null) {
             return null;
-        }
-        if (entity instanceof Carro) {
-            return CarroMap.toDTO((Carro) entity);
-        }
-        if (entity instanceof Onibus) {
-            return OnibusMap.toDTO((Onibus) entity);
-        }
-        if (entity instanceof Van) {
-            return VanMap.toDTO((Van) entity);
         }
         VeiculoDTO dto = new VeiculoDTO();
         populateDTO(entity, dto);
@@ -84,15 +63,6 @@ public final class VeiculoMap {
         if (entity == null) {
             return null;
         }
-        if (entity instanceof Carro) {
-            return CarroMap.toSummary((Carro) entity);
-        }
-        if (entity instanceof Onibus) {
-            return OnibusMap.toSummary((Onibus) entity);
-        }
-        if (entity instanceof Van) {
-            return VanMap.toSummary((Van) entity);
-        }
         VeiculoDTO dto = new VeiculoDTO();
         VeiculoMapperHelper.copySummary(entity, dto);
         return dto;
@@ -102,15 +72,12 @@ public final class VeiculoMap {
         if (dto == null) {
             return null;
         }
-        if (dto instanceof CarroDTO) {
-            return CarroMap.fromSummary((CarroDTO) dto);
-        }
-        if (dto instanceof OnibusDTO) {
-            return OnibusMap.fromSummary((OnibusDTO) dto);
-        }
-        if (dto instanceof VanDTO) {
-            return VanMap.fromSummary((VanDTO) dto);
-        }
-        throw new IllegalArgumentException("Tipo de DTO de veículo desconhecido: " + dto.getClass());
+        Veiculo entity = new Veiculo();
+        entity.setId(dto.getId());
+        entity.setPlaca(dto.getPlaca());
+        entity.setModelo(dto.getModelo());
+        entity.setAtivo(dto.getAtivo());
+        entity.setTipoVeiculo(TipoVeiculoMap.fromSummary(dto.getTipoVeiculo()));
+        return entity;
     }
 }

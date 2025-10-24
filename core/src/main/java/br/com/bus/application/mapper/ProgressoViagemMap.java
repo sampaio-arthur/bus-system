@@ -117,12 +117,9 @@ public final class ProgressoViagemMap {
     }
 
     private static String extractNomeViagem(Viagem viagem) {
-        if (viagem == null || viagem.getRota() == null) {
+        if (viagem == null || viagem.getLinha() == null) {
             return null;
         }
-        if (viagem.getRota().getLinha() != null) {
-            return viagem.getRota().getLinha().getNome();
-        }
-        return viagem.getRota().getNome();
+        return viagem.getLinha().getNome();
     }
 }

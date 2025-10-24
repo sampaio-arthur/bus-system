@@ -17,6 +17,14 @@ final class PessoaMapperHelper {
         dto.setDataNascimento(entity.getDataNascimento());
         dto.setEndereco(entity.getEndereco());
         dto.setAtivo(entity.getAtivo());
+        dto.setTipoPessoa(entity.getTipoPessoa());
+        dto.setCnh(entity.getCnh());
+        dto.setDataVencimentoCnh(entity.getDataVencimentoCnh());
+        dto.setCategoriaCnh(entity.getCategoriaCnh());
+        dto.setAnosExperiencia(entity.getAnosExperiencia());
+        dto.setNumeroCarteirinha(entity.getNumeroCarteirinha());
+        dto.setDescontoEstudante(entity.getDescontoEstudante());
+        dto.setDescontoIdoso(entity.getDescontoIdoso());
         dto.setVersion(entity.getVersion());
     }
 
@@ -28,6 +36,14 @@ final class PessoaMapperHelper {
         entity.setDataNascimento(dto.getDataNascimento());
         entity.setEndereco(dto.getEndereco());
         entity.setAtivo(dto.getAtivo());
+        entity.setTipoPessoa(dto.getTipoPessoa());
+        entity.setCnh(dto.getCnh());
+        entity.setDataVencimentoCnh(dto.getDataVencimentoCnh());
+        entity.setCategoriaCnh(dto.getCategoriaCnh());
+        entity.setAnosExperiencia(dto.getAnosExperiencia());
+        entity.setNumeroCarteirinha(dto.getNumeroCarteirinha());
+        entity.setDescontoEstudante(dto.getDescontoEstudante());
+        entity.setDescontoIdoso(dto.getDescontoIdoso());
         entity.setVersion(dto.getVersion());
     }
 

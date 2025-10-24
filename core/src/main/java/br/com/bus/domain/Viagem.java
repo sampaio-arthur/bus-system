@@ -39,16 +39,13 @@ public class Viagem extends PanacheEntityBase {
     private LocalDateTime dataHoraChegadaReal;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "rota_id")
-    private Rota rota;
+    private Linha linha;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "motorista_id")
-    private Motorista motorista;
+    private Pessoa motorista;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "status_viagem_id")
@@ -72,14 +69,14 @@ public class Viagem extends PanacheEntityBase {
     public LocalDateTime getDataHoraChegadaReal() { return dataHoraChegadaReal; }
     public void setDataHoraChegadaReal(LocalDateTime dataHoraChegadaReal) { this.dataHoraChegadaReal = dataHoraChegadaReal; }
 
-    public Rota getRota() { return rota; }
-    public void setRota(Rota rota) { this.rota = rota; }
+    public Linha getLinha() { return linha; }
+    public void setLinha(Linha linha) { this.linha = linha; }
 
     public Veiculo getVeiculo() { return veiculo; }
     public void setVeiculo(Veiculo veiculo) { this.veiculo = veiculo; }
 
-    public Motorista getMotorista() { return motorista; }
-    public void setMotorista(Motorista motorista) { this.motorista = motorista; }
+    public Pessoa getMotorista() { return motorista; }
+    public void setMotorista(Pessoa motorista) { this.motorista = motorista; }
 
     public StatusViagem getStatusViagem() { return statusViagem; }
     public void setStatusViagem(StatusViagem statusViagem) { this.statusViagem = statusViagem; }
