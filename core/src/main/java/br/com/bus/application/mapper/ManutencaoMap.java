@@ -136,9 +136,5 @@ public final class ManutencaoMap {
     private static final class PessoaReference extends Pessoa {
         private static final long serialVersionUID = 1L;
 
-        @Override
-        public String getPersonType() {
-            return null;
-        }
     }
 }
