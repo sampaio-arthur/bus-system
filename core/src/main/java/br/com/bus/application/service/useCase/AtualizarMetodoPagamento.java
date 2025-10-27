@@ -19,7 +19,14 @@ public class AtualizarMetodoPagamento {
     public MetodoPagamentoDTO executar(Long id, MetodoPagamentoDTO dto) {
         MetodoPagamento entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Método de pagamento não encontrado: id=" + id));
-        MetodoPagamentoMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return MetodoPagamentoMap.toDTO(entity);
+    }
+
+    private void aplicarAtualizacoes(MetodoPagamento entity, MetodoPagamentoDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setDescricao(dto.getDescricao());
     }
 }

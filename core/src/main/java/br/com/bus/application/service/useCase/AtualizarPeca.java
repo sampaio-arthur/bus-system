@@ -19,7 +19,17 @@ public class AtualizarPeca {
     public PecaDTO executar(Long id, PecaDTO dto) {
         Peca entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Peça não encontrada: id=" + id));
-        PecaMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return PecaMap.toDTO(entity);
+    }
+
+    private void aplicarAtualizacoes(Peca entity, PecaDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setNome(dto.getNome());
+        entity.setFabricante(dto.getFabricante());
+        entity.setValorUnitario(dto.getValorUnitario());
+        entity.setQuantidade(dto.getQuantidade());
     }
 }

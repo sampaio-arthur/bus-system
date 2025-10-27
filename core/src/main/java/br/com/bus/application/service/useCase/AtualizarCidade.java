@@ -19,8 +19,16 @@ public class AtualizarCidade {
     public CidadeDTO executar(Long id, CidadeDTO dto) {
         Cidade entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Cidade não encontrada: id=" + id));
-        CidadeMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return CidadeMap.toDTO(entity);
+    }
+
+    private void aplicarAtualizacoes(Cidade entity, CidadeDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setNome(dto.getNome());
+        entity.setUf(dto.getUf());
     }
 }
 

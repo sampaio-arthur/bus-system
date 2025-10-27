@@ -19,8 +19,17 @@ public class AtualizarLinha {
     public LinhaDTO executar(Long id, LinhaDTO dto) {
         Linha entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Linha não encontrada: id=" + id));
-        LinhaMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return LinhaMap.toDTO(entity);
     }
-}
 
+    private void aplicarAtualizacoes(Linha entity, LinhaDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setNome(dto.getNome());
+        entity.setCodigo(dto.getCodigo());
+        entity.setAtivo(dto.getAtivo());
+        entity.setTempoPercursoEstimado(dto.getTempoPercursoEstimado());
+    }
+}

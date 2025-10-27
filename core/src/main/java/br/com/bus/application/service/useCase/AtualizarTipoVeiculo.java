@@ -19,8 +19,15 @@ public class AtualizarTipoVeiculo {
     public TipoVeiculoDTO executar(Long id, TipoVeiculoDTO dto) {
         TipoVeiculo entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("TipoVeiculo não encontrado: id=" + id));
-        TipoVeiculoMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return TipoVeiculoMap.toDTO(entity);
     }
-}
 
+    private void aplicarAtualizacoes(TipoVeiculo entity, TipoVeiculoDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setDescrição(dto.getDescricao());
+        entity.setAtivo(dto.getAtivo());
+    }
+}
