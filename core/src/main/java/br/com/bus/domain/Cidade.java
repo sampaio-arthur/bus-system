@@ -34,19 +34,8 @@ public class Cidade extends PanacheEntityBase {
 
     @NotBlank(message = "Estado não pode ser vazio")
     @Size(min = 2, max = 2)
-    @Column(name = "estado", nullable = false, length = 2)
-    private String estado;
-
-    @Size(max = 9)
-    @Column(name = "cep", length = 9)
-    private String cep;
-
-    @Column(name = "populacao")
-    private Long populacao;
-
-    @NotNull
-    @Column(name = "ativo", nullable = false)
-    private Boolean ativo = true;
+    @Column(name = "uf", nullable = false, length = 2)
+    private String uf;
 
     @OneToMany(mappedBy = "cidade", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PontoParada> pontosParada = new ArrayList<>();
@@ -70,39 +59,15 @@ public class Cidade extends PanacheEntityBase {
         this.nome = nome;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+    public String getUf() {
+		return uf;
+	}
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
 
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public Long getPopulacao() {
-        return populacao;
-    }
-
-    public void setPopulacao(Long populacao) {
-        this.populacao = populacao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public List<PontoParada> getPontosParada() {
+	public List<PontoParada> getPontosParada() {
         return pontosParada;
     }
 

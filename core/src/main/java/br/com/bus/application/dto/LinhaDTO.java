@@ -1,14 +1,10 @@
 package br.com.bus.application.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class LinhaDTO {
 
     private Long id;
     private String nome;
     private String codigo;
-    private String cor;
     private Boolean ativo = true;
     private Integer tempoPercursoEstimado;
     
@@ -44,14 +40,6 @@ public class LinhaDTO {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
     }
 
     public Boolean getAtivo() {

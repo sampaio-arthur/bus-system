@@ -1,18 +1,13 @@
 package br.com.bus.domain;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
@@ -35,9 +30,6 @@ public class Linha extends PanacheEntityBase {
     @NotBlank(message = "Código da linha é obrigatório")
     @Column(nullable = false, unique = true)
     private String codigo;
-
-    @Column(length = 7)
-    private String cor;
 
     @NotNull
     @Column(nullable = false)
@@ -78,14 +70,6 @@ public class Linha extends PanacheEntityBase {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
     }
 
     public Boolean getAtivo() {

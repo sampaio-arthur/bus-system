@@ -45,9 +45,6 @@ public class Pessoa extends PanacheEntityBase {
     @Column(name = "data_nascimento")
     private LocalDateTime dataNascimento;
 
-    @Column(name = "endereco", length = 200)
-    private String endereco;
-
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = Boolean.TRUE;
 
@@ -57,23 +54,14 @@ public class Pessoa extends PanacheEntityBase {
     @Column(name = "cnh", length = 11, unique = true)
     private String cnh;
 
-    @Column(name = "data_vencimento_cnh")
-    private LocalDateTime dataVencimentoCnh;
+    @Column(name = "validade_cnh")
+    private LocalDateTime validadeCnh;
 
     @Column(name = "categoria_cnh", length = 10)
     private String categoriaCnh;
 
-    @Column(name = "anos_experiencia")
-    private Integer anosExperiencia;
-
     @Column(name = "numero_carteirinha", length = 20, unique = true)
     private String numeroCarteirinha;
-
-    @Column(name = "desconto_estudante", nullable = false)
-    private Boolean descontoEstudante = Boolean.FALSE;
-
-    @Column(name = "desconto_idoso", nullable = false)
-    private Boolean descontoIdoso = Boolean.FALSE;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -119,9 +107,6 @@ public class Pessoa extends PanacheEntityBase {
     public LocalDateTime getDataNascimento() { return dataNascimento; }
     public void setDataNascimento(LocalDateTime dataNascimento) { this.dataNascimento = dataNascimento; }
 
-    public String getEndereco() { return endereco; }
-    public void setEndereco(String endereco) { this.endereco = endereco; }
-
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
@@ -131,25 +116,16 @@ public class Pessoa extends PanacheEntityBase {
     public String getCnh() { return cnh; }
     public void setCnh(String cnh) { this.cnh = cnh; }
 
-    public LocalDateTime getDataVencimentoCnh() { return dataVencimentoCnh; }
-    public void setDataVencimentoCnh(LocalDateTime dataVencimentoCnh) { this.dataVencimentoCnh = dataVencimentoCnh; }
-
     public String getCategoriaCnh() { return categoriaCnh; }
     public void setCategoriaCnh(String categoriaCnh) { this.categoriaCnh = categoriaCnh; }
-
-    public Integer getAnosExperiencia() { return anosExperiencia; }
-    public void setAnosExperiencia(Integer anosExperiencia) { this.anosExperiencia = anosExperiencia; }
 
     public String getNumeroCarteirinha() { return numeroCarteirinha; }
     public void setNumeroCarteirinha(String numeroCarteirinha) { this.numeroCarteirinha = numeroCarteirinha; }
 
-    public Boolean getDescontoEstudante() { return descontoEstudante; }
-    public void setDescontoEstudante(Boolean descontoEstudante) { this.descontoEstudante = descontoEstudante; }
+    public LocalDateTime getValidadeCnh() {	return validadeCnh; }
+	public void setValidadeCnh(LocalDateTime validadeCnh) { this.validadeCnh = validadeCnh; }
 
-    public Boolean getDescontoIdoso() { return descontoIdoso; }
-    public void setDescontoIdoso(Boolean descontoIdoso) { this.descontoIdoso = descontoIdoso; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
+	public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }

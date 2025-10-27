@@ -37,10 +37,6 @@ public class PontoParada extends PanacheEntityBase {
     @Column(name = "nome", nullable = false, length = 100)
     private String nome;
 
-    @Size(max = 200)
-    @Column(name = "endereco", length = 200)
-    private String endereco;
-
     @NotNull
     @Column(name = "latitude", precision = 10, scale = 8, nullable = false)
     private BigDecimal latitude;
@@ -48,12 +44,6 @@ public class PontoParada extends PanacheEntityBase {
     @NotNull
     @Column(name = "longitude", precision = 11, scale = 8, nullable = false)
     private BigDecimal longitude;
-
-    @Column(name = "tem_cobertura")
-    private Boolean temCobertura;
-
-    @Column(name = "tem_banco")
-    private Boolean temBanco;
 
     @NotNull
     @Column(name = "ativo", nullable = false)
@@ -86,14 +76,6 @@ public class PontoParada extends PanacheEntityBase {
         this.nome = nome;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
     public BigDecimal getLatitude() {
         return latitude;
     }
@@ -108,22 +90,6 @@ public class PontoParada extends PanacheEntityBase {
 
     public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
-    }
-
-    public Boolean getTemCobertura() {
-        return temCobertura;
-    }
-
-    public void setTemCobertura(Boolean temCobertura) {
-        this.temCobertura = temCobertura;
-    }
-
-    public Boolean getTemBanco() {
-        return temBanco;
-    }
-
-    public void setTemBanco(Boolean temBanco) {
-        this.temBanco = temBanco;
     }
 
     public Boolean getAtivo() {

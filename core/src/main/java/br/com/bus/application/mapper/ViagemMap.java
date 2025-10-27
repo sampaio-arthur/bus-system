@@ -29,13 +29,14 @@ public final class ViagemMap {
         }
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
-        dto.setDataHoraSaida(entity.getDataHoraSaida());
-        dto.setDataHoraChegadaPrevista(entity.getDataHoraChegadaPrevista());
-        dto.setDataHoraChegadaReal(entity.getDataHoraChegadaReal());
+        dto.setDataPartidaPrevista(dto.getDataPartidaPrevista());
+        dto.setDataPartidaReal(entity.getDataPartidaReal());
+        dto.setDataChegadaPrevista(entity.getDataChegadaPrevista());
+        dto.setDataChegadaReal(entity.getDataChegadaReal());
         dto.setLinha(LinhaMap.toSummary(entity.getLinha()));
         dto.setVeiculo(VeiculoMap.toSummary(entity.getVeiculo()));
         dto.setMotorista(PessoaMap.toSummary(entity.getMotorista()));
-        dto.setStatusViagem(StatusViagemMap.toSummary(entity.getStatusViagem()));
+        dto.setStatus(entity.getStatus());
         dto.setVersion(entity.getVersion());
         if (entity.getPassagens() != null) {
             List<PassagemDTO> passagens = entity.getPassagens().stream()
@@ -54,13 +55,14 @@ public final class ViagemMap {
     }
 
     private static void entityFromDTO(ViagemDTO dto, Viagem entity) {
-        entity.setDataHoraSaida(dto.getDataHoraSaida());
-        entity.setDataHoraChegadaPrevista(dto.getDataHoraChegadaPrevista());
-        entity.setDataHoraChegadaReal(dto.getDataHoraChegadaReal());
+        entity.setDataPartidaReal(dto.getDataPartidaReal());
+        entity.setDataPartidaPrevista(dto.getDataPartidaPrevista());
+        entity.setDataChegadaPrevista(dto.getDataChegadaPrevista());
+        entity.setDataChegadaReal(dto.getDataChegadaReal());
         entity.setLinha(LinhaMap.fromSummary(dto.getLinha()));
         entity.setVeiculo(VeiculoMap.fromSummary(dto.getVeiculo()));
         entity.setMotorista(PessoaMap.fromSummary(dto.getMotorista()));
-        entity.setStatusViagem(StatusViagemMap.fromSummary(dto.getStatusViagem()));
+        entity.setStatus(dto.getStatus());
         entity.setVersion(dto.getVersion());
         if (dto.getPassagens() != null) {
             List<Passagem> passagens = dto.getPassagens().stream()
@@ -76,8 +78,8 @@ public final class ViagemMap {
         }
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
-        dto.setDataHoraSaida(entity.getDataHoraSaida());
-        dto.setStatusViagem(StatusViagemMap.toSummary(entity.getStatusViagem()));
+        dto.setDataPartidaReal(entity.getDataPartidaReal());
+        dto.setStatus(entity.getStatus());
         return dto;
     }
 
@@ -87,9 +89,6 @@ public final class ViagemMap {
         }
         Viagem entity = new Viagem();
         entity.setId(dto.getId());
-        entity.setDataHoraSaida(dto.getDataHoraSaida());
-        entity.setDataHoraChegadaPrevista(dto.getDataHoraChegadaPrevista());
-        entity.setStatusViagem(StatusViagemMap.fromSummary(dto.getStatusViagem()));
         return entity;
     }
 }

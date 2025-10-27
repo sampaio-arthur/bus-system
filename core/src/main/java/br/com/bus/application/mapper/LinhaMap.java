@@ -26,7 +26,6 @@ public final class LinhaMap {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setCodigo(entity.getCodigo());
-        dto.setCor(entity.getCor());
         dto.setAtivo(entity.getAtivo());
         dto.setTempoPercursoEstimado(entity.getTempoPercursoEstimado());
         dto.setVersion(entity.getVersion());
@@ -43,7 +42,6 @@ public final class LinhaMap {
     private static void entityFromDTO(LinhaDTO dto, Linha entity) {
         entity.setNome(dto.getNome());
         entity.setCodigo(dto.getCodigo());
-        entity.setCor(dto.getCor());
         entity.setAtivo(dto.getAtivo());
         entity.setTempoPercursoEstimado(dto.getTempoPercursoEstimado());
         entity.setVersion(dto.getVersion());

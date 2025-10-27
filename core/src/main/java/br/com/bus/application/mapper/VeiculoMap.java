@@ -85,8 +85,9 @@ public final class VeiculoMap {
         dto.setId(entity.getId());
         dto.setPlaca(entity.getPlaca());
         dto.setModelo(entity.getModelo());
-        dto.setAno(entity.getAno());
+        dto.setAnoFabricacao(entity.getAnoFabricacao());
         dto.setCapacidade(entity.getCapacidade());
+        dto.setChassi(entity.getChassi());
         dto.setAtivo(entity.getAtivo());
         dto.setTipoVeiculo(TipoVeiculoMap.toSummary(entity.getTipoVeiculo()));
         dto.setVersion(entity.getVersion());
@@ -95,7 +96,8 @@ public final class VeiculoMap {
     private static void copyToEntity(VeiculoDTO dto, Veiculo entity) {
         entity.setPlaca(dto.getPlaca());
         entity.setModelo(dto.getModelo());
-        entity.setAno(dto.getAno());
+        entity.setAnoFabricacao(dto.getAnoFabricacao());
+        entity.setChassi(dto.getChassi());
         entity.setCapacidade(dto.getCapacidade());
         entity.setAtivo(dto.getAtivo());
         entity.setTipoVeiculo(TipoVeiculoMap.fromSummary(dto.getTipoVeiculo()));

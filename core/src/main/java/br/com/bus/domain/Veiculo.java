@@ -31,9 +31,12 @@ public class Veiculo extends PanacheEntityBase {
     @Column(nullable = false, unique = true)
     private String placa;
 
+    private String chassi;
     private String modelo;
 
-    private Integer ano;
+    @NotBlank
+    @Column(name = "ano_fabricacao", nullable = false, unique = true)
+    private Integer anoFabricacao;
 
     @NotNull
     @Column(nullable = false)
@@ -61,8 +64,8 @@ public class Veiculo extends PanacheEntityBase {
     public String getModelo() { return modelo; }
     public void setModelo(String modelo) { this.modelo = modelo; }
 
-    public Integer getAno() { return ano; }
-    public void setAno(Integer ano) { this.ano = ano; }
+    public Integer getAnoFabricacao() { return anoFabricacao; }
+    public void setAnoFabricacao(Integer anoFabricacao) { this.anoFabricacao = anoFabricacao; }
 
     public Integer getCapacidade() { return capacidade; }
     public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
@@ -91,4 +94,10 @@ public class Veiculo extends PanacheEntityBase {
     public int hashCode() {
         return Objects.hash(id);
     }
+	public String getChassi() {
+		return chassi;
+	}
+	public void setChassi(String chassi) {
+		this.chassi = chassi;
+	}
 }

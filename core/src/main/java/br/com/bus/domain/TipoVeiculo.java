@@ -28,13 +28,7 @@ public class TipoVeiculo extends PanacheEntityBase {
 
     @NotBlank
     @Column(nullable = false, unique = true)
-    private String nome;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer capacidadePassageiros;
-
-    private String combustivel;
+    private String descrição;
 
     @NotNull
     @Column(nullable = false)
@@ -49,16 +43,13 @@ public class TipoVeiculo extends PanacheEntityBase {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-
-    public Integer getCapacidadePassageiros() { return capacidadePassageiros; }
-    public void setCapacidadePassageiros(Integer capacidadePassageiros) { this.capacidadePassageiros = capacidadePassageiros; }
-
-    public String getCombustivel() { return combustivel; }
-    public void setCombustivel(String combustivel) { this.combustivel = combustivel; }
-
-    public Boolean getAtivo() { return ativo; }
+    public String getDescrição() {
+		return descrição;
+	}
+	public void setDescrição(String descrição) {
+		this.descrição = descrição;
+	}
+	public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
 
     public List<Veiculo> getVeiculos() { return veiculos; }

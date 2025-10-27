@@ -30,11 +30,8 @@ public final class PontoParadaMap {
         PontoParadaDTO dto = new PontoParadaDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setEndereco(entity.getEndereco());
         dto.setLatitude(entity.getLatitude());
         dto.setLongitude(entity.getLongitude());
-        dto.setTemCobertura(entity.getTemCobertura());
-        dto.setTemBanco(entity.getTemBanco());
         dto.setAtivo(entity.getAtivo());
         dto.setCidade(CidadeMap.toSummary(entity.getCidade()));
         dto.setVersion(entity.getVersion());
@@ -56,11 +53,8 @@ public final class PontoParadaMap {
 
     private static void entityFromDTO(PontoParadaDTO dto, PontoParada entity) {
         entity.setNome(dto.getNome());
-        entity.setEndereco(dto.getEndereco());
         entity.setLatitude(dto.getLatitude());
         entity.setLongitude(dto.getLongitude());
-        entity.setTemCobertura(dto.getTemCobertura());
-        entity.setTemBanco(dto.getTemBanco());
         entity.setAtivo(dto.getAtivo());
         entity.setCidade(CidadeMap.fromSummary(dto.getCidade()));
         entity.setVersion(dto.getVersion());
@@ -79,7 +73,6 @@ public final class PontoParadaMap {
         PontoParadaDTO dto = new PontoParadaDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setEndereco(entity.getEndereco());
         return dto;
     }
 
@@ -90,7 +83,6 @@ public final class PontoParadaMap {
         PontoParada entity = new PontoParada();
         entity.setId(dto.getId());
         entity.setNome(dto.getNome());
-        entity.setEndereco(dto.getEndereco());
         return entity;
     }
 }

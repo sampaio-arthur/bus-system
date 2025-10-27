@@ -9,8 +9,6 @@ public class PontoTuristicoDTO {
     private Long id;
     private String nome;
     private String descricao;
-    private String categoria;
-    private String endereco;
     private BigDecimal latitude;
     private BigDecimal longitude;
     private Boolean ativo = true;
@@ -25,12 +23,6 @@ public class PontoTuristicoDTO {
 
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
-
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
-
-    public String getEndereco() { return endereco; }
-    public void setEndereco(String endereco) { this.endereco = endereco; }
 
     public BigDecimal getLatitude() { return latitude; }
     public void setLatitude(BigDecimal latitude) { this.latitude = latitude; }
