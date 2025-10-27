@@ -11,7 +11,6 @@ public class LinhaDTO {
     private String cor;
     private Boolean ativo = true;
     private Integer tempoPercursoEstimado;
-    private List<ParadaLinhaDTO> paradasLinha = new ArrayList<>();
     
     public int getVersion() {
 		return version;
@@ -69,14 +68,6 @@ public class LinhaDTO {
 
     public void setTempoPercursoEstimado(Integer tempoPercursoEstimado) {
         this.tempoPercursoEstimado = tempoPercursoEstimado;
-    }
-
-    public List<ParadaLinhaDTO> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinhaDTO> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
 }

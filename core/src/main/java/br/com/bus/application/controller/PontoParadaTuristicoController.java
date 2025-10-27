@@ -42,7 +42,9 @@ public class PontoParadaTuristicoController {
     @POST
     public Response criar(@Valid PontoParadaTuristicoDTO dto) {
         PontoParadaTuristicoDTO created = service.criar(dto);
-        return Response.created(URI.create("/pontos-parada-turisticos/" + created.getId())).entity(created).build();
+        URI location = URI.create(String.format("/pontos-parada-turisticos/%d/%d",
+                created.getIdPontoParada(), created.getIdPontoTuristico()));
+        return Response.created(location).entity(created).build();
     }
 
     @PUT

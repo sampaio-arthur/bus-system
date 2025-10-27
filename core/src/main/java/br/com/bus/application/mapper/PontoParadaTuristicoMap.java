@@ -7,8 +7,9 @@ import java.util.stream.Collectors;
 
 import br.com.bus.application.dto.PontoParadaTuristicoDTO;
 import br.com.bus.domain.PontoParada;
-import br.com.bus.domain.PontoParadaTuristico;
 import br.com.bus.domain.PontoTuristico;
+import br.com.bus.domain.pontoParadaTuristico.PontoParadaTuristico;
+import br.com.bus.domain.pontoParadaTuristico.PontoParadaTuristicoId;
 
 public final class PontoParadaTuristicoMap {
 
@@ -20,9 +21,6 @@ public final class PontoParadaTuristicoMap {
             return null;
         }
         PontoParadaTuristico entity = new PontoParadaTuristico();
-        if (dto.getId() != null) {
-            entity.setId(dto.getId());
-        }
         entityFromDTO(dto, entity);
         return entity;
     }
@@ -32,9 +30,10 @@ public final class PontoParadaTuristicoMap {
             return null;
         }
         PontoParadaTuristicoDTO dto = new PontoParadaTuristicoDTO();
-        dto.setId(entity.getId());
-        dto.setPontoParada(PontoParadaMap.toSummary(entity.getPontoParada()));
-        dto.setPontoTuristico(PontoTuristicoMap.toSummary(entity.getPontoTuristico()));
+        if (entity.getId() != null) {
+            dto.setIdPontoParada(entity.getId().getIdPontoParada());
+            dto.setIdPontoTuristico(entity.getId().getIdPontoTuristico());
+        }
         return dto;
     }
 
@@ -49,34 +48,31 @@ public final class PontoParadaTuristicoMap {
         if (dto == null || entity == null) {
             return;
         }
-        if (dto.getPontoParada() != null && dto.getPontoParada().getId() != null) {
+        PontoParadaTuristicoId id = entity.getId();
+        if (id == null) {
+            id = new PontoParadaTuristicoId();
+            entity.setId(id);
+        }
+        dto.setIdPontoParada(entity.getId().getIdPontoParada());
+        dto.setIdPontoTuristico(entity.getId().getIdPontoTuristico());
+
+        if (dto.getIdPontoParada() != null) {
             PontoParada pontoParada = entity.getPontoParada();
             if (pontoParada == null) {
-                pontoParada = new PontoParada();
+            	pontoParada = new PontoParada();
             }
-            pontoParada.setId(dto.getPontoParada().getId());
+            pontoParada.setId(dto.getIdPontoParada());
             entity.setPontoParada(pontoParada);
-            entity.setId(dto.getPontoParada().getId());
         }
-        if (dto.getPontoTuristico() != null && dto.getPontoTuristico().getId() != null) {
+
+        if (dto.getIdPontoTuristico() != null) {
             PontoTuristico pontoTuristico = entity.getPontoTuristico();
             if (pontoTuristico == null) {
-                pontoTuristico = new PontoTuristico();
+            	pontoTuristico = new PontoTuristico();
             }
-            pontoTuristico.setId(dto.getPontoTuristico().getId());
+            pontoTuristico.setId(dto.getIdPontoTuristico());
             entity.setPontoTuristico(pontoTuristico);
-        } else if (dto.getPontoTuristico() == null) {
-            entity.setPontoTuristico(null);
         }
-    }
-
-    public static PontoParadaTuristicoDTO toSummary(PontoParadaTuristico entity) {
-        if (entity == null) {
-            return null;
-        }
-        PontoParadaTuristicoDTO dto = new PontoParadaTuristicoDTO();
-        dto.setId(entity.getId());
-        return dto;
     }
 
     public static Set<PontoParadaTuristicoDTO> toDTOSet(Set<PontoParadaTuristico> entities) {
@@ -97,12 +93,4 @@ public final class PontoParadaTuristicoMap {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
-    public static Set<PontoParadaTuristicoDTO> toSummarySet(Set<PontoParadaTuristico> entities) {
-        if (entities == null || entities.isEmpty()) {
-            return Collections.emptySet();
-        }
-        return entities.stream()
-                .map(PontoParadaTuristicoMap::toSummary)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-    }
 }

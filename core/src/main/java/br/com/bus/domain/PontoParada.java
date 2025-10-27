@@ -63,9 +63,6 @@ public class PontoParada extends PanacheEntityBase {
     @JoinColumn(name = "cidade_id", nullable = false)
     private Cidade cidade;
 
-    @OneToMany(mappedBy = "pontoParada", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParadaLinha> paradasLinha = new ArrayList<>();
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ponto_parada_ponto_turistico", joinColumns = @JoinColumn(name = "ponto_parada_id"), inverseJoinColumns = @JoinColumn(name = "ponto_turistico_id"))
     private List<PontoTuristico> pontosTuristicosProximos = new ArrayList<>();
@@ -143,14 +140,6 @@ public class PontoParada extends PanacheEntityBase {
 
     public void setCidade(Cidade cidade) {
         this.cidade = cidade;
-    }
-
-    public List<ParadaLinha> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinha> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
     public List<PontoTuristico> getPontosTuristicosProximos() {

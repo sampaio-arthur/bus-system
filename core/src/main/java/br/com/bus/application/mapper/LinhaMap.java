@@ -1,12 +1,7 @@
 package br.com.bus.application.mapper;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import br.com.bus.application.dto.LinhaDTO;
-import br.com.bus.application.dto.ParadaLinhaDTO;
 import br.com.bus.domain.Linha;
-import br.com.bus.domain.ParadaLinha;
 
 public final class LinhaMap {
 
@@ -35,12 +30,6 @@ public final class LinhaMap {
         dto.setAtivo(entity.getAtivo());
         dto.setTempoPercursoEstimado(entity.getTempoPercursoEstimado());
         dto.setVersion(entity.getVersion());
-        if (entity.getParadasLinha() != null) {
-            List<ParadaLinhaDTO> paradas = entity.getParadasLinha().stream()
-                    .map(ParadaLinhaMap::toDTO)
-                    .collect(Collectors.toList());
-            dto.setParadasLinha(paradas);
-        }
         return dto;
     }
 
@@ -58,12 +47,6 @@ public final class LinhaMap {
         entity.setAtivo(dto.getAtivo());
         entity.setTempoPercursoEstimado(dto.getTempoPercursoEstimado());
         entity.setVersion(dto.getVersion());
-        if (dto.getParadasLinha() != null) {
-            List<ParadaLinha> paradas = dto.getParadasLinha().stream()
-                    .map(ParadaLinhaMap::toEntity)
-                    .collect(Collectors.toList());
-            entity.setParadasLinha(paradas);
-        }
     }
 
     public static LinhaDTO toSummary(Linha entity) {

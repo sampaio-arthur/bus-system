@@ -2,27 +2,20 @@ package br.com.bus.application.dto;
 
 public class PontoParadaTuristicoDTO {
 
-	private Long id;
-	private PontoParadaDTO pontoParada;
-	private PontoTuristicoDTO pontoTuristico;
+	private Long idPontoParada;
+	private Long idPontoTuristico;
 	
-	public Long getId() {
-		return id;
+	public Long getIdPontoParada() {
+		return idPontoParada;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdPontoParada(Long idPontoParada) {
+		this.idPontoParada = idPontoParada;
 	}
-	public PontoParadaDTO getPontoParada() {
-		return pontoParada;
+	public Long getIdPontoTuristico() {
+		return idPontoTuristico;
 	}
-	public void setPontoParada(PontoParadaDTO pontoParada) {
-		this.pontoParada = pontoParada;
-	}
-	public PontoTuristicoDTO getPontoTuristico() {
-		return pontoTuristico;
-	}
-	public void setPontoTuristico(PontoTuristicoDTO pontoTuristico) {
-		this.pontoTuristico = pontoTuristico;
+	public void setIdPontoTuristico(Long idPontoTuristico) {
+		this.idPontoTuristico = idPontoTuristico;
 	}
 	
 }

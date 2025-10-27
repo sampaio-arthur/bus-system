@@ -45,9 +45,6 @@ public class Linha extends PanacheEntityBase {
 
     private Integer tempoPercursoEstimado;
 
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParadaLinha> paradasLinha = new ArrayList<>();
-
     @Version
     private int version;
 
@@ -105,14 +102,6 @@ public class Linha extends PanacheEntityBase {
 
     public void setTempoPercursoEstimado(Integer tempoPercursoEstimado) {
         this.tempoPercursoEstimado = tempoPercursoEstimado;
-    }
-
-    public List<ParadaLinha> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinha> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
     @Override

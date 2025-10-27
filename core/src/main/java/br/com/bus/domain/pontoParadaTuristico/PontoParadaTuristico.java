@@ -1,10 +1,11 @@
-package br.com.bus.domain;
+package br.com.bus.domain.pontoParadaTuristico;
 
+import br.com.bus.domain.PontoParada;
+import br.com.bus.domain.PontoTuristico;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -15,26 +16,18 @@ import jakarta.persistence.Table;
 @Table(name = "ponto_parada_turistico")
 public class PontoParadaTuristico extends PanacheEntityBase {
 
-    @Id
-    @Column(name = "id_ponto_parada")
-    private Long id;
+	@EmbeddedId
+    private PontoParadaTuristicoId id = new PontoParadaTuristicoId();
 
-    @MapsId
+    @MapsId("idPontoParada")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ponto_parada", nullable = false)
     private PontoParada pontoParada;
 
+    @MapsId("idPontoTuristico")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ponto_turistico", nullable = false)
     private PontoTuristico pontoTuristico;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public PontoParada getPontoParada() {
 		return pontoParada;
@@ -50,6 +43,14 @@ public class PontoParadaTuristico extends PanacheEntityBase {
 
 	public void setPontoTuristico(PontoTuristico pontoTuristico) {
 		this.pontoTuristico = pontoTuristico;
+	}
+
+	public PontoParadaTuristicoId getId() {
+		return id;
+	}
+
+	public void setId(PontoParadaTuristicoId id) {
+		this.id = id;
 	}
     
 }

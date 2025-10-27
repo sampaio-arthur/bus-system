@@ -15,7 +15,6 @@ public class PontoParadaDTO {
     private Boolean temBanco;
     private Boolean ativo = true;
     private CidadeDTO cidade;
-    private List<ParadaLinhaDTO> paradasLinha = new ArrayList<>();
     private List<PontoTuristicoDTO> pontosTuristicosProximos = new ArrayList<>();
     private int version;
 
@@ -89,14 +88,6 @@ public class PontoParadaDTO {
 
     public void setCidade(CidadeDTO cidade) {
         this.cidade = cidade;
-    }
-
-    public List<ParadaLinhaDTO> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinhaDTO> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
     public List<PontoTuristicoDTO> getPontosTuristicosProximos() {
