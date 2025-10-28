@@ -27,15 +27,15 @@ public class Viagem extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Column(name = "data_partida_real", nullable = false)
+    @Column(name = "data_partida_real")
     private LocalDateTime dataPartidaReal;
-    
+
     @NotNull
     @Column(name = "data_partida_prevista", nullable = false)
     private LocalDateTime dataPartidaPrevista;
 
-    @Column(name = "data_chegada_prevista")
+    @NotNull
+    @Column(name = "data_chegada_prevista", nullable = false)
     private LocalDateTime dataChegadaPrevista;
 
     @Column(name = "data_chegada_real")
@@ -59,58 +59,100 @@ public class Viagem extends PanacheEntityBase {
     @Version
     private int version;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public LocalDateTime getDataPartidaReal() {
-		return dataPartidaReal;
-	}
-	public void setDataPartidaReal(LocalDateTime dataPartidaReal) {
-		this.dataPartidaReal = dataPartidaReal;
-	}
-	public LocalDateTime getDataPartidaPrevista() {
-		return dataPartidaPrevista;
-	}
-	public void setDataPartidaPrevista(LocalDateTime dataPartidaPrevista) {
-		this.dataPartidaPrevista = dataPartidaPrevista;
-	}
-	public LocalDateTime getDataChegadaPrevista() {
-		return dataChegadaPrevista;
-	}
-	public void setDataChegadaPrevista(LocalDateTime dataChegadaPrevista) {
-		this.dataChegadaPrevista = dataChegadaPrevista;
-	}
-	public LocalDateTime getDataChegadaReal() {
-		return dataChegadaReal;
-	}
-	public void setDataChegadaReal(LocalDateTime dataChegadaReal) {
-		this.dataChegadaReal = dataChegadaReal;
-	}
-	public Linha getLinha() { return linha; }
-    public void setLinha(Linha linha) { this.linha = linha; }
+        return dataPartidaReal;
+    }
 
-    public Veiculo getVeiculo() { return veiculo; }
-    public void setVeiculo(Veiculo veiculo) { this.veiculo = veiculo; }
+    public void setDataPartidaReal(LocalDateTime dataPartidaReal) {
+        this.dataPartidaReal = dataPartidaReal;
+    }
 
-    public Pessoa getMotorista() { return motorista; }
-    public void setMotorista(Pessoa motorista) { this.motorista = motorista; }
+    public LocalDateTime getDataPartidaPrevista() {
+        return dataPartidaPrevista;
+    }
+
+    public void setDataPartidaPrevista(LocalDateTime dataPartidaPrevista) {
+        this.dataPartidaPrevista = dataPartidaPrevista;
+    }
+
+    public LocalDateTime getDataChegadaPrevista() {
+        return dataChegadaPrevista;
+    }
+
+    public void setDataChegadaPrevista(LocalDateTime dataChegadaPrevista) {
+        this.dataChegadaPrevista = dataChegadaPrevista;
+    }
+
+    public LocalDateTime getDataChegadaReal() {
+        return dataChegadaReal;
+    }
+
+    public void setDataChegadaReal(LocalDateTime dataChegadaReal) {
+        this.dataChegadaReal = dataChegadaReal;
+    }
+
+    public Linha getLinha() {
+        return linha;
+    }
+
+    public void setLinha(Linha linha) {
+        this.linha = linha;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public Pessoa getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Pessoa motorista) {
+        this.motorista = motorista;
+    }
 
     public Integer getStatus() {
-		return status;
-	}
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
-	public List<Passagem> getPassagens() { return passagens; }
-    public void setPassagens(List<Passagem> passagens) { this.passagens = passagens; }
+        return status;
+    }
 
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public List<Passagem> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(List<Passagem> passagens) {
+        this.passagens = passagens;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Viagem)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Viagem))
+            return false;
         Viagem viagem = (Viagem) o;
         return id != null && id.equals(viagem.id);
     }

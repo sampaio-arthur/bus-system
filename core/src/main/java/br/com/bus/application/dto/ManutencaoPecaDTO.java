@@ -8,8 +8,6 @@ public class ManutencaoPecaDTO {
     private Long idPeca;
     private Integer quantidadeUtilizada;
     private BigDecimal valorUnitario;
-    private String nomePeca;
-    private String nomeManutencao;
 
     public Long getIdManutencao() {
         return idManutencao;
@@ -41,21 +39,5 @@ public class ManutencaoPecaDTO {
 
     public void setValorUnitario(BigDecimal valorUnitario) {
         this.valorUnitario = valorUnitario;
-    }
-
-    public String getNomePeca() {
-        return nomePeca;
-    }
-
-    public void setNomePeca(String nomePeca) {
-        this.nomePeca = nomePeca;
-    }
-
-    public String getNomeManutencao() {
-        return nomeManutencao;
-    }
-
-    public void setNomeManutencao(String nomeManutencao) {
-        this.nomeManutencao = nomeManutencao;
     }
 }
