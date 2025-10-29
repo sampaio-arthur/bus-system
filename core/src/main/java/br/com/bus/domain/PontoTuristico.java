@@ -36,12 +36,6 @@ public class PontoTuristico extends PanacheEntityBase {
     @Column(length = 500)
     private String descricao;
 
-    @Column(length = 50)
-    private String categoria;
-
-    @Column(length = 200)
-    private String endereco;
-
     @NotNull
     @Column(nullable = false, precision = 10, scale = 8)
     private BigDecimal latitude;
@@ -60,8 +54,6 @@ public class PontoTuristico extends PanacheEntityBase {
     @Version
     private int version;
 
-    // Getters e Setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -70,12 +62,6 @@ public class PontoTuristico extends PanacheEntityBase {
 
     public String getDescricao() { return descricao; }
     public void setDescricao(String descricao) { this.descricao = descricao; }
-
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
-
-    public String getEndereco() { return endereco; }
-    public void setEndereco(String endereco) { this.endereco = endereco; }
 
     public BigDecimal getLatitude() { return latitude; }
     public void setLatitude(BigDecimal latitude) { this.latitude = latitude; }

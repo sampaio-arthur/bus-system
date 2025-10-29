@@ -36,12 +36,6 @@ public final class ManutencaoPecaMap {
         }
         dto.setQuantidadeUtilizada(entity.getQuantidadeUtilizada());
         dto.setValorUnitario(entity.getValorUnitario());
-        if (entity.getPeca() != null) {
-            dto.setNomePeca(entity.getPeca().getNome());
-        }
-        if (entity.getManutencao() != null) {
-            dto.setNomeManutencao(entity.getManutencao().getDescricao());
-        }
         return dto;
     }
 

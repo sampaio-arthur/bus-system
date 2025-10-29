@@ -31,8 +31,6 @@ public final class PontoTuristicoMap {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setDescricao(entity.getDescricao());
-        dto.setCategoria(entity.getCategoria());
-        dto.setEndereco(entity.getEndereco());
         dto.setLatitude(entity.getLatitude());
         dto.setLongitude(entity.getLongitude());
         dto.setAtivo(entity.getAtivo());
@@ -56,8 +54,6 @@ public final class PontoTuristicoMap {
     private static void entityFromDTO(PontoTuristicoDTO dto, PontoTuristico entity) {
         entity.setNome(dto.getNome());
         entity.setDescricao(dto.getDescricao());
-        entity.setCategoria(dto.getCategoria());
-        entity.setEndereco(dto.getEndereco());
         entity.setLatitude(dto.getLatitude());
         entity.setLongitude(dto.getLongitude());
         entity.setAtivo(dto.getAtivo());
@@ -77,7 +73,6 @@ public final class PontoTuristicoMap {
         PontoTuristicoDTO dto = new PontoTuristicoDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setCategoria(entity.getCategoria());
         return dto;
     }
 
@@ -88,7 +83,6 @@ public final class PontoTuristicoMap {
         PontoTuristico entity = new PontoTuristico();
         entity.setId(dto.getId());
         entity.setNome(dto.getNome());
-        entity.setCategoria(dto.getCategoria());
         return entity;
     }
 }

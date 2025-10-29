@@ -75,16 +75,12 @@ public final class PessoaMap {
         dto.setEmail(entity.getEmail());
         dto.setTelefone(entity.getTelefone());
         dto.setDataNascimento(entity.getDataNascimento());
-        dto.setEndereco(entity.getEndereco());
         dto.setAtivo(entity.getAtivo());
         dto.setTipoPessoa(entity.getTipoPessoa());
         dto.setCnh(entity.getCnh());
-        dto.setDataVencimentoCnh(entity.getDataVencimentoCnh());
+        dto.setValidadeCnh(entity.getValidadeCnh());
         dto.setCategoriaCnh(entity.getCategoriaCnh());
-        dto.setAnosExperiencia(entity.getAnosExperiencia());
         dto.setNumeroCarteirinha(entity.getNumeroCarteirinha());
-        dto.setDescontoEstudante(entity.getDescontoEstudante());
-        dto.setDescontoIdoso(entity.getDescontoIdoso());
         dto.setVersion(entity.getVersion());
     }
 
@@ -94,16 +90,12 @@ public final class PessoaMap {
         entity.setEmail(dto.getEmail());
         entity.setTelefone(dto.getTelefone());
         entity.setDataNascimento(dto.getDataNascimento());
-        entity.setEndereco(dto.getEndereco());
         entity.setAtivo(dto.getAtivo());
         entity.setTipoPessoa(dto.getTipoPessoa());
         entity.setCnh(dto.getCnh());
-        entity.setDataVencimentoCnh(dto.getDataVencimentoCnh());
+        entity.setValidadeCnh(dto.getValidadeCnh());
         entity.setCategoriaCnh(dto.getCategoriaCnh());
-        entity.setAnosExperiencia(dto.getAnosExperiencia());
         entity.setNumeroCarteirinha(dto.getNumeroCarteirinha());
-        entity.setDescontoEstudante(dto.getDescontoEstudante());
-        entity.setDescontoIdoso(dto.getDescontoIdoso());
         entity.setVersion(dto.getVersion());
     }
 

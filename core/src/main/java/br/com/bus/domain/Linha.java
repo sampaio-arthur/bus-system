@@ -1,18 +1,13 @@
 package br.com.bus.domain;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotBlank;
@@ -36,17 +31,11 @@ public class Linha extends PanacheEntityBase {
     @Column(nullable = false, unique = true)
     private String codigo;
 
-    @Column(length = 7)
-    private String cor;
-
     @NotNull
     @Column(nullable = false)
     private Boolean ativo = true;
 
     private Integer tempoPercursoEstimado;
-
-    @OneToMany(mappedBy = "linha", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<ParadaLinha> paradasLinha = new ArrayList<>();
 
     @Version
     private int version;
@@ -83,14 +72,6 @@ public class Linha extends PanacheEntityBase {
         this.codigo = codigo;
     }
 
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
     public Boolean getAtivo() {
         return ativo;
     }
@@ -105,14 +86,6 @@ public class Linha extends PanacheEntityBase {
 
     public void setTempoPercursoEstimado(Integer tempoPercursoEstimado) {
         this.tempoPercursoEstimado = tempoPercursoEstimado;
-    }
-
-    public List<ParadaLinha> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinha> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
     @Override

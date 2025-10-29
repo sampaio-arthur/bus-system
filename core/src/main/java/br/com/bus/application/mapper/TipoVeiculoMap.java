@@ -29,9 +29,7 @@ public final class TipoVeiculoMap {
         }
         TipoVeiculoDTO dto = new TipoVeiculoDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setCapacidadePassageiros(entity.getCapacidadePassageiros());
-        dto.setCombustivel(entity.getCombustivel());
+        dto.setDescricao(entity.getDescricao());
         dto.setAtivo(entity.getAtivo());
         dto.setVersion(entity.getVersion());
         if (entity.getVeiculos() != null) {
@@ -51,9 +49,7 @@ public final class TipoVeiculoMap {
     }
 
     private static void entityFromDTO(TipoVeiculoDTO dto, TipoVeiculo entity) {
-        entity.setNome(dto.getNome());
-        entity.setCapacidadePassageiros(dto.getCapacidadePassageiros());
-        entity.setCombustivel(dto.getCombustivel());
+        entity.setDescricao(dto.getDescricao());
         entity.setAtivo(dto.getAtivo());
         entity.setVersion(dto.getVersion());
         if (dto.getVeiculos() != null) {
@@ -70,7 +66,7 @@ public final class TipoVeiculoMap {
         }
         TipoVeiculoDTO dto = new TipoVeiculoDTO();
         dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
+        dto.setDescricao(entity.getDescricao());
         return dto;
     }
 
@@ -80,7 +76,7 @@ public final class TipoVeiculoMap {
         }
         TipoVeiculo entity = new TipoVeiculo();
         entity.setId(dto.getId());
-        entity.setNome(dto.getNome());
+        entity.setDescricao(dto.getDescricao());
         return entity;
     }
 }

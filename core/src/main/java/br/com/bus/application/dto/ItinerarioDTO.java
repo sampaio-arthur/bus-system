@@ -2,6 +2,7 @@ package br.com.bus.application.dto;
 
 public class ItinerarioDTO {
 
+    private Short ordem;
     private Long idLinha;
     private Long idPontoParada;
     private String nomeLinha;
@@ -38,5 +39,12 @@ public class ItinerarioDTO {
     public void setNomePontoParada(String nomePontoParada) {
         this.nomePontoParada = nomePontoParada;
     }
-}
 
+    public Short getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(Short ordem) {
+        this.ordem = ordem;
+    }
+}

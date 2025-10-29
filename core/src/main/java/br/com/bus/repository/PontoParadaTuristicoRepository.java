@@ -1,6 +1,6 @@
 package br.com.bus.repository;
 
-import br.com.bus.domain.PontoParadaTuristico;
+import br.com.bus.domain.pontoParadaTuristico.PontoParadaTuristico;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

@@ -8,7 +8,8 @@ public class VeiculoDTO {
 	private Long id;
     private String placa;
     private String modelo;
-    private Integer ano;
+    private String chassi;
+    private Integer anoFabricacao;
     private Integer capacidade;
     private Boolean ativo = true;
     private TipoVeiculoDTO tipoVeiculo;
@@ -24,8 +25,8 @@ public class VeiculoDTO {
     public String getModelo() { return modelo; }
     public void setModelo(String modelo) { this.modelo = modelo; }
 
-    public Integer getAno() { return ano; }
-    public void setAno(Integer ano) { this.ano = ano; }
+    public Integer getAnoFabricacao() { return anoFabricacao; }
+    public void setAnoFabricacao(Integer anoFabricacao) { this.anoFabricacao = anoFabricacao; }
 
     public Integer getCapacidade() { return capacidade; }
     public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
@@ -41,5 +42,11 @@ public class VeiculoDTO {
 
     public int getVersion() { return version; }
     public void setVersion(int version) { this.version = version; }
+	public String getChassi() {
+		return chassi;
+	}
+	public void setChassi(String chassi) {
+		this.chassi = chassi;
+	}
 
 }

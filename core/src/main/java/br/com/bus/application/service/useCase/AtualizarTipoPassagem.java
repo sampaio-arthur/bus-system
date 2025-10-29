@@ -19,7 +19,14 @@ public class AtualizarTipoPassagem {
     public TipoPassagemDTO executar(Long id, TipoPassagemDTO dto) {
         TipoPassagem entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException("Tipo de passagem não encontrado: id=" + id));
-        TipoPassagemMap.updateEntityFromDTO(dto, entity);
+        aplicarAtualizacoes(entity, dto);
         return TipoPassagemMap.toDTO(entity);
+    }
+
+    private void aplicarAtualizacoes(TipoPassagem entity, TipoPassagemDTO dto) {
+        if (dto == null) {
+            return;
+        }
+        entity.setDescricao(dto.getDescricao());
     }
 }

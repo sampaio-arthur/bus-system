@@ -6,22 +6,26 @@ import java.time.LocalDateTime;
 public class PassagemDTO {
 
     private Long id;
-    private LocalDateTime dataCompra;
+    private LocalDateTime dataEmissao;
     private BigDecimal valor;
     private BigDecimal descontoAplicado;
     private Boolean ativo = true;
     private PessoaDTO pessoa;
     private ViagemDTO viagem;
+    private Short numeroAssento;
     private TipoPassagemDTO tipoPassagem;
     private MetodoPagamentoDTO metodoPagamento;
     
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public LocalDateTime getDataCompra() { return dataCompra; }
-    public void setDataCompra(LocalDateTime dataCompra) { this.dataCompra = dataCompra; }
-
-    public BigDecimal getValor() { return valor; }
+    public LocalDateTime getDataEmissao() {
+		return dataEmissao;
+	}
+	public void setDataEmissao(LocalDateTime dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+	public BigDecimal getValor() { return valor; }
     public void setValor(BigDecimal valor) { this.valor = valor; }
 
     public BigDecimal getDescontoAplicado() { return descontoAplicado; }
@@ -41,5 +45,12 @@ public class PassagemDTO {
 
     public MetodoPagamentoDTO getMetodoPagamento() { return metodoPagamento; }
     public void setMetodoPagamento(MetodoPagamentoDTO metodoPagamento) { this.metodoPagamento = metodoPagamento; }
+	
+    public Short getNumeroAssento() {
+		return numeroAssento;
+	}
+	public void setNumeroAssento(Short numeroAssento) {
+		this.numeroAssento = numeroAssento;
+	}
     
 }

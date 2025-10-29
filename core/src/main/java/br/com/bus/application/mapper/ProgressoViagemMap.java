@@ -36,14 +36,6 @@ public final class ProgressoViagemMap {
             dto.setIdViagem(id.getIdViagem());
             dto.setIdPontoParada(id.getIdPontoParada());
         }
-        Viagem viagem = entity.getViagem();
-        if (viagem != null) {
-            dto.setNomeViagem(extractNomeViagem(viagem));
-        }
-        PontoParada pontoParada = entity.getPontoParada();
-        if (pontoParada != null) {
-            dto.setNomePontoParada(pontoParada.getNome());
-        }
         return dto;
     }
 
@@ -114,12 +106,5 @@ public final class ProgressoViagemMap {
 
     public static Set<ProgressoViagemDTO> toSummarySet(Set<ProgressoViagem> entities) {
         return toDTOSet(entities);
-    }
-
-    private static String extractNomeViagem(Viagem viagem) {
-        if (viagem == null || viagem.getLinha() == null) {
-            return null;
-        }
-        return viagem.getLinha().getNome();
     }
 }

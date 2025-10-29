@@ -7,8 +7,6 @@ public class ProgressoViagemDTO {
     private LocalDateTime data;
     private Long idViagem;
     private Long idPontoParada;
-    private String nomeViagem;
-    private String nomePontoParada;
 
     public LocalDateTime getData() {
         return data;
@@ -34,20 +32,4 @@ public class ProgressoViagemDTO {
         this.idPontoParada = idPontoParada;
     }
 
-    public String getNomeViagem() {
-        return nomeViagem;
-    }
-
-    public void setNomeViagem(String nomeViagem) {
-        this.nomeViagem = nomeViagem;
-    }
-
-    public String getNomePontoParada() {
-        return nomePontoParada;
-    }
-
-    public void setNomePontoParada(String nomePontoParada) {
-        this.nomePontoParada = nomePontoParada;
-    }
 }
-

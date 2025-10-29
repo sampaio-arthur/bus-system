@@ -7,10 +7,7 @@ public class CidadeDTO {
 
     private Long id;
     private String nome;
-    private String estado;
-    private String cep;
-    private Long populacao;
-    private Boolean ativo = true;
+    private String uf;
     private List<PontoParadaDTO> pontosParada = new ArrayList<>();
     private int version;
 
@@ -30,37 +27,13 @@ public class CidadeDTO {
         this.nome = nome;
     }
 
-    public String getEstado() {
-        return estado;
-    }
+    public String getUf() {
+		return uf;
+	}
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getCep() {
-        return cep;
-    }
-
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
-
-    public Long getPopulacao() {
-        return populacao;
-    }
-
-    public void setPopulacao(Long populacao) {
-        this.populacao = populacao;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
 
     public List<PontoParadaDTO> getPontosParada() {
         return pontosParada;

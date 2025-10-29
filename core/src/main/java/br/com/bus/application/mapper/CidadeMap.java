@@ -30,10 +30,7 @@ public final class CidadeMap {
         CidadeDTO dto = new CidadeDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setEstado(entity.getEstado());
-        dto.setCep(entity.getCep());
-        dto.setPopulacao(entity.getPopulacao());
-        dto.setAtivo(entity.getAtivo());
+        dto.setUf(entity.getUf());
         dto.setVersion(entity.getVersion());
         if (entity.getPontosParada() != null) {
             List<PontoParadaDTO> pontos = entity.getPontosParada().stream()
@@ -53,11 +50,8 @@ public final class CidadeMap {
 
     private static void entityFromDTO(CidadeDTO dto, Cidade entity) {
         entity.setNome(dto.getNome());
-        entity.setEstado(dto.getEstado());
-        entity.setCep(dto.getCep());
-        entity.setPopulacao(dto.getPopulacao());
-        entity.setAtivo(dto.getAtivo());
         entity.setVersion(dto.getVersion());
+        entity.setUf(dto.getUf());
         if (dto.getPontosParada() != null) {
             List<PontoParada> pontos = dto.getPontosParada().stream()
                     .map(PontoParadaMap::toEntity)
@@ -73,7 +67,6 @@ public final class CidadeMap {
         CidadeDTO dto = new CidadeDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
-        dto.setEstado(entity.getEstado());
         return dto;
     }
 
@@ -83,8 +76,6 @@ public final class CidadeMap {
         }
         Cidade entity = new Cidade();
         entity.setId(dto.getId());
-        entity.setNome(dto.getNome());
-        entity.setEstado(dto.getEstado());
         return entity;
     }
 }

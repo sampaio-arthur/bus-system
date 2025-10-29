@@ -13,7 +13,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -28,15 +27,19 @@ public class Viagem extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "data_partida_real")
+    private LocalDateTime dataPartidaReal;
+
     @NotNull
-    @Column(name = "data_hora_saida", nullable = false)
-    private LocalDateTime dataHoraSaida;
+    @Column(name = "data_partida_prevista", nullable = false)
+    private LocalDateTime dataPartidaPrevista;
 
-    @Column(name = "data_hora_chegada_prevista")
-    private LocalDateTime dataHoraChegadaPrevista;
+    @NotNull
+    @Column(name = "data_chegada_prevista", nullable = false)
+    private LocalDateTime dataChegadaPrevista;
 
-    @Column(name = "data_hora_chegada_real")
-    private LocalDateTime dataHoraChegadaReal;
+    @Column(name = "data_chegada_real")
+    private LocalDateTime dataChegadaReal;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Linha linha;
@@ -47,9 +50,8 @@ public class Viagem extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Pessoa motorista;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "status_viagem_id")
-    private StatusViagem statusViagem;
+    @Column(name = "status")
+    private Integer status;
 
     @OneToMany(mappedBy = "viagem", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Passagem> passagens = new ArrayList<>();
@@ -57,40 +59,100 @@ public class Viagem extends PanacheEntityBase {
     @Version
     private int version;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public LocalDateTime getDataHoraSaida() { return dataHoraSaida; }
-    public void setDataHoraSaida(LocalDateTime dataHoraSaida) { this.dataHoraSaida = dataHoraSaida; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public LocalDateTime getDataHoraChegadaPrevista() { return dataHoraChegadaPrevista; }
-    public void setDataHoraChegadaPrevista(LocalDateTime dataHoraChegadaPrevista) { this.dataHoraChegadaPrevista = dataHoraChegadaPrevista; }
+    public LocalDateTime getDataPartidaReal() {
+        return dataPartidaReal;
+    }
 
-    public LocalDateTime getDataHoraChegadaReal() { return dataHoraChegadaReal; }
-    public void setDataHoraChegadaReal(LocalDateTime dataHoraChegadaReal) { this.dataHoraChegadaReal = dataHoraChegadaReal; }
+    public void setDataPartidaReal(LocalDateTime dataPartidaReal) {
+        this.dataPartidaReal = dataPartidaReal;
+    }
 
-    public Linha getLinha() { return linha; }
-    public void setLinha(Linha linha) { this.linha = linha; }
+    public LocalDateTime getDataPartidaPrevista() {
+        return dataPartidaPrevista;
+    }
 
-    public Veiculo getVeiculo() { return veiculo; }
-    public void setVeiculo(Veiculo veiculo) { this.veiculo = veiculo; }
+    public void setDataPartidaPrevista(LocalDateTime dataPartidaPrevista) {
+        this.dataPartidaPrevista = dataPartidaPrevista;
+    }
 
-    public Pessoa getMotorista() { return motorista; }
-    public void setMotorista(Pessoa motorista) { this.motorista = motorista; }
+    public LocalDateTime getDataChegadaPrevista() {
+        return dataChegadaPrevista;
+    }
 
-    public StatusViagem getStatusViagem() { return statusViagem; }
-    public void setStatusViagem(StatusViagem statusViagem) { this.statusViagem = statusViagem; }
+    public void setDataChegadaPrevista(LocalDateTime dataChegadaPrevista) {
+        this.dataChegadaPrevista = dataChegadaPrevista;
+    }
 
-    public List<Passagem> getPassagens() { return passagens; }
-    public void setPassagens(List<Passagem> passagens) { this.passagens = passagens; }
+    public LocalDateTime getDataChegadaReal() {
+        return dataChegadaReal;
+    }
 
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
+    public void setDataChegadaReal(LocalDateTime dataChegadaReal) {
+        this.dataChegadaReal = dataChegadaReal;
+    }
+
+    public Linha getLinha() {
+        return linha;
+    }
+
+    public void setLinha(Linha linha) {
+        this.linha = linha;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public Pessoa getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Pessoa motorista) {
+        this.motorista = motorista;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public List<Passagem> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(List<Passagem> passagens) {
+        this.passagens = passagens;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Viagem)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Viagem))
+            return false;
         Viagem viagem = (Viagem) o;
         return id != null && id.equals(viagem.id);
     }

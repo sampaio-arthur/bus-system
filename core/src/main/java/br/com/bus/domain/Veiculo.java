@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,9 +30,12 @@ public class Veiculo extends PanacheEntityBase {
     @Column(nullable = false, unique = true)
     private String placa;
 
+    private String chassi;
     private String modelo;
 
-    private Integer ano;
+    @NotNull
+    @Column(name = "ano_fabricacao", nullable = false)
+    private Integer anoFabricacao;
 
     @NotNull
     @Column(nullable = false)
@@ -46,7 +48,7 @@ public class Veiculo extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private TipoVeiculo tipoVeiculo;
 
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "veiculo", fetch = FetchType.LAZY)
     private List<Viagem> viagens = new ArrayList<>();
 
     @Version
@@ -61,8 +63,8 @@ public class Veiculo extends PanacheEntityBase {
     public String getModelo() { return modelo; }
     public void setModelo(String modelo) { this.modelo = modelo; }
 
-    public Integer getAno() { return ano; }
-    public void setAno(Integer ano) { this.ano = ano; }
+    public Integer getAnoFabricacao() { return anoFabricacao; }
+    public void setAnoFabricacao(Integer anoFabricacao) { this.anoFabricacao = anoFabricacao; }
 
     public Integer getCapacidade() { return capacidade; }
     public void setCapacidade(Integer capacidade) { this.capacidade = capacidade; }
@@ -91,4 +93,10 @@ public class Veiculo extends PanacheEntityBase {
     public int hashCode() {
         return Objects.hash(id);
     }
+	public String getChassi() {
+		return chassi;
+	}
+	public void setChassi(String chassi) {
+		this.chassi = chassi;
+	}
 }

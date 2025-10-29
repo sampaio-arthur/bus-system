@@ -24,8 +24,8 @@ public class Passagem extends PanacheEntityBase {
     private Long id;
 
     @NotNull
-    @Column(name = "data_compra", nullable = false)
-    private LocalDateTime dataCompra;
+    @Column(name = "data_emissao", nullable = false)
+    private LocalDateTime dataEmissao;
 
     @NotNull
     @Column(nullable = false, precision = 10, scale = 2)
@@ -37,8 +37,12 @@ public class Passagem extends PanacheEntityBase {
     @NotNull
     @Column(nullable = false)
     private Boolean ativo = true;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    
+    @NotNull
+    @Column(name = "numero_assento", nullable = false)
+    private Short numeroAssento;
+   
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Pessoa pessoa;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -52,14 +56,27 @@ public class Passagem extends PanacheEntityBase {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    
+    public Short getNumeroAssento() {
+		return numeroAssento;
+	}
+	public void setNumeroAssento(Short numeroAssento) {
+		this.numeroAssento = numeroAssento;
+	}
 
-    public LocalDateTime getDataCompra() { return dataCompra; }
-    public void setDataCompra(LocalDateTime dataCompra) { this.dataCompra = dataCompra; }
-
-    public BigDecimal getValor() { return valor; }
-    public void setValor(BigDecimal valor) { this.valor = valor; }
-
-    public BigDecimal getDescontoAplicado() { return descontoAplicado; }
+    public LocalDateTime getDataEmissao() {
+		return dataEmissao;
+	}
+	public void setDataEmissao(LocalDateTime dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+	public BigDecimal getValor() {
+		return valor;
+	}
+	public void setValor(BigDecimal valor) {
+		this.valor = valor;
+	}
+	public BigDecimal getDescontoAplicado() { return descontoAplicado; }
     public void setDescontoAplicado(BigDecimal descontoAplicado) { this.descontoAplicado = descontoAplicado; }
 
     public Boolean getAtivo() { return ativo; }

@@ -27,14 +27,8 @@ public class TipoVeiculo extends PanacheEntityBase {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
-    private String nome;
-
-    @NotNull
-    @Column(nullable = false)
-    private Integer capacidadePassageiros;
-
-    private String combustivel;
+    @Column(name = "descricao", nullable = false, unique = true)
+    private String descricao;
 
     @NotNull
     @Column(nullable = false)
@@ -46,31 +40,44 @@ public class TipoVeiculo extends PanacheEntityBase {
     @Version
     private int version;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Integer getCapacidadePassageiros() { return capacidadePassageiros; }
-    public void setCapacidadePassageiros(Integer capacidadePassageiros) { this.capacidadePassageiros = capacidadePassageiros; }
+    public Boolean getAtivo() {
+        return ativo;
+    }
 
-    public String getCombustivel() { return combustivel; }
-    public void setCombustivel(String combustivel) { this.combustivel = combustivel; }
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
-    public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+    public List<Veiculo> getVeiculos() {
+        return veiculos;
+    }
 
-    public List<Veiculo> getVeiculos() { return veiculos; }
-    public void setVeiculos(List<Veiculo> veiculos) { this.veiculos = veiculos; }
+    public void setVeiculos(List<Veiculo> veiculos) {
+        this.veiculos = veiculos;
+    }
 
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TipoVeiculo)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof TipoVeiculo))
+            return false;
         TipoVeiculo that = (TipoVeiculo) o;
         return id != null && id.equals(that.id);
     }
@@ -78,5 +85,13 @@ public class TipoVeiculo extends PanacheEntityBase {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

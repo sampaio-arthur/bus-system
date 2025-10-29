@@ -3,34 +3,33 @@ package br.com.bus.application.service.useCase;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.bus.application.dto.ParadaLinhaDTO;
-import br.com.bus.application.mapper.ParadaLinhaMap;
-import br.com.bus.repository.ParadaLinhaRepository;
+import br.com.bus.application.dto.VeiculoDTO;
+import br.com.bus.application.mapper.VeiculoMap;
+import br.com.bus.repository.VeiculoRepository;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class BuscaParadaLinha {
+public class BuscaVeiculo {
 
     @Inject
-    ParadaLinhaRepository repository;
+    VeiculoRepository repository;
 
-    public ParadaLinhaDTO porId(Long id) {
-        return ParadaLinhaMap.toDTO(
+    public VeiculoDTO porId(Long id) {
+        return VeiculoMap.toDTO(
                 repository.findByIdOptional(id)
-                        .orElseThrow(() -> new NotFoundException("ParadaLinha não encontrada: id=" + id))
+                        .orElseThrow(() -> new NotFoundException("Veículo não encontrado: id=" + id))
         );
     }
 
-    public List<ParadaLinhaDTO> listar(int page, int size) {
+    public List<VeiculoDTO> listar(int page, int size) {
         return repository.findAll()
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ParadaLinhaMap::toSummary)
+                .map(VeiculoMap::toSummary)
                 .collect(Collectors.toList());
     }
 }
-

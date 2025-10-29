@@ -34,6 +34,7 @@ public final class ItinerarioMap {
         if (id != null) {
             dto.setIdLinha(id.getIdLinha());
             dto.setIdPontoParada(id.getIdPontoParada());
+            dto.setOrdem(id.getOrdem());
         }
         if (entity.getLinha() != null) {
             dto.setNomeLinha(entity.getLinha().getNome());
@@ -62,24 +63,33 @@ public final class ItinerarioMap {
         }
         id.setIdLinha(dto.getIdLinha());
         id.setIdPontoParada(dto.getIdPontoParada());
+        id.setOrdem(dto.getOrdem());
 
-        if (dto.getIdLinha() != null) {
+        if (dto.getIdLinha() != null || dto.getNomeLinha() != null) {
             Linha linha = entity.getLinha();
             if (linha == null) {
                 linha = new Linha();
             }
+            // use all DTO attributes related to Linha
             linha.setId(dto.getIdLinha());
+            if (dto.getNomeLinha() != null) {
+                linha.setNome(dto.getNomeLinha());
+            }
             entity.setLinha(linha);
         } else {
             entity.setLinha(null);
         }
 
-        if (dto.getIdPontoParada() != null) {
+        if (dto.getIdPontoParada() != null || dto.getNomePontoParada() != null) {
             PontoParada pontoParada = entity.getPontoParada();
             if (pontoParada == null) {
                 pontoParada = new PontoParada();
             }
+            // use all DTO attributes related to PontoParada
             pontoParada.setId(dto.getIdPontoParada());
+            if (dto.getNomePontoParada() != null) {
+                pontoParada.setNome(dto.getNomePontoParada());
+            }
             entity.setPontoParada(pontoParada);
         } else {
             entity.setPontoParada(null);
@@ -87,7 +97,17 @@ public final class ItinerarioMap {
     }
 
     public static ItinerarioDTO toSummary(Itinerario entity) {
-        return toDTO(entity);
+        if (entity == null) {
+            return null;
+        }
+        ItinerarioDTO dto = new ItinerarioDTO();
+        ItinerarioId id = entity.getId();
+        if (id != null) {
+            dto.setIdLinha(id.getIdLinha());
+            dto.setIdPontoParada(id.getIdPontoParada());
+            dto.setOrdem(id.getOrdem());
+        }
+        return dto;
     }
 
     public static Set<ItinerarioDTO> toDTOSet(Set<Itinerario> entities) {

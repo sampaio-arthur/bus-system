@@ -8,14 +8,10 @@ public class PontoParadaDTO {
 
     private Long id;
     private String nome;
-    private String endereco;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private Boolean temCobertura;
-    private Boolean temBanco;
     private Boolean ativo = true;
     private CidadeDTO cidade;
-    private List<ParadaLinhaDTO> paradasLinha = new ArrayList<>();
     private List<PontoTuristicoDTO> pontosTuristicosProximos = new ArrayList<>();
     private int version;
 
@@ -35,13 +31,6 @@ public class PontoParadaDTO {
         this.nome = nome;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
 
     public BigDecimal getLatitude() {
         return latitude;
@@ -59,22 +48,6 @@ public class PontoParadaDTO {
         this.longitude = longitude;
     }
 
-    public Boolean getTemCobertura() {
-        return temCobertura;
-    }
-
-    public void setTemCobertura(Boolean temCobertura) {
-        this.temCobertura = temCobertura;
-    }
-
-    public Boolean getTemBanco() {
-        return temBanco;
-    }
-
-    public void setTemBanco(Boolean temBanco) {
-        this.temBanco = temBanco;
-    }
-
     public Boolean getAtivo() {
         return ativo;
     }
@@ -89,14 +62,6 @@ public class PontoParadaDTO {
 
     public void setCidade(CidadeDTO cidade) {
         this.cidade = cidade;
-    }
-
-    public List<ParadaLinhaDTO> getParadasLinha() {
-        return paradasLinha;
-    }
-
-    public void setParadasLinha(List<ParadaLinhaDTO> paradasLinha) {
-        this.paradasLinha = paradasLinha;
     }
 
     public List<PontoTuristicoDTO> getPontosTuristicosProximos() {

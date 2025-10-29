@@ -3,8 +3,8 @@ package br.com.bus.application.controller;
 import java.net.URI;
 import java.util.List;
 
-import br.com.bus.application.dto.StatusViagemDTO;
-import br.com.bus.application.service.StatusViagemService;
+import br.com.bus.application.dto.PessoaDTO;
+import br.com.bus.application.service.PessoaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -19,17 +19,17 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/status-viagens")
+@Path("/pessoas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class StatusViagemController {
+public class PessoaController {
 
     @Inject
-    StatusViagemService service;
+    PessoaService service;
 
     @GET
-    public List<StatusViagemDTO> listar(@QueryParam("page") Integer page,
-                                        @QueryParam("size") Integer size) {
+    public List<PessoaDTO> listar(@QueryParam("page") Integer page,
+                                  @QueryParam("size") Integer size) {
         int p = page == null || page < 0 ? 0 : page;
         int s = size == null || size <= 0 ? 20 : size;
         return service.listar(p, s);
@@ -37,17 +37,17 @@ public class StatusViagemController {
 
     @GET
     @Path("/{id}")
-    public StatusViagemDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
+    public PessoaDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
 
     @POST
-    public Response criar(@Valid StatusViagemDTO dto) {
-        StatusViagemDTO created = service.criar(dto);
-        return Response.created(URI.create("/status-viagens/" + created.getId())).entity(created).build();
+    public Response criar(@Valid PessoaDTO dto) {
+        PessoaDTO created = service.criar(dto);
+        return Response.created(URI.create("/pessoas/" + created.getId())).entity(created).build();
     }
 
     @PUT
     @Path("/{id}")
-    public StatusViagemDTO atualizar(@PathParam("id") Long id, @Valid StatusViagemDTO dto) { return service.atualizar(id, dto); }
+    public PessoaDTO atualizar(@PathParam("id") Long id, @Valid PessoaDTO dto) { return service.atualizar(id, dto); }
 
     @DELETE
     @Path("/{id}")
@@ -56,4 +56,3 @@ public class StatusViagemController {
         return Response.noContent().build();
     }
 }
-

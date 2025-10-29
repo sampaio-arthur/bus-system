@@ -3,8 +3,8 @@ package br.com.bus.application.controller;
 import java.net.URI;
 import java.util.List;
 
-import br.com.bus.application.dto.ParadaLinhaDTO;
-import br.com.bus.application.service.ParadaLinhaService;
+import br.com.bus.application.dto.VeiculoDTO;
+import br.com.bus.application.service.VeiculoService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -19,17 +19,17 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/paradas-linha")
+@Path("/veiculos")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class ParadaLinhaController {
+public class VeiculoController {
 
     @Inject
-    ParadaLinhaService service;
+    VeiculoService service;
 
     @GET
-    public List<ParadaLinhaDTO> listar(@QueryParam("page") Integer page,
-                                       @QueryParam("size") Integer size) {
+    public List<VeiculoDTO> listar(@QueryParam("page") Integer page,
+                                   @QueryParam("size") Integer size) {
         int p = page == null || page < 0 ? 0 : page;
         int s = size == null || size <= 0 ? 20 : size;
         return service.listar(p, s);
@@ -37,17 +37,17 @@ public class ParadaLinhaController {
 
     @GET
     @Path("/{id}")
-    public ParadaLinhaDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
+    public VeiculoDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
 
     @POST
-    public Response criar(@Valid ParadaLinhaDTO dto) {
-        ParadaLinhaDTO created = service.criar(dto);
-        return Response.created(URI.create("/paradas-linha/" + created.getId())).entity(created).build();
+    public Response criar(@Valid VeiculoDTO dto) {
+        VeiculoDTO created = service.criar(dto);
+        return Response.created(URI.create("/veiculos/" + created.getId())).entity(created).build();
     }
 
     @PUT
     @Path("/{id}")
-    public ParadaLinhaDTO atualizar(@PathParam("id") Long id, @Valid ParadaLinhaDTO dto) { return service.atualizar(id, dto); }
+    public VeiculoDTO atualizar(@PathParam("id") Long id, @Valid VeiculoDTO dto) { return service.atualizar(id, dto); }
 
     @DELETE
     @Path("/{id}")
@@ -56,4 +56,3 @@ public class ParadaLinhaController {
         return Response.noContent().build();
     }
 }
-

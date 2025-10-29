@@ -1,23 +1,21 @@
 package br.com.bus.application.service.useCase;
 
-import br.com.bus.repository.StatusViagemRepository;
+import br.com.bus.repository.VeiculoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 @ApplicationScoped
-public class DeletarStatusViagem {
+public class DeletarVeiculo {
 
     @Inject
-    StatusViagemRepository repository;
+    VeiculoRepository repository;
 
     @Transactional
     public void executar(Long id) {
-        boolean deleted = repository.deleteById(id);
-        if (!deleted) {
-            throw new NotFoundException("StatusViagem não encontrado: id=" + id);
+        if (!repository.deleteById(id)) {
+            throw new NotFoundException("Veículo não encontrado: id=" + id);
         }
     }
 }
-
