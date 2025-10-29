@@ -27,7 +27,7 @@ public class AtualizarTipoVeiculo {
         if (dto == null) {
             return;
         }
-        entity.setDescrição(dto.getDescricao());
+        entity.setDescricao(dto.getDescricao());
         entity.setAtivo(dto.getAtivo());
     }
 }

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,8 +33,8 @@ public class Veiculo extends PanacheEntityBase {
     private String chassi;
     private String modelo;
 
-    @NotBlank
-    @Column(name = "ano_fabricacao", nullable = false, unique = true)
+    @NotNull
+    @Column(name = "ano_fabricacao", nullable = false)
     private Integer anoFabricacao;
 
     @NotNull
@@ -49,7 +48,7 @@ public class Veiculo extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private TipoVeiculo tipoVeiculo;
 
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "veiculo", fetch = FetchType.LAZY)
     private List<Viagem> viagens = new ArrayList<>();
 
     @Version

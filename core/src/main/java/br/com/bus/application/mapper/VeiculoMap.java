@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import br.com.bus.application.dto.VeiculoDTO;
 import br.com.bus.application.dto.ViagemDTO;
 import br.com.bus.domain.Veiculo;
-import br.com.bus.domain.Viagem;
 
 public final class VeiculoMap {
 
@@ -41,12 +40,6 @@ public final class VeiculoMap {
 
     static void entityFromDTO(VeiculoDTO dto, Veiculo entity) {
         copyToEntity(dto, entity);
-        if (dto.getViagens() != null) {
-            List<Viagem> viagens = dto.getViagens().stream()
-                    .map(ViagemMap::toEntity)
-                    .collect(Collectors.toList());
-            entity.setViagens(viagens);
-        }
     }
 
     static void populateDTO(Veiculo entity, VeiculoDTO dto) {
@@ -100,7 +93,6 @@ public final class VeiculoMap {
         entity.setChassi(dto.getChassi());
         entity.setCapacidade(dto.getCapacidade());
         entity.setAtivo(dto.getAtivo());
-        entity.setTipoVeiculo(TipoVeiculoMap.fromSummary(dto.getTipoVeiculo()));
         entity.setVersion(dto.getVersion());
     }
 

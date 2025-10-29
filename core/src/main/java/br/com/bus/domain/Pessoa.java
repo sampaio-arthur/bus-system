@@ -39,7 +39,7 @@ public class Pessoa extends PanacheEntityBase {
     @Column(name = "email", length = 100)
     private String email;
 
-    @Column(name = "telefone", length = 15)
+    @Column(name = "telefone", length = 20)
     private String telefone;
 
     @Column(name = "data_nascimento")
@@ -48,7 +48,7 @@ public class Pessoa extends PanacheEntityBase {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = Boolean.TRUE;
 
-    @Column(name = "tipo_pessoa", length = 20)
+    @Column(name = "tipo_pessoa", length = 100)
     private String tipoPessoa;
 
     @Column(name = "cnh", length = 11, unique = true)
@@ -89,61 +89,148 @@ public class Pessoa extends PanacheEntityBase {
         updatedAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getCpf() { return cpf; }
-    public void setCpf(String cpf) { this.cpf = cpf; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public String getCpf() {
+        return cpf;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
-    public String getTelefone() { return telefone; }
-    public void setTelefone(String telefone) { this.telefone = telefone; }
+    public String getNome() {
+        return nome;
+    }
 
-    public LocalDateTime getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDateTime dataNascimento) { this.dataNascimento = dataNascimento; }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public Boolean getAtivo() { return ativo; }
-    public void setAtivo(Boolean ativo) { this.ativo = ativo; }
+    public String getEmail() {
+        return email;
+    }
 
-    public String getTipoPessoa() { return tipoPessoa; }
-    public void setTipoPessoa(String tipoPessoa) { this.tipoPessoa = tipoPessoa; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public String getCnh() { return cnh; }
-    public void setCnh(String cnh) { this.cnh = cnh; }
+    public String getTelefone() {
+        return telefone;
+    }
 
-    public String getCategoriaCnh() { return categoriaCnh; }
-    public void setCategoriaCnh(String categoriaCnh) { this.categoriaCnh = categoriaCnh; }
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
 
-    public String getNumeroCarteirinha() { return numeroCarteirinha; }
-    public void setNumeroCarteirinha(String numeroCarteirinha) { this.numeroCarteirinha = numeroCarteirinha; }
+    public LocalDateTime getDataNascimento() {
+        return dataNascimento;
+    }
 
-    public LocalDateTime getValidadeCnh() {	return validadeCnh; }
-	public void setValidadeCnh(LocalDateTime validadeCnh) { this.validadeCnh = validadeCnh; }
+    public void setDataNascimento(LocalDateTime dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
 
-	public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public Boolean getAtivo() {
+        return ativo;
+    }
 
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
+    public String getTipoPessoa() {
+        return tipoPessoa;
+    }
 
-    public List<Viagem> getViagens() { return viagens; }
-    public void setViagens(List<Viagem> viagens) { this.viagens = viagens; }
+    public void setTipoPessoa(String tipoPessoa) {
+        this.tipoPessoa = tipoPessoa;
+    }
 
-    public List<Passagem> getPassagens() { return passagens; }
-    public void setPassagens(List<Passagem> passagens) { this.passagens = passagens; }
+    public String getCnh() {
+        return cnh;
+    }
+
+    public void setCnh(String cnh) {
+        this.cnh = cnh;
+    }
+
+    public String getCategoriaCnh() {
+        return categoriaCnh;
+    }
+
+    public void setCategoriaCnh(String categoriaCnh) {
+        this.categoriaCnh = categoriaCnh;
+    }
+
+    public String getNumeroCarteirinha() {
+        return numeroCarteirinha;
+    }
+
+    public void setNumeroCarteirinha(String numeroCarteirinha) {
+        this.numeroCarteirinha = numeroCarteirinha;
+    }
+
+    public LocalDateTime getValidadeCnh() {
+        return validadeCnh;
+    }
+
+    public void setValidadeCnh(LocalDateTime validadeCnh) {
+        this.validadeCnh = validadeCnh;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public List<Viagem> getViagens() {
+        return viagens;
+    }
+
+    public void setViagens(List<Viagem> viagens) {
+        this.viagens = viagens;
+    }
+
+    public List<Passagem> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(List<Passagem> passagens) {
+        this.passagens = passagens;
+    }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Pessoa)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Pessoa))
+            return false;
         Pessoa pessoa = (Pessoa) o;
         return id != null && id.equals(pessoa.id);
     }

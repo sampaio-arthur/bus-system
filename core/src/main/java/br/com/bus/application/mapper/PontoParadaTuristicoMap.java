@@ -6,8 +6,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import br.com.bus.application.dto.PontoParadaTuristicoDTO;
-import br.com.bus.domain.PontoParada;
-import br.com.bus.domain.PontoTuristico;
 import br.com.bus.domain.pontoParadaTuristico.PontoParadaTuristico;
 import br.com.bus.domain.pontoParadaTuristico.PontoParadaTuristicoId;
 
@@ -53,26 +51,9 @@ public final class PontoParadaTuristicoMap {
             id = new PontoParadaTuristicoId();
             entity.setId(id);
         }
-        dto.setIdPontoParada(entity.getId().getIdPontoParada());
-        dto.setIdPontoTuristico(entity.getId().getIdPontoTuristico());
 
-        if (dto.getIdPontoParada() != null) {
-            PontoParada pontoParada = entity.getPontoParada();
-            if (pontoParada == null) {
-            	pontoParada = new PontoParada();
-            }
-            pontoParada.setId(dto.getIdPontoParada());
-            entity.setPontoParada(pontoParada);
-        }
-
-        if (dto.getIdPontoTuristico() != null) {
-            PontoTuristico pontoTuristico = entity.getPontoTuristico();
-            if (pontoTuristico == null) {
-            	pontoTuristico = new PontoTuristico();
-            }
-            pontoTuristico.setId(dto.getIdPontoTuristico());
-            entity.setPontoTuristico(pontoTuristico);
-        }
+        id.setIdPontoParada(dto.getIdPontoParada());
+        id.setIdPontoTuristico(dto.getIdPontoTuristico());
     }
 
     public static Set<PontoParadaTuristicoDTO> toDTOSet(Set<PontoParadaTuristico> entities) {
