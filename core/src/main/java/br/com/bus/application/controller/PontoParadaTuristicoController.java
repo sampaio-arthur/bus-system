@@ -36,8 +36,11 @@ public class PontoParadaTuristicoController {
     }
 
     @GET
-    @Path("/{id}")
-    public PontoParadaTuristicoDTO buscarPorId(@PathParam("id") Long id) { return service.buscarPorId(id); }
+    @Path("/{idPontoParada}/{idPontoTuristico}")
+    public PontoParadaTuristicoDTO buscarPorId(@PathParam("idPontoParada") Long idPontoParada,
+                                               @PathParam("idPontoTuristico") Long idPontoTuristico) {
+        return service.buscarPorId(idPontoParada, idPontoTuristico);
+    }
 
     @POST
     public Response criar(@Valid PontoParadaTuristicoDTO dto) {
@@ -48,15 +51,18 @@ public class PontoParadaTuristicoController {
     }
 
     @PUT
-    @Path("/{id}")
-    public PontoParadaTuristicoDTO atualizar(@PathParam("id") Long id, @Valid PontoParadaTuristicoDTO dto) {
-        return service.atualizar(id, dto);
+    @Path("/{idPontoParada}/{idPontoTuristico}")
+    public PontoParadaTuristicoDTO atualizar(@PathParam("idPontoParada") Long idPontoParada,
+                                             @PathParam("idPontoTuristico") Long idPontoTuristico,
+                                             @Valid PontoParadaTuristicoDTO dto) {
+        return service.atualizar(idPontoParada, idPontoTuristico, dto);
     }
 
     @DELETE
-    @Path("/{id}")
-    public Response deletar(@PathParam("id") Long id) {
-        service.deletar(id);
+    @Path("/{idPontoParada}/{idPontoTuristico}")
+    public Response deletar(@PathParam("idPontoParada") Long idPontoParada,
+                            @PathParam("idPontoTuristico") Long idPontoTuristico) {
+        service.deletar(idPontoParada, idPontoTuristico);
         return Response.noContent().build();
     }
 }

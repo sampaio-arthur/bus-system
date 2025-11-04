@@ -18,14 +18,15 @@ public class BuscaItinerario {
     @Inject
     ItinerarioRepository repository;
 
-    public ItinerarioDTO porId(Long idLinha, Long idPontoParada) {
+    public ItinerarioDTO porId(Short ordem, Long idLinha, Long idPontoParada) {
         ItinerarioId id = new ItinerarioId();
+        id.setOrdem(ordem);
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);
         return ItinerarioMap.toDTO(
                 repository.findByIdOptional(id)
                         .orElseThrow(() -> new NotFoundException(
-                                "Itinerário não encontrado: linha=" + idLinha + ", ponto=" + idPontoParada))
+                                "Itinerário não encontrado: ordem=" + ordem + ", linha=" + idLinha + ", ponto=" + idPontoParada))
         );
     }
 

@@ -37,51 +37,12 @@ services:
       SERVER_EXTERNAL_PORT: ${SERVER_EXTERNAL_PORT}
       SERVER_DEBUG_PORT: ${SERVER_DEBUG_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      DB_ADMIN_TOKEN: ${DB_ADMIN_TOKEN}
       TZ: ${TZ}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}"
-      OLLAMA_URL: ${OLLAMA_URL}
     ports:
       - "${SERVER_EXTERNAL_PORT}:${SERVER_EXTERNAL_PORT}"
       - "${SERVER_DEBUG_PORT}:${SERVER_DEBUG_PORT}"
 
-  # 🧠 Ollama (modelo local)
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - "${OLLAMA_PORT}:11434"
-    volumes:
-      - ollama_models:/root/.ollama
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [gpu]
-    runtime: nvidia
-    environment:
-      - OLLAMA_KEEP_ALIVE=5m
-    command: >
-      sh -c "
-        ollama serve & 
-        sleep 5 && 
-        ollama list | grep -q 'phi3:mini' || ollama pull phi3:mini &&
-        wait
-      "
-
-  # 🔌 MCP Shim
-  mcp-shim:
-    build: ./mcp
-    container_name: mcp-shim
-    ports:
-      - "${MCP_SHIM_PORT}:5151"
-    environment:
-      - MCP_SHIM_PORT=${MCP_SHIM_PORT}
-      - SERVER_EXTERNAL_PORT=${SERVER_EXTERNAL_PORT}
-      - SERVER_HOST=app
-    depends_on:
-      - app
-      - ollama
-
 volumes:
   bus_pgdata:
-  ollama_models:

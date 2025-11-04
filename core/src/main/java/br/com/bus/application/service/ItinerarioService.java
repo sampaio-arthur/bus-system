@@ -26,12 +26,12 @@ public class ItinerarioService {
     DeletarItinerario deletar;
 
     public List<ItinerarioDTO> listar(int page, int size) { return busca.listar(page, size); }
-    public ItinerarioDTO buscarPorId(Long idLinha, Long idPontoParada) {
-        return busca.porId(idLinha, idPontoParada);
+    public ItinerarioDTO buscarPorId(Short ordem, Long idLinha, Long idPontoParada) {
+        return busca.porId(ordem, idLinha, idPontoParada);
     }
     public ItinerarioDTO criar(ItinerarioDTO dto) { return criar.executar(dto); }
-    public ItinerarioDTO atualizar(Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
-        return atualizar.executar(idLinha, idPontoParada, dto);
+    public ItinerarioDTO atualizar(Short ordem, Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
+        return atualizar.executar(ordem, idLinha, idPontoParada, dto);
     }
-    public void deletar(Long idLinha, Long idPontoParada) { deletar.executar(idLinha, idPontoParada); }
+    public void deletar(Short ordem, Long idLinha, Long idPontoParada) { deletar.executar(ordem, idLinha, idPontoParada); }
 }
