@@ -23,27 +23,18 @@ public class AtualizarPontoParadaTuristico {
     EntityManager entityManager;
 
     @Transactional
-    public PontoParadaTuristicoDTO executar(Long id, PontoParadaTuristicoDTO dto) {
+    public PontoParadaTuristicoDTO executar(Long idPontoParada, Long idPontoTuristico, PontoParadaTuristicoDTO dto) {
+        PontoParadaTuristicoId id = new PontoParadaTuristicoId(idPontoParada, idPontoTuristico);
         PontoParadaTuristico entity = repository.findByIdOptional(id)
-                .orElseThrow(() -> new NotFoundException("Ponto parada turístico não encontrado: id=" + id));
-        aplicarAtualizacoes(entity, dto);
+                .orElseThrow(() -> new NotFoundException(
+                        "Ponto parada turístico não encontrado: parada=" + idPontoParada + ", turistico=" + idPontoTuristico));
+        aplicarAtualizacoes(entity, id);
         return PontoParadaTuristicoMap.toDTO(entity);
     }
 
-    private void aplicarAtualizacoes(PontoParadaTuristico entity, PontoParadaTuristicoDTO dto) {
-        if (dto == null) {
-            return;
-        }
-        if (entity.getId() == null) {
-            entity.setId(new PontoParadaTuristicoId());
-        }
-        if (dto.getIdPontoParada() != null) {
-            entity.getId().setIdPontoParada(dto.getIdPontoParada());
-            entity.setPontoParada(entityManager.getReference(PontoParada.class, dto.getIdPontoParada()));
-        }
-        if (dto.getIdPontoTuristico() != null) {
-            entity.getId().setIdPontoTuristico(dto.getIdPontoTuristico());
-            entity.setPontoTuristico(entityManager.getReference(PontoTuristico.class, dto.getIdPontoTuristico()));
-        }
+    private void aplicarAtualizacoes(PontoParadaTuristico entity, PontoParadaTuristicoId id) {
+        entity.setId(id);
+        entity.setPontoParada(entityManager.getReference(PontoParada.class, id.getIdPontoParada()));
+        entity.setPontoTuristico(entityManager.getReference(PontoTuristico.class, id.getIdPontoTuristico()));
     }
 }

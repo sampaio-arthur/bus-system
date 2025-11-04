@@ -26,8 +26,12 @@ public class PontoParadaTuristicoService {
     DeletarPontoParadaTuristico deletar;
 
     public List<PontoParadaTuristicoDTO> listar(int page, int size) { return busca.listar(page, size); }
-    public PontoParadaTuristicoDTO buscarPorId(Long id) { return busca.porId(id); }
+    public PontoParadaTuristicoDTO buscarPorId(Long idPontoParada, Long idPontoTuristico) {
+        return busca.porId(idPontoParada, idPontoTuristico);
+    }
     public PontoParadaTuristicoDTO criar(PontoParadaTuristicoDTO dto) { return criar.executar(dto); }
-    public PontoParadaTuristicoDTO atualizar(Long id, PontoParadaTuristicoDTO dto) { return atualizar.executar(id, dto); }
-    public void deletar(Long id) { deletar.executar(id); }
+    public PontoParadaTuristicoDTO atualizar(Long idPontoParada, Long idPontoTuristico, PontoParadaTuristicoDTO dto) {
+        return atualizar.executar(idPontoParada, idPontoTuristico, dto);
+    }
+    public void deletar(Long idPontoParada, Long idPontoTuristico) { deletar.executar(idPontoParada, idPontoTuristico); }
 }
