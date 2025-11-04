@@ -23,13 +23,14 @@ public class AtualizarItinerario {
     EntityManager entityManager;
 
     @Transactional
-    public ItinerarioDTO executar(Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
+    public ItinerarioDTO executar(Short ordem, Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
         ItinerarioId id = new ItinerarioId();
+        id.setOrdem(ordem);
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);
         Itinerario entity = repository.findByIdOptional(id)
                 .orElseThrow(() -> new NotFoundException(
-                        "Itinerário não encontrado: linha=" + idLinha + ", ponto=" + idPontoParada));
+                        "Itinerário não encontrado: ordem=" + ordem + ", linha=" + idLinha + ", ponto=" + idPontoParada));
         aplicarAtualizacoes(entity, id);
         return ItinerarioMap.toDTO(entity);
     }

@@ -36,33 +36,36 @@ public class ItinerarioController {
     }
 
     @GET
-    @Path("/{idLinha}/{idPontoParada}")
-    public ItinerarioDTO buscarPorId(@PathParam("idLinha") Long idLinha,
+    @Path("/{ordem}/{idLinha}/{idPontoParada}")
+    public ItinerarioDTO buscarPorId(@PathParam("ordem") Short ordem,
+                                     @PathParam("idLinha") Long idLinha,
                                      @PathParam("idPontoParada") Long idPontoParada) {
-        return service.buscarPorId(idLinha, idPontoParada);
+        return service.buscarPorId(ordem, idLinha, idPontoParada);
     }
 
     @POST
     public Response criar(@Valid ItinerarioDTO dto) {
         ItinerarioDTO created = service.criar(dto);
-        URI location = URI.create(String.format("/itinerarios/%d/%d",
-                created.getIdLinha(), created.getIdPontoParada()));
+        URI location = URI.create(String.format("/itinerarios/%d/%d/%d",
+                created.getOrdem(), created.getIdLinha(), created.getIdPontoParada()));
         return Response.created(location).entity(created).build();
     }
 
     @PUT
-    @Path("/{idLinha}/{idPontoParada}")
-    public ItinerarioDTO atualizar(@PathParam("idLinha") Long idLinha,
+    @Path("/{ordem}/{idLinha}/{idPontoParada}")
+    public ItinerarioDTO atualizar(@PathParam("ordem") Short ordem,
+                                   @PathParam("idLinha") Long idLinha,
                                    @PathParam("idPontoParada") Long idPontoParada,
                                    @Valid ItinerarioDTO dto) {
-        return service.atualizar(idLinha, idPontoParada, dto);
+        return service.atualizar(ordem, idLinha, idPontoParada, dto);
     }
 
     @DELETE
-    @Path("/{idLinha}/{idPontoParada}")
-    public Response deletar(@PathParam("idLinha") Long idLinha,
+    @Path("/{ordem}/{idLinha}/{idPontoParada}")
+    public Response deletar(@PathParam("ordem") Short ordem,
+                            @PathParam("idLinha") Long idLinha,
                             @PathParam("idPontoParada") Long idPontoParada) {
-        service.deletar(idLinha, idPontoParada);
+        service.deletar(ordem, idLinha, idPontoParada);
         return Response.noContent().build();
     }
 }

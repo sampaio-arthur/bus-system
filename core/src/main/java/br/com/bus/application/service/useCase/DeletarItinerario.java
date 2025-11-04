@@ -14,14 +14,15 @@ public class DeletarItinerario {
     ItinerarioRepository repository;
 
     @Transactional
-    public void executar(Long idLinha, Long idPontoParada) {
+    public void executar(Short ordem, Long idLinha, Long idPontoParada) {
         ItinerarioId id = new ItinerarioId();
+        id.setOrdem(ordem);
         id.setIdLinha(idLinha);
         id.setIdPontoParada(idPontoParada);
         boolean deleted = repository.deleteById(id);
         if (!deleted) {
             throw new NotFoundException(
-                    "Itinerário não encontrado: linha=" + idLinha + ", ponto=" + idPontoParada);
+                    "Itinerário não encontrado: ordem=" + ordem + ", linha=" + idLinha + ", ponto=" + idPontoParada);
         }
     }
 }
