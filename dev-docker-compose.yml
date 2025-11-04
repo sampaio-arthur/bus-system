@@ -37,6 +37,7 @@ services:
       SERVER_EXTERNAL_PORT: ${SERVER_EXTERNAL_PORT}
       SERVER_DEBUG_PORT: ${SERVER_DEBUG_PORT}
       JWT_SECRET: ${JWT_SECRET}
+      DB_ADMIN_TOKEN: ${DB_ADMIN_TOKEN}
       TZ: ${TZ}
       JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:${SERVER_DEBUG_PORT}"
     ports:
