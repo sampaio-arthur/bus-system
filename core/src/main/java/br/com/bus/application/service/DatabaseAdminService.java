@@ -34,7 +34,6 @@ public class DatabaseAdminService {
     @Transactional
     public int seed() {
         int executed = 0;
-        // Prefer single file db/seed.sql; fallback to db/seed/seed.sql
         String[] candidates = new String[] { "db/seed.sql", "db/seed/seed.sql" };
         for (String resource : candidates) {
             executed += executeSqlResourceIfPresent(resource);
@@ -57,15 +56,14 @@ public class DatabaseAdminService {
     }
 
     private int executeSqlStatements(String sql) {
-        // naive split by ';' (ignores edge cases inside strings)
         int executed = 0;
         for (String stmt : sql.split(";")) {
             String s = stmt.trim();
-            if (s.isEmpty()) continue;
+            if (s.isEmpty())
+                continue;
             em.createNativeQuery(s).executeUpdate();
             executed++;
         }
         return executed;
     }
 }
-
