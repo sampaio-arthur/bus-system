@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
@@ -42,12 +43,15 @@ public class Viagem extends PanacheEntityBase {
     private LocalDateTime dataChegadaReal;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "linha_id", nullable = false)
     private Linha linha;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "veiculo_id", nullable = false)
     private Veiculo veiculo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "motorista_id", nullable = false)
     private Pessoa motorista;
 
     @Column(name = "status")

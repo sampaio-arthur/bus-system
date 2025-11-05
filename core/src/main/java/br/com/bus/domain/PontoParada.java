@@ -54,7 +54,11 @@ public class PontoParada extends PanacheEntityBase {
     private Cidade cidade;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "ponto_parada_ponto_turistico", joinColumns = @JoinColumn(name = "ponto_parada_id"), inverseJoinColumns = @JoinColumn(name = "ponto_turistico_id"))
+    @JoinTable(
+        name = "ponto_parada_turistico",
+        joinColumns = @JoinColumn(name = "id_ponto_parada", nullable = false),
+        inverseJoinColumns = @JoinColumn(name = "id_ponto_turistico", nullable = false)
+    )
     private List<PontoTuristico> pontosTuristicosProximos = new ArrayList<>();
 
     @Version

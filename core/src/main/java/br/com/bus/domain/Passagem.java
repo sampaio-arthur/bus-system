@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
@@ -43,15 +44,19 @@ public class Passagem extends PanacheEntityBase {
     private Short numeroAssento;
    
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "pessoa_id", nullable = false)
     private Pessoa pessoa;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "viagem_id", nullable = false)
     private Viagem viagem;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tipo_passagem_id", nullable = false)
     private TipoPassagem tipoPassagem;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "metodo_pagamento_id", nullable = false)
     private MetodoPagamento metodoPagamento;
 
     public Long getId() { return id; }

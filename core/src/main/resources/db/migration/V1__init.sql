@@ -72,7 +72,7 @@ create table if not exists tipo_veiculo (
 create table if not exists veiculo (
     id bigserial primary key,
     placa varchar(50) not null unique,
-    chassi varchar(100),
+    chassi varchar(100) unique,
     modelo varchar(100),
     ano_fabricacao integer not null,
     capacidade integer not null,
