@@ -35,20 +35,21 @@ public class Linha extends PanacheEntityBase {
     @Column(nullable = false)
     private Boolean ativo = true;
 
+    @Column(name = "tempo_percurso_estimado")
     private Integer tempoPercursoEstimado;
 
     @Version
     private int version;
 
     public int getVersion() {
-		return version;
-	}
+        return version;
+    }
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
