@@ -27,7 +27,7 @@ public class TipoVeiculo extends PanacheEntityBase {
     private Long id;
 
     @NotBlank
-    @Column(name = "descricao", nullable = false, unique = true)
+    @Column(name = "descricao", nullable = false)
     private String descricao;
 
     @NotNull
