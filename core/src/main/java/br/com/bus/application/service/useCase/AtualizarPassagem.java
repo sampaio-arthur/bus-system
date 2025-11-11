@@ -36,9 +36,7 @@ public class AtualizarPassagem {
             return;
         }
         entity.setDataEmissao(dto.getDataEmissao());
-        entity.setNumeroAssento(dto.getNumeroAssento());
         entity.setValor(dto.getValor());
-        entity.setDescontoAplicado(dto.getDescontoAplicado());
         entity.setAtivo(dto.getAtivo());
 
         if (dto.getPessoa() != null && dto.getPessoa().getId() != null) {
@@ -62,4 +60,3 @@ public class AtualizarPassagem {
         return entityManager.getReference(tipo, id);
     }
 }
-

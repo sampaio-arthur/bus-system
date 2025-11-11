@@ -1,10 +1,13 @@
 package br.com.bus.application.dto;
 
+import java.math.BigDecimal;
+
 public class LinhaDTO {
 
     private Long id;
     private String nome;
     private String codigo;
+    private BigDecimal tarifa;
     private Boolean ativo = true;
     private Integer tempoPercursoEstimado;
     
@@ -40,6 +43,14 @@ public class LinhaDTO {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public BigDecimal getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(BigDecimal tarifa) {
+        this.tarifa = tarifa;
     }
 
     public Boolean getAtivo() {

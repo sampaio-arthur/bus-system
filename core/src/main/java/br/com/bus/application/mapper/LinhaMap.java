@@ -26,6 +26,7 @@ public final class LinhaMap {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setCodigo(entity.getCodigo());
+        dto.setTarifa(entity.getTarifa());
         dto.setAtivo(entity.getAtivo());
         dto.setTempoPercursoEstimado(entity.getTempoPercursoEstimado());
         dto.setVersion(entity.getVersion());
@@ -42,6 +43,7 @@ public final class LinhaMap {
     private static void entityFromDTO(LinhaDTO dto, Linha entity) {
         entity.setNome(dto.getNome());
         entity.setCodigo(dto.getCodigo());
+        entity.setTarifa(dto.getTarifa());
         entity.setAtivo(dto.getAtivo());
         entity.setTempoPercursoEstimado(dto.getTempoPercursoEstimado());
         entity.setVersion(dto.getVersion());
@@ -55,6 +57,7 @@ public final class LinhaMap {
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
         dto.setCodigo(entity.getCodigo());
+        dto.setTarifa(entity.getTarifa());
         return dto;
     }
 

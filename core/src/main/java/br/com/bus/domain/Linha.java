@@ -1,5 +1,6 @@
 package br.com.bus.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -30,6 +31,9 @@ public class Linha extends PanacheEntityBase {
     @NotBlank(message = "Código da linha é obrigatório")
     @Column(nullable = false, unique = true)
     private String codigo;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal tarifa;
 
     @NotNull
     @Column(nullable = false)
@@ -71,6 +75,14 @@ public class Linha extends PanacheEntityBase {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public BigDecimal getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(BigDecimal tarifa) {
+        this.tarifa = tarifa;
     }
 
     public Boolean getAtivo() {

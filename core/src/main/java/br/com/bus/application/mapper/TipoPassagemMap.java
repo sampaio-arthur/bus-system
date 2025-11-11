@@ -32,6 +32,7 @@ public final class TipoPassagemMap {
         TipoPassagemDTO dto = new TipoPassagemDTO();
         dto.setId(entity.getId());
         dto.setDescricao(entity.getDescricao());
+        dto.setPorcentagemDesconto(entity.getPorcentagemDesconto());
         dto.setPassagens(PassagemMap.toSummarySet(entity.getPassagens()));
         return dto;
     }
@@ -48,6 +49,7 @@ public final class TipoPassagemMap {
             return;
         }
         entity.setDescricao(dto.getDescricao());
+        entity.setPorcentagemDesconto(dto.getPorcentagemDesconto());
     }
 
     public static TipoPassagemDTO toSummary(TipoPassagem entity) {
@@ -57,6 +59,7 @@ public final class TipoPassagemMap {
         TipoPassagemDTO dto = new TipoPassagemDTO();
         dto.setId(entity.getId());
         dto.setDescricao(entity.getDescricao());
+        dto.setPorcentagemDesconto(entity.getPorcentagemDesconto());
         return dto;
     }
 
@@ -94,6 +97,7 @@ public final class TipoPassagemMap {
         TipoPassagem entity = new TipoPassagem();
         entity.setId(dto.getId());
         entity.setDescricao(dto.getDescricao());
+        entity.setPorcentagemDesconto(dto.getPorcentagemDesconto());
         return entity;
     }
 }
