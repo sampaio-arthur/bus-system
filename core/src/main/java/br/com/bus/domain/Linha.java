@@ -32,7 +32,8 @@ public class Linha extends PanacheEntityBase {
     @Column(nullable = false, unique = true)
     private String codigo;
 
-    @Column(precision = 10, scale = 2)
+    @NotNull
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal tarifa;
 
     @NotNull
