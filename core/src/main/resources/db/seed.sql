@@ -313,3 +313,187 @@ insert into progresso_viagem (data, id_ponto_parada, id_viagem) values
         (select id from viagem where linha_id = (select id from linha where codigo = 'LX106'))),
     ('2024-06-01 09:15:00', (select id from ponto_parada where nome = 'Parada Aeroporto Plus'),
         (select id from viagem where linha_id = (select id from linha where codigo = 'LX108')));
+
+-- =====================================================================
+-- MASS DATA SEED (PostgreSQL): ensure >= 50 rows per table
+-- =====================================================================
+
+-- CIDADE: add 50 total (IDs 11..60)
+insert into cidade (nome, uf, version)
+select 'Cidade Seed ' || g,
+       (array['SP','RJ','MG','PR','RS','SC','BA','GO','PE','CE'])[(g % 10) + 1],
+       0
+from generate_series(11, 60) as g;
+
+-- LINHA: add 60 novas (LX201..LX260) para evitar colisão com LX101..LX110
+insert into linha (nome, codigo, tarifa, ativo, tempo_percurso_estimado, version)
+select 'Linha Seed ' || g,
+       'LX' || to_char(g, 'FM000'),
+       round((5 + random()*12)::numeric, 2),
+       true,
+       35 + (g % 60),
+       0
+from generate_series(201, 260) as g;
+
+-- PONTO_TURISTICO: add 50
+insert into ponto_turistico (nome, descricao, latitude, longitude, ativo, version)
+select 'Ponto Turístico Seed ' || g,
+       'Descrição gerada automaticamente ' || g,
+       round((-30 + random()*27)::numeric, 8),
+       round((-55 + random()*25)::numeric, 8),
+       true,
+       0
+from generate_series(1, 50) as g;
+
+-- PONTO_PARADA: add 50 com cidades válidas
+insert into ponto_parada (nome, latitude, longitude, ativo, cidade_id, version)
+select 'Parada Seed ' || g,
+       round((-30 + random()*27)::numeric, 8),
+       round((-55 + random()*25)::numeric, 8),
+       true,
+       (select id from cidade order by random() limit 1),
+       0
+from generate_series(1, 50) as g;
+
+-- TIPO_VEICULO: add 40 descrições únicas
+insert into tipo_veiculo (descricao, ativo, version)
+select 'Tipo Veículo Seed ' || g, true, 0
+from generate_series(1, 40) as g;
+
+-- VEICULO: add 50 com placas únicas
+insert into veiculo (placa, chassi, modelo, ano_fabricacao, capacidade, ativo, tipo_veiculo_id, version)
+select 'PL' || lpad(g::text, 3, '0') || upper(substr(md5(g::text), 1, 2)),
+       'CHS' || lpad((1000+g)::text, 6, '0'),
+       'Modelo ' || chr(65 + (g % 26)),
+       2010 + (g % 14),
+       30 + (g % 40),
+       true,
+       (select id from tipo_veiculo order by random() limit 1),
+       0
+from generate_series(1, 50) as g;
+
+-- PESSOA: add 60 (motoristas, passageiros, mecânicos) com CPFs únicos válidos
+insert into pessoa (cpf, nome, email, telefone, data_nascimento, ativo, tipo_pessoa, cnh, validade_cnh, categoria_cnh, numero_carteirinha, created_at, updated_at, version)
+select
+  substr(s,1,3) || '.' || substr(s,4,3) || '.' || substr(s,7,3) || '-' || substr(s,10,2) as cpf,
+  case when g % 3 = 0 then 'Motorista Seed ' || g when g % 3 = 1 then 'Passageiro Seed ' || g else 'Mecânico Seed ' || g end as nome,
+  lower(case when g % 3 = 0 then 'motorista' when g % 3 = 1 then 'passageiro' else 'mecanico' end) || g || '@bus.com' as email,
+  '(11)9' || to_char((100000 + g) % 999999, 'FM000000') as telefone,
+  (date '1970-01-01' + (g * 50))::timestamp as data_nascimento,
+  true as ativo,
+  case when g % 3 = 0 then 'MOTORISTA' when g % 3 = 1 then 'PASSAGEIRO' else 'MECANICO' end as tipo_pessoa,
+  case when g % 3 = 0 then lpad((40000000000 + g)::text, 11, '0') else null end as cnh,
+  case when g % 3 = 0 then (now() + ((g % 5) + 1) * interval '365 days') else null end as validade_cnh,
+  case when g % 3 = 0 then 'D' else null end as categoria_cnh,
+  case when g % 3 = 1 then 'PX' || to_char(g, 'FM000') else null end as numero_carteirinha,
+  now(), now(), 0
+from (
+  select g, lpad((10000000000 + g)::text, 11, '0') as s from generate_series(1, 60) as g
+) q;
+
+-- CRONOGRAMA: 3 horários por linha
+insert into cronograma (id_linha, hora_partida, tipo_dia)
+select l.id,
+       (time '05:00:00' + ((g % 18) * interval '20 minutes')),
+       ((g % 3) + 1)::smallint
+from (select id from linha) l
+cross join generate_series(1, 3) as g;
+
+-- METODO_PAGAMENTO: add 40
+insert into metodo_pagamento (descricao)
+select 'Método Pagamento Seed ' || g from generate_series(1, 40) as g;
+
+-- TIPO_PASSAGEM: add 40
+insert into tipo_passagem (descricao, porcentagem_desconto)
+select 'Tipo Passagem Seed ' || g, round((random()*100)::numeric, 2)
+from generate_series(1, 40) as g;
+
+-- ITINERARIO: 5 paradas para cada nova linha LX201..LX260
+insert into itinerario (ordem, id_linha, id_ponto_parada)
+select ord as ordem,
+       (select id from linha where codigo = 'LX' || to_char(lc, 'FM000')) as id_linha,
+       (select id from ponto_parada order by random() limit 1) as id_ponto_parada
+from generate_series(201, 260) as lc
+cross join generate_series(1, 5) as ord;
+
+-- PONTO_PARADA_TURISTICO: 50 pares únicos
+with p as (
+  select id, row_number() over (order by id) rn from ponto_parada
+), t as (
+  select id, row_number() over (order by id) rn from ponto_turistico
+), m as (
+  select p.id as id_ponto_parada, t.id as id_ponto_turistico, p.rn
+  from p join t on p.rn = t.rn
+)
+insert into ponto_parada_turistico (id_ponto_parada, id_ponto_turistico)
+select m.id_ponto_parada, m.id_ponto_turistico
+from m
+left join ponto_parada_turistico ppt
+  on ppt.id_ponto_parada = m.id_ponto_parada and ppt.id_ponto_turistico = m.id_ponto_turistico
+where ppt.id_ponto_parada is null
+order by m.rn
+limit 50;
+
+-- VIAGEM: +100 viagens
+insert into viagem (data_partida_real, data_partida_prevista, data_chegada_prevista, data_chegada_real, linha_id, veiculo_id, motorista_id, status, version)
+select
+  (timestamp '2024-07-01 06:00:00' + (g * interval '15 minutes')),
+  (timestamp '2024-07-01 06:00:00' + (g * interval '15 minutes')),
+  (timestamp '2024-07-01 07:30:00' + (g * interval '15 minutes')),
+  null,
+  (select id from linha order by random() limit 1),
+  (select id from veiculo order by random() limit 1),
+  (select id from pessoa where tipo_pessoa = 'MOTORISTA' order by random() limit 1),
+  1,
+  0
+from generate_series(1, 100) as g;
+
+-- PASSAGEM: +200
+insert into passagem (data_emissao, valor, ativo, pessoa_id, viagem_id, tipo_passagem_id, metodo_pagamento_id)
+select
+  now() - (g * interval '1 day'),
+  round((5 + random()*40)::numeric, 2),
+  true,
+  (select id from pessoa where tipo_pessoa = 'PASSAGEIRO' order by random() limit 1),
+  (select id from viagem order by random() limit 1),
+  (select id_tipo_passagem from tipo_passagem order by random() limit 1),
+  (select id_metodo_pagamento from metodo_pagamento order by random() limit 1)
+from generate_series(1, 200) as g;
+
+-- PECA: +40
+insert into peca (valor_unitario, nome, fabricante, quantidade)
+select round((10 + random()*500)::numeric, 2),
+       'Peça Seed ' || g,
+       'Fabricante Seed ' || ((g % 10) + 1),
+       1 + (g % 20)
+from generate_series(1, 40) as g;
+
+-- MANUTENCAO: +50
+insert into manutencao (id_veiculo, id_pessoa, descricao, custo_total, data_inicio, data_fim)
+select (select id from veiculo order by random() limit 1),
+       (select id from pessoa where tipo_pessoa = 'MECANICO' order by random() limit 1),
+       'Manutenção Seed ' || g,
+       round((100 + random()*900)::numeric, 2),
+       (timestamp '2024-06-01 08:00:00' + (g * interval '1 day')),
+       (timestamp '2024-06-01 12:00:00' + (g * interval '1 day'))
+from generate_series(1, 50) as g;
+
+-- MANUTENCAO_PECA: 50 pares únicos
+with m as (
+  select id_manutencao, row_number() over (order by id_manutencao) rn from manutencao
+), p as (
+  select id_peca, row_number() over (order by id_peca) rn from peca
+), mp as (
+  select m.id_manutencao, p.id_peca, m.rn
+  from m join p on m.rn = p.rn
+)
+insert into manutencao_peca (id_manutencao, id_peca, quantidade_utilizada, valor_unitario)
+select id_manutencao, id_peca, 1 + (rn % 5), round((20 + random()*300)::numeric, 2)
+from mp order by rn limit 50;
+
+-- PROGRESSO_VIAGEM: +150 com data distinta (evita colisão PK)
+insert into progresso_viagem (data, id_ponto_parada, id_viagem)
+select (timestamp '2024-07-01 06:00:00' + (g * interval '3 minutes')),
+       (select id from ponto_parada order by random() limit 1),
+       (select id from viagem order by random() limit 1)
+from generate_series(1, 150) as g;
