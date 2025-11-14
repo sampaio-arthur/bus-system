@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 213 94% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 213 94% 65%;
+
+    --secondary: 158 64% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 213 94% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 213 94% 45%;
+
+    --radius: 0.75rem;
+
+    --transit-blue: 213 94% 45%;
+    --transit-green: 158 64% 52%;
+    --transit-orange: 25 95% 53%;
+    --transit-purple: 262 52% 47%;
+
+    --gradient-transit: linear-gradient(135deg, hsl(213 94% 45%), hsl(213 94% 65%));
+    --gradient-stop: linear-gradient(135deg, hsl(158 64% 52%), hsl(158 64% 72%));
+    
+    --shadow-card: 0 2px 8px -2px hsl(213 94% 45% / 0.1);
+    --shadow-hover: 0 8px 16px -4px hsl(213 94% 45% / 0.2);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 213 94% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 213 94% 75%;
+
+    --secondary: 158 64% 52%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 213 94% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 213 94% 55%;
+
+    --transit-blue: 213 94% 55%;
+    --transit-green: 158 64% 52%;
+    --transit-orange: 25 95% 53%;
+    --transit-purple: 262 52% 47%;
+
+    --shadow-card: 0 2px 8px -2px hsl(0 0% 0% / 0.3);
+    --shadow-hover: 0 8px 16px -4px hsl(0 0% 0% / 0.5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
