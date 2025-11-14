@@ -1,9 +1,9 @@
-import { api, PaginatedResponse } from './api';
+import { api, PaginatedResponse, getPaginated } from './api';
 import { Cronograma } from '@/types/transit';
 
 export const cronogramaService = {
   getAll: (page = 0, size = 10) => 
-    api.get<PaginatedResponse<Cronograma>>('/cronogramas', { params: { page, size } }),
+    getPaginated<Cronograma>('/cronogramas', { page, size }),
   
   getById: (id: number) => 
     api.get<Cronograma>(`/cronogramas/${id}`),
