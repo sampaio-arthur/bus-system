@@ -43,7 +43,7 @@ public class BuscarViagensPorCidade {
         List<Viagem> viagens = viagemRepository.find("linha in ?1", linhas).list();
 
         return viagens.stream()
-                .map(ViagemMap::toSummary)
+                .map(ViagemMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

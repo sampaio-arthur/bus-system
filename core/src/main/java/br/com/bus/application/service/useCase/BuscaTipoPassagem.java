@@ -29,7 +29,7 @@ public class BuscaTipoPassagem {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(TipoPassagemMap::toSummary)
+                .map(TipoPassagemMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

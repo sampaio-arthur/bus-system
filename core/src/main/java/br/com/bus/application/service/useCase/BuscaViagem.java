@@ -29,7 +29,7 @@ public class BuscaViagem {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ViagemMap::toSummary)
+                .map(ViagemMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

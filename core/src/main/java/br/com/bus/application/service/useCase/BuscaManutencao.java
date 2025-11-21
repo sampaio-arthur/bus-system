@@ -29,7 +29,7 @@ public class BuscaManutencao {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ManutencaoMap::toSummary)
+                .map(ManutencaoMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

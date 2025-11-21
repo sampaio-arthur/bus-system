@@ -20,7 +20,7 @@ export default function Cidades() {
 
   const { data: cidades = [], isLoading } = useQuery({
     queryKey: ["cidades"],
-    queryFn: () => api.get("/cidades"),
+    queryFn: () => api.get("/cidades", { page: 0, size: 1000 }),
   });
 
   const createMutation = useMutation({
@@ -52,15 +52,24 @@ export default function Cidades() {
     onError: () => toast({ title: "Erro ao excluir cidade", variant: "destructive" }),
   });
 
-  const filteredCidades = cidades.filter((cidade: Cidade) =>
-    cidade.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cidade.uf.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Normaliza dados vindos do back (pode vir nome/uf nulos) para evitar warnings/erros no input e filtro
+  const normalizedCidades = cidades.map((cidade: Cidade) => ({
+    ...cidade,
+    nome: cidade.nome ?? "",
+    uf: cidade.uf ?? "",
+  }));
+
+  const filteredCidades = normalizedCidades.filter((cidade: Cidade) => {
+    const nome = cidade.nome.toLowerCase();
+    const uf = cidade.uf.toLowerCase();
+    const term = searchTerm.toLowerCase();
+    return nome.includes(term) || uf.includes(term);
+  }).sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
 
   const openDialog = (item?: Cidade) => {
     if (item) {
       setEditingItem(item);
-      setFormData({ nome: item.nome, uf: item.uf });
+      setFormData({ nome: item.nome ?? "", uf: item.uf ?? "" });
     } else {
       setEditingItem(null);
       setFormData({ nome: "", uf: "" });

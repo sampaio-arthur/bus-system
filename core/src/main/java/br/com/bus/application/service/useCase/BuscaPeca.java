@@ -29,7 +29,7 @@ public class BuscaPeca {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(PecaMap::toSummary)
+                .map(PecaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

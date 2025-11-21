@@ -35,7 +35,7 @@ public class BuscaItinerario {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ItinerarioMap::toSummary)
+                .map(ItinerarioMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

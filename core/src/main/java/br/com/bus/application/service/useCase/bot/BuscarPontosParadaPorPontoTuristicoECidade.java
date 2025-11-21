@@ -20,14 +20,14 @@ public class BuscarPontosParadaPorPontoTuristicoECidade {
         String cidade = nomeCidade == null ? "" : nomeCidade.toLowerCase();
         List<PontoParada> pontos = pontoParadaRepository.find(
                 "select distinct pp from PontoParada pp " +
-                        "join pp.pontosTuristicosProximos pt " +
-                        "join pp.cidade c " +
-                        "where pt.id = ?1 and lower(c.nome) = ?2",
+                    "join pp.pontosTuristicosProximos pt " +
+                    "join pp.cidade c " +
+                    "where pt.id = ?1 and lower(c.nome) = ?2",
                 idPontoTuristico, cidade)
             .list();
 
         return pontos.stream()
-                .map(PontoParadaMap::toSummary)
+                .map(PontoParadaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

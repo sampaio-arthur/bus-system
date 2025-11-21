@@ -28,7 +28,7 @@ export default function PontosParada() {
 
   const { data: pontos = [] } = useQuery({
     queryKey: ["pontos-parada"],
-    queryFn: () => api.get("/pontos-parada"),
+    queryFn: () => api.get("/pontos-parada", { page: 0, size: 1000 }),
   });
 
   const { data: cidades = [] } = useQuery({
@@ -71,19 +71,33 @@ export default function PontosParada() {
     onError: () => toast({ title: "Erro ao excluir ponto de parada", variant: "destructive" }),
   });
 
-  const filteredPontos = pontos.filter((ponto: PontoParada) =>
-    ponto.nome.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const normalizedPontos = pontos.map((ponto: PontoParada) => ({
+    ...ponto,
+    nome: ponto.nome ?? "",
+    latitude: ponto.latitude ?? 0,
+    longitude: ponto.longitude ?? 0,
+    cidade: {
+      id: ponto.cidade?.id ?? null,
+      nome: ponto.cidade?.nome ?? "",
+      uf: ponto.cidade?.uf ?? "",
+    },
+  }));
+
+  const filteredPontos = normalizedPontos
+    .filter((ponto: PontoParada) =>
+      ponto.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
 
   const openDialog = (item?: PontoParada) => {
     if (item) {
       setEditingItem(item);
       setFormData({
-        nome: item.nome,
-        latitude: item.latitude,
-        longitude: item.longitude,
-        ativo: item.ativo,
-        cidadeId: String(item.cidade.id),
+        nome: item.nome ?? "",
+        latitude: item.latitude ?? 0,
+        longitude: item.longitude ?? 0,
+        ativo: item.ativo ?? true,
+        cidadeId: item.cidade?.id ? String(item.cidade.id) : "",
       });
     } else {
       setEditingItem(null);
@@ -95,6 +109,7 @@ export default function PontosParada() {
   const closeDialog = () => {
     setIsDialogOpen(false);
     setEditingItem(null);
+    setFormData({ nome: "", latitude: 0, longitude: 0, ativo: true, cidadeId: "" });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -112,8 +127,8 @@ export default function PontosParada() {
     { key: "nome", label: "Nome" },
     { key: "cidade.nome", label: "Cidade" },
     { key: "cidade.uf", label: "UF" },
-    { key: "latitude", label: "Latitude", render: (val: number) => val.toFixed(6) },
-    { key: "longitude", label: "Longitude", render: (val: number) => val.toFixed(6) },
+    { key: "latitude", label: "Latitude", render: (val: number) => Number(val ?? 0).toFixed(6) },
+    { key: "longitude", label: "Longitude", render: (val: number) => Number(val ?? 0).toFixed(6) },
     { key: "ativo", label: "Status", render: (val: boolean) => <ActiveBadge ativo={val} /> },
   ];
 

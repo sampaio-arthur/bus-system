@@ -10,6 +10,11 @@ import PontosParada from "./pages/PontosParada";
 import Linhas from "./pages/Linhas";
 import Veiculos from "./pages/Veiculos";
 import Viagens from "./pages/Viagens";
+import Pessoas from "./pages/Pessoas";
+import Passagens from "./pages/Passagens";
+import Manutencoes from "./pages/Manutencoes";
+import PontosTuristicos from "./pages/PontosTuristicos";
+import Relatorios from "./pages/Relatorios";
 import Atendimento from "./pages/Atendimento";
 import NotFound from "./pages/NotFound";
 
@@ -26,9 +31,14 @@ const App = () => (
             <Route path="/" element={<Dashboard />} />
             <Route path="/cidades" element={<Cidades />} />
             <Route path="/pontos-parada" element={<PontosParada />} />
+            <Route path="/pontos-turisticos" element={<PontosTuristicos />} />
             <Route path="/linhas" element={<Linhas />} />
             <Route path="/veiculos" element={<Veiculos />} />
+            <Route path="/pessoas" element={<Pessoas />} />
             <Route path="/viagens" element={<Viagens />} />
+            <Route path="/passagens" element={<Passagens />} />
+            <Route path="/manutencoes" element={<Manutencoes />} />
+            <Route path="/relatorios" element={<Relatorios />} />
             <Route path="/atendimento" element={<Atendimento />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

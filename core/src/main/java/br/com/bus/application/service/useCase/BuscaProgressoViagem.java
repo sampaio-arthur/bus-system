@@ -37,7 +37,7 @@ public class BuscaProgressoViagem {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ProgressoViagemMap::toSummary)
+                .map(ProgressoViagemMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

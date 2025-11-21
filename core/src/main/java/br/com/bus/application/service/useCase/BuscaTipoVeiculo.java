@@ -29,7 +29,7 @@ public class BuscaTipoVeiculo {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(TipoVeiculoMap::toSummary)
+                .map(TipoVeiculoMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

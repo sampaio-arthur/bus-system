@@ -29,7 +29,7 @@ public class BuscaPessoa {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(PessoaMap::toSummary)
+                .map(PessoaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

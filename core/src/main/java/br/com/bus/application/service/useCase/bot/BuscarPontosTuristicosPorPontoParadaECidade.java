@@ -27,7 +27,7 @@ public class BuscarPontosTuristicosPorPontoParadaECidade {
             .list();
 
         return pontos.stream()
-                .map(PontoTuristicoMap::toSummary)
+                .map(PontoTuristicoMap::toDTO)
                 .collect(Collectors.toList());
     }
 }
