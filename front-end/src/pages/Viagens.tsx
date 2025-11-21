@@ -36,7 +36,7 @@ export default function Viagens() {
 
   const { data: viagens = [] } = useQuery({
     queryKey: ["viagens"],
-    queryFn: () => api.get("/viagens"),
+    queryFn: () => api.get("/viagens", { page: 0, size: 1000 }),
   });
 
   const { data: linhas = [] } = useQuery({
@@ -54,7 +54,7 @@ export default function Viagens() {
     queryFn: () => api.get("/pessoas"),
   });
 
-  const motoristas = pessoas.filter((p: any) => p.tipoPessoa === 1);
+  const motoristas = pessoas.filter((p: any) => (p.tipoPessoa || "").toUpperCase() === "MOTORISTA");
 
   const createMutation = useMutation({
     mutationFn: (data: any) => api.post("/viagens", {
@@ -97,21 +97,25 @@ export default function Viagens() {
     onError: () => toast({ title: "Erro ao excluir viagem", variant: "destructive" }),
   });
 
-  const filteredViagens = viagens.filter((viagem: Viagem) =>
-    viagem.linha.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    viagem.veiculo.placa.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredViagens = viagens
+    .filter((viagem: Viagem) =>
+      (viagem.linha?.nome || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (viagem.veiculo?.placa || "").toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
+
+  const toInputDateTime = (value?: string) => (value ? value.substring(0, 16) : "");
 
   const openDialog = (item?: Viagem) => {
     if (item) {
       setEditingItem(item);
       setFormData({
-        dataPartidaPrevista: item.dataPartidaPrevista.substring(0, 16),
-        dataChegadaPrevista: item.dataChegadaPrevista.substring(0, 16),
-        linhaId: String(item.linha.id),
-        veiculoId: String(item.veiculo.id),
-        motoristaId: String(item.motorista.id),
-        status: item.status,
+        dataPartidaPrevista: toInputDateTime(item.dataPartidaPrevista),
+        dataChegadaPrevista: toInputDateTime(item.dataChegadaPrevista),
+        linhaId: item.linha?.id ? String(item.linha.id) : "",
+        veiculoId: item.veiculo?.id ? String(item.veiculo.id) : "",
+        motoristaId: item.motorista?.id ? String(item.motorista.id) : "",
+        status: item.status ?? 0,
       });
     } else {
       setEditingItem(null);

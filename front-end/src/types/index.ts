@@ -83,7 +83,7 @@ export interface Pessoa {
   telefone: string;
   dataNascimento: string;
   ativo: boolean;
-  tipoPessoa: number;
+  tipoPessoa: string;
   cnh?: string;
   validadeCnh?: string;
   categoriaCnh?: string;

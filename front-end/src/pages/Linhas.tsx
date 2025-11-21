@@ -18,7 +18,7 @@ export default function Linhas() {
   const [formData, setFormData] = useState({
     nome: "",
     codigo: "",
-    tarifa: 0,
+    tarifa: "0",
     ativo: true,
     tempoPercursoEstimado: "",
   });
@@ -27,7 +27,7 @@ export default function Linhas() {
 
   const { data: linhas = [] } = useQuery({
     queryKey: ["linhas"],
-    queryFn: () => api.get("/linhas"),
+    queryFn: () => api.get("/linhas", { page: 0, size: 1000 }),
   });
 
   const createMutation = useMutation({
@@ -59,10 +59,12 @@ export default function Linhas() {
     onError: () => toast({ title: "Erro ao excluir linha", variant: "destructive" }),
   });
 
-  const filteredLinhas = linhas.filter((linha: Linha) =>
-    linha.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    linha.codigo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredLinhas = linhas
+    .filter((linha: Linha) =>
+      linha.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      linha.codigo.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
 
   const openDialog = (item?: Linha) => {
     if (item) {
@@ -70,13 +72,13 @@ export default function Linhas() {
       setFormData({
         nome: item.nome,
         codigo: item.codigo,
-        tarifa: item.tarifa,
+        tarifa: String(item.tarifa ?? 0),
         ativo: item.ativo,
         tempoPercursoEstimado: item.tempoPercursoEstimado || "",
       });
     } else {
       setEditingItem(null);
-      setFormData({ nome: "", codigo: "", tarifa: 0, ativo: true, tempoPercursoEstimado: "" });
+      setFormData({ nome: "", codigo: "", tarifa: "0", ativo: true, tempoPercursoEstimado: "" });
     }
     setIsDialogOpen(true);
   };
@@ -88,10 +90,18 @@ export default function Linhas() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const payload = {
+      ...formData,
+      tarifa: parseFloat(formData.tarifa) || 0,
+      tempoPercursoEstimado: formData.tempoPercursoEstimado
+        ? parseInt(formData.tempoPercursoEstimado, 10)
+        : null,
+      version: editingItem?.version,
+    };
     if (editingItem) {
-      updateMutation.mutate({ ...editingItem, ...formData });
+      updateMutation.mutate({ ...editingItem, ...payload });
     } else {
-      createMutation.mutate(formData);
+      createMutation.mutate(payload);
     }
   };
 
@@ -156,7 +166,7 @@ export default function Linhas() {
                   type="number"
                   step="0.01"
                   value={formData.tarifa}
-                  onChange={(e) => setFormData({ ...formData, tarifa: parseFloat(e.target.value) })}
+                  onChange={(e) => setFormData({ ...formData, tarifa: e.target.value })}
                   required
                 />
               </div>
@@ -173,7 +183,7 @@ export default function Linhas() {
                 <Label htmlFor="tempoPercursoEstimado">Tempo Estimado</Label>
                 <Input
                   id="tempoPercursoEstimado"
-                  placeholder="Ex: 01:30:00"
+                  placeholder="Minutos (ex: 90)"
                   value={formData.tempoPercursoEstimado}
                   onChange={(e) => setFormData({ ...formData, tempoPercursoEstimado: e.target.value })}
                 />

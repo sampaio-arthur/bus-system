@@ -29,7 +29,9 @@ public class AtualizarLinha {
         }
         entity.setNome(dto.getNome());
         entity.setCodigo(dto.getCodigo());
+        entity.setTarifa(dto.getTarifa());
         entity.setAtivo(dto.getAtivo());
         entity.setTempoPercursoEstimado(dto.getTempoPercursoEstimado());
+        entity.setVersion(dto.getVersion());
     }
 }

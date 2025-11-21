@@ -30,7 +30,7 @@ export default function Veiculos() {
 
   const { data: veiculos = [] } = useQuery({
     queryKey: ["veiculos"],
-    queryFn: () => api.get("/veiculos"),
+    queryFn: () => api.get("/veiculos", { page: 0, size: 1000 }),
   });
 
   const { data: tiposVeiculo = [] } = useQuery({
@@ -73,10 +73,12 @@ export default function Veiculos() {
     onError: () => toast({ title: "Erro ao excluir veículo", variant: "destructive" }),
   });
 
-  const filteredVeiculos = veiculos.filter((veiculo: Veiculo) =>
-    veiculo.placa.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    veiculo.modelo.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredVeiculos = veiculos
+    .filter((veiculo: Veiculo) =>
+      veiculo.placa.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      veiculo.modelo.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
 
   const openDialog = (item?: Veiculo) => {
     if (item) {

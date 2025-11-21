@@ -1,6 +1,7 @@
 package br.com.bus.application.service.useCase;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import br.com.bus.application.dto.PontoTuristicoDTO;
 import br.com.bus.application.mapper.PontoTuristicoMap;
@@ -41,12 +42,25 @@ public class AtualizarPontoTuristico {
         entity.setAtivo(dto.getAtivo());
 
         if (dto.getPontosParadaProximos() != null) {
-            List<PontoParada> proximos = entity.getPontosParadaProximos();
-            proximos.clear();
+            // Precisamos atualizar o lado "owner" do relacionamento (PontoParada)
+            // para que o join table seja persistido corretamente.
+            List<PontoParada> atuais = new ArrayList<>(entity.getPontosParadaProximos());
+            // Remove vínculo antigo
+            atuais.forEach(p -> p.getPontosTuristicosProximos().remove(entity));
+
+            List<PontoParada> novos = new ArrayList<>();
             dto.getPontosParadaProximos().stream()
                     .filter(p -> p.getId() != null)
                     .map(p -> entityManager.getReference(PontoParada.class, p.getId()))
-                    .forEach(proximos::add);
+                    .forEach(ponto -> {
+                        novos.add(ponto);
+                        if (!ponto.getPontosTuristicosProximos().contains(entity)) {
+                            ponto.getPontosTuristicosProximos().add(entity);
+                        }
+                    });
+
+            entity.getPontosParadaProximos().clear();
+            entity.getPontosParadaProximos().addAll(novos);
         }
     }
 }
