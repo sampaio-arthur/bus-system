@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,8 +19,25 @@ const actions: { key: AdminAction; label: string; description: string; variant?:
 export default function Configuracoes() {
   const [token, setToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState<AdminAction | null>(null);
+  const tokenStorageKey = "admin-db-token";
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem(tokenStorageKey);
+    if (storedToken) {
+      setToken(storedToken);
+    }
+  }, []);
 
   const callAdmin = async (action: AdminAction) => {
+    if (!token.trim()) {
+      toast({
+        title: "Token não informado",
+        description: "Preencha o token administrativo antes de continuar.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(action);
     try {
       const res = await fetch(`${API_BASE_URL}/admin/db/${action}`, {
@@ -62,7 +79,11 @@ export default function Configuracoes() {
             type="password"
             placeholder="DB_ADMIN_TOKEN"
             value={token}
-            onChange={(e) => setToken(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              setToken(value);
+              localStorage.setItem(tokenStorageKey, value);
+            }}
           />
         </CardContent>
       </Card>
