@@ -23,7 +23,8 @@ public class RelatorioController {
 
     @GET
     @Path("/gastos-manutencao-por-veiculo")
-    public List<GastoManutencaoPorVeiculoDTO> gastosManutencaoPorVeiculo(@QueryParam("meses") @DefaultValue("12") int meses) {
+    public List<GastoManutencaoPorVeiculoDTO> gastosManutencaoPorVeiculo(
+            @QueryParam("meses") @DefaultValue("24") int meses) {
         int m = meses <= 0 ? 12 : meses;
         return service.gastosManutencaoPorVeiculo(m);
     }
@@ -36,9 +37,9 @@ public class RelatorioController {
 
     @GET
     @Path("/media-passageiros-por-linha")
-    public List<MediaPassageirosPorLinhaDTO> mediaPassageirosPorLinha(@QueryParam("meses") @DefaultValue("6") int meses) {
+    public List<MediaPassageirosPorLinhaDTO> mediaPassageirosPorLinha(
+            @QueryParam("meses") @DefaultValue("24") int meses) {
         int m = meses <= 0 ? 6 : meses;
         return service.mediaPassageirosPorLinha(m);
     }
 }
-
