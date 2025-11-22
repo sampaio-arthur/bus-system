@@ -108,7 +108,7 @@ export default function Relatorios() {
               config={{
                 value: { label: "Pontos" },
               }}
-              className="h-[360px]"
+              className="h-[360px] w-full"
             >
               {pontosData.length === 0 ? (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
