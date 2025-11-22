@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { API_BASE_URL } from "@/lib/api";
 import { toast } from "@/hooks/use-toast";
 
 type AdminAction = "migrate" | "seed" | "clean" | "reload";
@@ -22,7 +23,7 @@ export default function Configuracoes() {
   const callAdmin = async (action: AdminAction) => {
     setIsSubmitting(action);
     try {
-      const res = await fetch(`/api/admin/db/${action}`, {
+      const res = await fetch(`${API_BASE_URL}/admin/db/${action}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
