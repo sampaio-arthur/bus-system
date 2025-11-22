@@ -33,8 +33,8 @@ const dynamicColor = (index: number, total: number) => {
 };
 
 export default function Relatorios() {
-  const [mesesGasto, setMesesGasto] = useState(12);
-  const [mesesMedia, setMesesMedia] = useState(6);
+  const [mesesGasto, setMesesGasto] = useState(24);
+  const [mesesMedia, setMesesMedia] = useState(24);
 
   const { data: gastos = [] } = useQuery({
     queryKey: ["relatorios", "gastos-manutencao", mesesGasto],
@@ -180,7 +180,7 @@ export default function Relatorios() {
           <CardHeader className="pb-2">
             <CardTitle>Gasto de manutencao por veiculo</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados
+              Informe os ultimos meses considerados (padrao 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesGasto" className="text-xs">
@@ -240,7 +240,7 @@ export default function Relatorios() {
           <CardHeader className="pb-2">
             <CardTitle>Media de passageiros por linha</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados
+              Informe os ultimos meses considerados (padrao 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesMedia" className="text-xs">
