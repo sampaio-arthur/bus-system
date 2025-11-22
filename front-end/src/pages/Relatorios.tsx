@@ -20,7 +20,17 @@ import {
 } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Cell, Legend, Pie, PieChart } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const toNumber = (value: unknown) => {
   const num = Number(value);
@@ -264,27 +274,17 @@ export default function Relatorios() {
               config={{
                 value: { label: "Passageiros" },
               }}
-              className="h-[280px]"
+              className="h-[320px]"
             >
               {mediasData.length === 0 ? (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
                   Sem dados para o periodo
                 </div>
               ) : (
-                <PieChart>
-                  <Pie
-                    data={mediasData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={50}
-                    outerRadius={100}
-                    paddingAngle={2}
-                    stroke="none"
-                  >
-                    {mediasData.map((item, idx) => (
-                      <Cell key={idx} fill={item.color} />
-                    ))}
-                  </Pie>
+                <BarChart data={mediasData} margin={{ top: 12, right: 12, left: 0, bottom: 24 }}>
+                  <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tickMargin={8} interval={0} angle={-20} textAnchor="end" height={60} />
+                  <YAxis allowDecimals={false} />
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                   <Legend
                     verticalAlign="bottom"
@@ -292,7 +292,12 @@ export default function Relatorios() {
                     iconType="circle"
                     payload={mediasLegend}
                   />
-                </PieChart>
+                  <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                    {mediasData.map((item, idx) => (
+                      <Cell key={idx} fill={item.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
               )}
             </ChartContainer>
           </CardContent>
