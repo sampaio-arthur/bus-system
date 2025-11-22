@@ -66,6 +66,16 @@ export default function Relatorios() {
     }));
   }, [gastos]);
 
+  const gastosLegend = useMemo(
+    () =>
+      gastosData.map((item) => ({
+        value: item.name,
+        color: item.color,
+        type: "circle" as const,
+      })),
+    [gastosData],
+  );
+
   const pontosData = useMemo(() => {
     const list = (pontos as RelatorioPontosTuristicos[]).map((p) => ({
       name: `${p.cidade} - ${p.uf}`,
@@ -77,6 +87,16 @@ export default function Relatorios() {
     }));
   }, [pontos]);
 
+  const pontosLegend = useMemo(
+    () =>
+      pontosData.map((item) => ({
+        value: item.name,
+        color: item.color,
+        type: "circle" as const,
+      })),
+    [pontosData],
+  );
+
   const mediasData = useMemo(() => {
     const list = (medias as RelatorioMediaPassageiros[]).map((m) => ({
       name: m.linha,
@@ -87,6 +107,16 @@ export default function Relatorios() {
       color: dynamicColor(idx, list.length),
     }));
   }, [medias]);
+
+  const mediasLegend = useMemo(
+    () =>
+      mediasData.map((item) => ({
+        value: item.name,
+        color: item.color,
+        type: "circle" as const,
+      })),
+    [mediasData],
+  );
 
   return (
     <div className="space-y-6">
@@ -198,6 +228,7 @@ export default function Relatorios() {
                     verticalAlign="bottom"
                     height={24}
                     iconType="circle"
+                    payload={gastosLegend}
                   />
                 </PieChart>
               )}
@@ -257,6 +288,7 @@ export default function Relatorios() {
                     verticalAlign="bottom"
                     height={24}
                     iconType="circle"
+                    payload={mediasLegend}
                   />
                 </PieChart>
               )}
@@ -267,12 +299,3 @@ export default function Relatorios() {
     </div>
   );
 }
-// const pontosLegend = useMemo(
-//   () =>
-//     pontosData.map((item) => ({
-//       value: item.name,
-//       color: item.color,
-//       type: "circle" as const,
-//     })),
-//   [pontosData],
-// );
