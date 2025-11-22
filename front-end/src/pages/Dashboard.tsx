@@ -1,13 +1,39 @@
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bus, Users, MapPin, Calendar, TrendingUp } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/lib/api";
+import { Cidade, Linha, Passagem, Veiculo } from "@/types";
+import { useQuery } from "@tanstack/react-query";
+import { Bus, Calendar, MapPin, TrendingUp, Users } from "lucide-react";
 
 export default function Dashboard() {
+  const { data: veiculos = [], isLoading: loadingVeiculos } = useQuery({
+    queryKey: ["veiculos", "dashboard"],
+    queryFn: () =>
+      api.get("/veiculos", { page: 0, size: 1000 }) as Promise<Veiculo[]>,
+  });
+
+  const { data: cidades = [], isLoading: loadingCidades } = useQuery({
+    queryKey: ["cidades", "dashboard"],
+    queryFn: () =>
+      api.get("/cidades", { page: 0, size: 1000 }) as Promise<Cidade[]>,
+  });
+
+  const { data: linhas = [], isLoading: loadingLinhas } = useQuery({
+    queryKey: ["linhas", "dashboard"],
+    queryFn: () =>
+      api.get("/linhas", { page: 0, size: 1000 }) as Promise<Linha[]>,
+  });
+
+  const { data: passagens = [], isLoading: loadingPassagens } = useQuery({
+    queryKey: ["passagens", "dashboard"],
+    queryFn: () =>
+      api.get("/passagens", { page: 0, size: 1000 }) as Promise<Passagem[]>,
+  });
+
   const { data: relatorioGastos, isLoading: loadingGastos } = useQuery({
     queryKey: ["relatorios", "gastos-manutencao"],
-    queryFn: () => api.get("/relatorios/gastos-manutencao-por-veiculo", { meses: 12 }),
+    queryFn: () =>
+      api.get("/relatorios/gastos-manutencao-por-veiculo", { meses: 24 }),
   });
 
   const { data: relatorioPontos, isLoading: loadingPontos } = useQuery({
@@ -15,36 +41,43 @@ export default function Dashboard() {
     queryFn: () => api.get("/relatorios/pontos-turisticos-por-cidade"),
   });
 
-  const { data: relatorioPassageiros, isLoading: loadingPassageiros } = useQuery({
-    queryKey: ["relatorios", "media-passageiros"],
-    queryFn: () => api.get("/relatorios/media-passageiros-por-linha", { meses: 6 }),
-  });
+  const { data: relatorioPassageiros, isLoading: loadingPassageiros } =
+    useQuery({
+      queryKey: ["relatorios", "media-passageiros"],
+      queryFn: () =>
+        api.get("/relatorios/media-passageiros-por-linha", { meses: 24 }),
+    });
+
+  const activeVehicles = veiculos.filter((veiculo) => veiculo.ativo).length;
+  const activeLinhas = linhas.filter((linha) => linha.ativo).length;
+  const isStatsLoading =
+    loadingVeiculos || loadingCidades || loadingLinhas || loadingPassagens;
 
   const stats = [
     {
       title: "Veículos Ativos",
-      value: relatorioGastos?.length || 0,
+      value: isStatsLoading ? "-" : activeVehicles,
       icon: Bus,
       color: "text-primary",
       bgColor: "bg-primary/10",
     },
     {
       title: "Cidades Atendidas",
-      value: relatorioPontos?.length || 0,
+      value: isStatsLoading ? "-" : cidades.length,
       icon: MapPin,
       color: "text-secondary",
       bgColor: "bg-secondary/10",
     },
     {
       title: "Linhas Operando",
-      value: relatorioPassageiros?.length || 0,
+      value: isStatsLoading ? "-" : activeLinhas,
       icon: Calendar,
       color: "text-accent",
       bgColor: "bg-accent/10",
     },
     {
       title: "Total Passageiros",
-      value: relatorioPassageiros?.reduce((acc: number, curr: any) => acc + curr.mediaPassageiros, 0) || 0,
+      value: isStatsLoading ? "-" : passagens.length,
       icon: Users,
       color: "text-warning",
       bgColor: "bg-warning/10",
@@ -90,7 +123,7 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              Gastos com Manutenção (12 meses)
+              Gastos com Manutenção (24 meses)
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -103,10 +136,16 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-3">
                 {relatorioGastos?.slice(0, 5).map((item: any) => (
-                  <div key={item.placa} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
+                  <div
+                    key={item.placa}
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                  >
                     <span className="font-medium">{item.placa}</span>
                     <span className="text-sm font-semibold text-primary">
-                      R$ {item.valorTotalGasto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                      R${" "}
+                      {item.valorTotalGasto.toLocaleString("pt-BR", {
+                        minimumFractionDigits: 2,
+                      })}
                     </span>
                   </div>
                 ))}
@@ -132,8 +171,13 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-3">
                 {relatorioPontos?.slice(0, 5).map((item: any) => (
-                  <div key={`${item.cidade}-${item.uf}`} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg">
-                    <span className="font-medium">{item.cidade} - {item.uf}</span>
+                  <div
+                    key={`${item.cidade}-${item.uf}`}
+                    className="flex items-center justify-between p-3 bg-muted/30 rounded-lg"
+                  >
+                    <span className="font-medium">
+                      {item.cidade} - {item.uf}
+                    </span>
                     <span className="text-sm font-semibold text-secondary">
                       {item.quantidadePontosTuristicos} pontos
                     </span>
@@ -149,7 +193,7 @@ export default function Dashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-accent" />
-            Média de Passageiros por Linha (6 meses)
+            Média de Passageiros por Linha (24 meses)
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -167,7 +211,9 @@ export default function Dashboard() {
                   <p className="text-2xl font-bold text-accent">
                     {Math.round(item.mediaPassageiros)}
                   </p>
-                  <p className="text-xs text-muted-foreground mt-1">passageiros/viagem</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    passageiros/viagem
+                  </p>
                 </div>
               ))}
             </div>

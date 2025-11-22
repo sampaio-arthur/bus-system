@@ -33,8 +33,8 @@ const dynamicColor = (index: number, total: number) => {
 };
 
 export default function Relatorios() {
-  const [mesesGasto, setMesesGasto] = useState(12);
-  const [mesesMedia, setMesesMedia] = useState(6);
+  const [mesesGasto, setMesesGasto] = useState(24);
+  const [mesesMedia, setMesesMedia] = useState(24);
 
   const { data: gastos = [] } = useQuery({
     queryKey: ["relatorios", "gastos-manutencao", mesesGasto],
@@ -128,51 +128,55 @@ export default function Relatorios() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
-        <Card className="xl:col-span-2">
-          <CardHeader className="pb-2">
-            <CardTitle>Pontos turisticos por cidade</CardTitle>
-            <CardDescription>Quantidade de pontos cadastrados</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ChartContainer
-              config={{
-                value: { label: "Pontos" },
-              }}
-              className="h-[360px]"
-            >
-              {pontosData.length === 0 ? (
-                <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                  Sem dados para exibir
-                </div>
-              ) : (
-                <PieChart>
-                  <Pie
-                    data={pontosData}
-                    dataKey="value"
-                    nameKey="name"
-                    innerRadius={70}
-                    outerRadius={140}
-                    paddingAngle={2}
-                    stroke="none"
-                  >
-                    {pontosData.map((item, idx) => (
-                      <Cell key={idx} fill={item.color} />
-                    ))}
-                  </Pie>
-                  <ChartTooltip content={<ChartTooltipContent hideLabel />} />
-                  <Legend
-                    verticalAlign="bottom"
-                    align="center"
-                    layout="horizontal"
-                    height={32}
-                    iconType="circle"
-                    payload={pontosLegend}
-                  />
-                </PieChart>
-              )}
-            </ChartContainer>
-          </CardContent>
-        </Card>
+        <div className="xl:col-span-2 flex justify-center">
+          <Card className="w-full max-w-5xl">
+            <CardHeader className="pb-2">
+              <CardTitle>Pontos turisticos por cidade</CardTitle>
+              <CardDescription>
+                Quantidade de pontos cadastrados
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ChartContainer
+                config={{
+                  value: { label: "Pontos" },
+                }}
+                className="mx-auto h-[360px] w-full max-w-4xl"
+              >
+                {pontosData.length === 0 ? (
+                  <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+                    Sem dados para exibir
+                  </div>
+                ) : (
+                  <PieChart>
+                    <Pie
+                      data={pontosData}
+                      dataKey="value"
+                      nameKey="name"
+                      innerRadius={70}
+                      outerRadius={140}
+                      paddingAngle={2}
+                      stroke="none"
+                    >
+                      {pontosData.map((item, idx) => (
+                        <Cell key={idx} fill={item.color} />
+                      ))}
+                    </Pie>
+                    <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+                    <Legend
+                      verticalAlign="bottom"
+                      align="center"
+                      layout="horizontal"
+                      height={32}
+                      iconType="circle"
+                      payload={pontosLegend}
+                    />
+                  </PieChart>
+                )}
+              </ChartContainer>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
@@ -180,7 +184,7 @@ export default function Relatorios() {
           <CardHeader className="pb-2">
             <CardTitle>Gasto de manutencao por veiculo</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados
+              Informe os ultimos meses considerados (padrao 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesGasto" className="text-xs">
@@ -240,7 +244,7 @@ export default function Relatorios() {
           <CardHeader className="pb-2">
             <CardTitle>Media de passageiros por linha</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados
+              Informe os ultimos meses considerados (padrao 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesMedia" className="text-xs">
