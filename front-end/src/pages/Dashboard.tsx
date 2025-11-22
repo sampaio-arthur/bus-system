@@ -28,7 +28,7 @@ export default function Dashboard() {
 
   const { data: relatorioGastos, isLoading: loadingGastos } = useQuery({
     queryKey: ["relatorios", "gastos-manutencao"],
-    queryFn: () => api.get("/relatorios/gastos-manutencao-por-veiculo", { meses: 12 }),
+    queryFn: () => api.get("/relatorios/gastos-manutencao-por-veiculo", { meses: 24 }),
   });
 
   const { data: relatorioPontos, isLoading: loadingPontos } = useQuery({
@@ -38,7 +38,7 @@ export default function Dashboard() {
 
   const { data: relatorioPassageiros, isLoading: loadingPassageiros } = useQuery({
     queryKey: ["relatorios", "media-passageiros"],
-    queryFn: () => api.get("/relatorios/media-passageiros-por-linha", { meses: 6 }),
+    queryFn: () => api.get("/relatorios/media-passageiros-por-linha", { meses: 24 }),
   });
 
   const activeVehicles = veiculos.filter((veiculo) => veiculo.ativo).length;
@@ -115,7 +115,7 @@ export default function Dashboard() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <TrendingUp className="h-5 w-5 text-primary" />
-              Gastos com Manutenção (12 meses)
+              Gastos com Manutenção (24 meses)
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -174,7 +174,7 @@ export default function Dashboard() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Users className="h-5 w-5 text-accent" />
-            Média de Passageiros por Linha (6 meses)
+            Média de Passageiros por Linha (24 meses)
           </CardTitle>
         </CardHeader>
         <CardContent>
