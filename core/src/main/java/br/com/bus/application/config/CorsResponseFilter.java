@@ -12,7 +12,8 @@ import java.io.IOException;
 
 /**
  * Forca headers de CORS para todas as respostas. Util quando a configuracao
- * padrao do Quarkus nao eh aplicada ou ha setups mistos (localhost vs. containers).
+ * padrao do Quarkus nao eh aplicada ou ha setups mistos (localhost vs.
+ * containers).
  */
 @Provider
 @Priority(Priorities.HEADER_DECORATOR)
@@ -45,7 +46,8 @@ public class CorsResponseFilter implements ContainerResponseFilter, ContainerReq
             builder.header("Access-Control-Allow-Origin", allowedOrigin);
             builder.header("Vary", "Origin");
             builder.header("Access-Control-Allow-Credentials", "true");
-            builder.header("Access-Control-Allow-Headers", "origin, content-type, accept, authorization");
+            builder.header("Access-Control-Allow-Headers",
+                    "origin, content-type, accept, authorization, x-admin-token");
             builder.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
             builder.header("Access-Control-Max-Age", "86400");
         } else if (response instanceof ContainerResponseContext) {
@@ -54,7 +56,7 @@ public class CorsResponseFilter implements ContainerResponseFilter, ContainerReq
             context.getHeaders().putSingle("Vary", "Origin");
             context.getHeaders().putSingle("Access-Control-Allow-Credentials", "true");
             context.getHeaders().putSingle("Access-Control-Allow-Headers",
-                    "origin, content-type, accept, authorization");
+                    "origin, content-type, accept, authorization, x-admin-token");
             context.getHeaders().putSingle("Access-Control-Allow-Methods",
                     "GET, POST, PUT, DELETE, OPTIONS");
             context.getHeaders().putSingle("Access-Control-Max-Age", "86400");
