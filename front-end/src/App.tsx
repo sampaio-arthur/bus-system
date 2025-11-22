@@ -13,9 +13,9 @@ import Viagens from "./pages/Viagens";
 import Pessoas from "./pages/Pessoas";
 import Passagens from "./pages/Passagens";
 import Manutencoes from "./pages/Manutencoes";
+import Itinerarios from "./pages/Itinerarios";
 import PontosTuristicos from "./pages/PontosTuristicos";
 import Relatorios from "./pages/Relatorios";
-import Atendimento from "./pages/Atendimento";
 import Configuracoes from "./pages/Configuracoes";
 import NotFound from "./pages/NotFound";
 
@@ -38,9 +38,9 @@ const App = () => (
             <Route path="/pessoas" element={<Pessoas />} />
             <Route path="/viagens" element={<Viagens />} />
             <Route path="/passagens" element={<Passagens />} />
+            <Route path="/itinerarios" element={<Itinerarios />} />
             <Route path="/manutencoes" element={<Manutencoes />} />
             <Route path="/relatorios" element={<Relatorios />} />
-            <Route path="/atendimento" element={<Atendimento />} />
             <Route path="/configuracoes" element={<Configuracoes />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

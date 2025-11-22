@@ -59,6 +59,15 @@ export default function Passagens() {
     queryFn: () => api.get("/metodos-pagamento", { page: 0, size: 1000 }),
   });
 
+  const viagensDisponiveis = useMemo(
+    () =>
+      viagens.filter(
+        (v: any) =>
+          (v.status !== 2 && v.status !== 3) || v.id === Number(formData.viagemId)
+      ),
+    [viagens, formData.viagemId]
+  );
+
   const createMutation = useMutation({
     mutationFn: (data: any) =>
       api.post("/passagens", {
@@ -247,7 +256,7 @@ export default function Passagens() {
                     <SelectValue placeholder="Selecione a viagem" />
                   </SelectTrigger>
                   <SelectContent>
-                    {viagens.map((viagem: any) => (
+                    {viagensDisponiveis.map((viagem: any) => (
                       <SelectItem key={viagem.id} value={String(viagem.id)}>
                         {viagem.linha?.codigo || "Viagem"} -{" "}
                         {viagem.dataPartidaPrevista
