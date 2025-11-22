@@ -1,0 +1,1491 @@
+{
+  "name": "DB",
+  "nodes": [
+    {
+      "parameters": {
+        "queue": "spaik.messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1776,
+        304
+      ],
+      "id": "509f639c-ca42-4b4a-8b48-5519ee8f0b50",
+      "name": "RabbitMQ - Trigger",
+      "credentials": {
+        "rabbitmq": {
+          "id": "uJx68wN9OxdoLeLL",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.content;\nconst parsed = JSON.parse(raw);\n\nreturn parsed;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1616,
+        304
+      ],
+      "id": "079e6bcd-137a-4372-b9a4-f5aa0e84148c",
+      "name": "Parsing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7f875af6-4ec8-493e-82ab-f944fc170e49",
+              "name": "dialogId",
+              "value": "={{ $json.body.dialogId }}",
+              "type": "string"
+            },
+            {
+              "id": "3be532a0-a1bd-4b81-b1ea-181660c2081b",
+              "name": "message",
+              "value": "={{ $json.body.message.message }}",
+              "type": "string"
+            },
+            {
+              "id": "f9d21d24-3b7d-4df6-9c7a-e8f5414cf376",
+              "name": "userName",
+              "value": "={{ $json.body.message.user.name }}",
+              "type": "string"
+            },
+            {
+              "id": "ebf27b9c-f44b-426c-bdab-943ffd0e372b",
+              "name": "timestamp",
+              "value": "={{ $json.body.message.timestamp }}",
+              "type": "string"
+            },
+            {
+              "id": "d547776b-a314-412f-a378-12154b66d3d8",
+              "name": "url",
+              "value": "={{ $json.body.message.file.url }}",
+              "type": "string"
+            },
+            {
+              "id": "b2de6432-c5e5-4efd-a04d-dc5ae8a0733d",
+              "name": "id",
+              "value": "={{ $json.body.message.id }}",
+              "type": "string"
+            },
+            {
+              "id": "e065609c-d7ed-4469-a74c-e92c00d08b86",
+              "name": "Accept",
+              "value": "={{ $json.headers.accept }}",
+              "type": "string"
+            },
+            {
+              "id": "d8f0c91f-bc0b-4564-8ffc-d4d6922dd602",
+              "name": "Content-Type",
+              "value": "={{ $json.headers['content-type'] }}",
+              "type": "string"
+            },
+            {
+              "id": "a3a13119-080c-4342-8a60-b908f9163b8f",
+              "name": "x-api-key",
+              "value": "={{ $json.headers['x-api-key'] }}",
+              "type": "string"
+            },
+            {
+              "id": "536b31fe-d8cf-4251-b50d-91529e48bf29",
+              "name": "model",
+              "value": 0,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1456,
+        304
+      ],
+      "id": "b5d288f9-be93-447b-b06d-d91c92d45474",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "incr",
+        "key": "=msgcount:{{ $('Edit Fields').item.json.dialogId }}",
+        "expire": true,
+        "ttl": 300
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -1280,
+        304
+      ],
+      "id": "ac07fcbf-e03d-4d28-b03c-7797d878e5da",
+      "name": "Redis - Spam Incr",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "baebb1c4-612d-4326-9cad-fb0fa4f32821",
+              "leftValue": "={{ $json['msgcount:e2ec399a-aa5a-40d8-a8d6-b8729e9721ba'] }}",
+              "rightValue": 15,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1104,
+        304
+      ],
+      "id": "33b9c102-fb28-4970-ab6a-70bdc31fbd9a",
+      "name": "If Spam"
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Edit Fields').item.json.dialogId }}_messages",
+        "messageData": "={\n  \"id\": \"{{ $('Edit Fields').item.json.id }}\",\n  \"date\": \"{{ $('Edit Fields').item.json.timestamp }}\",\n  \"message\": \"{{ $('Edit Fields').item.json.message }}\"\n}",
+        "tail": true
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        304
+      ],
+      "id": "8f1d0bc6-b765-49a4-a662-07976cc1be80",
+      "name": "Redis - AddToQueue",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=blocked:{{ $('Edit Fields').item.json.dialogId }}",
+        "value": "=\"true\"",
+        "expire": true,
+        "ttl": 300
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c1ccfea6-c4b2-46be-b3df-bef9046057c5",
+      "name": "Redis - Set Block",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "=blocked:{{ $('Edit Fields').item.json.dialogId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        112
+      ],
+      "id": "76673eae-d30c-4d34-b13d-468bc4896c37",
+      "name": "Redis - Get Block",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b50ee139-1a93-4236-9429-11190841c196",
+              "leftValue": "={{ $('Redis - Get Block').item.json.propertyName }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        112
+      ],
+      "id": "ca928d06-8ed6-45b3-aeda-999fee5be964",
+      "name": "If Blocked"
+    },
+    {
+      "parameters": {
+        "jsCode": "const dialogId = $('Edit Fields').first().json.dialogId;\nconst id = $('Edit Fields').first().json.id;\nconst timestamp = $('Edit Fields').first().json.timestamp;\nconst url = $('Edit Fields').first().json.url;\n\nreturn {\n  body: {\n    dialogId,\n    message: {\n      message: \"Detectamos um volume muito alto de mensagens. Vou transferir você para um atendente humano agora. 💬\",\n      id,\n      file: { url },\n      timestamp\n    }\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        0
+      ],
+      "id": "cd454979-33d0-4678-9a29-4f557cceb26b",
+      "name": "Build Spam"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        112
+      ],
+      "id": "bcefabcc-6343-41f1-801c-06a88e042af5",
+      "name": "Pass"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Edit Fields').item.json.dialogId }}_messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        304
+      ],
+      "id": "52f8ef5a-440c-4f2b-b087-d0359ca5add6",
+      "name": "Redis - Get Messages",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a592a924-a639-48b8-b026-9c5600ee434b",
+                    "leftValue": "={{ $json.messages.length === 0 }}",
+                    "rightValue": "={{ true }}",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Pass"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "r1",
+                    "leftValue": "={{ JSON.parse($json.messages.last()).date }}",
+                    "rightValue": "={{ $now.minus(8, 'seconds') }}",
+                    "operator": {
+                      "type": "dateTime",
+                      "operation": "before"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Continue"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra",
+          "renameFallbackOutput": "Wait"
+        }
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -480,
+        288
+      ],
+      "id": "f9e2cb38-5d0d-460c-b25d-7ef6d5741be3",
+      "name": "Window Switch"
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -320,
+        480
+      ],
+      "id": "9620127a-03ff-4297-a849-2ba5ac1ee31a",
+      "name": "Wait",
+      "webhookId": "debounce-fallback-wait"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Edit Fields').item.json.dialogId }}_messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        480
+      ],
+      "id": "ce8b031e-b674-45d2-af6e-48c8e7eca810",
+      "name": "Redis - Recheck Messages",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ef51fba9-d27e-4852-bb30-32d2f8cac07a",
+              "name": "messages",
+              "value": "={{ $json.messages || [] }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        480
+      ],
+      "id": "8c210cd1-0e20-4539-8fc6-efd1171dd2da",
+      "name": "Message Check"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messages",
+        "key": "={{ $('Edit Fields').item.json.dialogId }}_messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        304
+      ],
+      "id": "5a474b98-71ed-449b-ac06-762ccc0740c0",
+      "name": "Redis - Final Get",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4d717f3b-cbfc-4f0e-8098-a3b111accd6d",
+              "name": "message",
+              "value": "={{ $('Redis - Final Get').item.json.messages }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        48,
+        304
+      ],
+      "id": "edf07950-723d-40d1-9811-17e29a8e99dd",
+      "name": "Output"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Edit Fields').item.json.dialogId }}_messages"
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        256,
+        304
+      ],
+      "id": "b6f8f5df-ad8b-4a23-ae31-8fb8abc50f86",
+      "name": "Redis - Cleanup",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $('Output').item.json.message }}",
+        "options": {
+          "systemMessage": "=### 🧠 Função\n\nVocê é **BIA**, assistente virtual do **Bus-System**, um sistema inteligente de transporte coletivo urbano.\nSeu papel é **atender passageiros com simpatia e eficiência**, fornecendo informações em tempo real sobre **linhas, itinerários, pontos turísticos, viagens e progresso em tempo real**.\nVocê realiza consultas ao sistema através da ferramenta **API Call**.\n\n---\n\n### 🗓️ Contexto\n\n**Data e hora:** `{{ DateTime.now().setZone('America/Sao_Paulo') }}`  \n**Nome recebido:** `{{ $('Edit Fields').item.json.userName }}`  \n**Ferramenta disponível:** **API Call**, que consulta os endpoints do Bus-System.  \n**Objetivo:** Responder dúvidas dos passageiros de forma **natural, gentil e informativa**, convertendo os dados técnicos em linguagem acessível. 🚌\n\n---\n\n### 🧾 Regras sobre o nome\n\nAntes de iniciar o atendimento:\n\n* Se o nome for genérico ou inválido (\"Usuário\", \"LEAD\", \"Visitante\", \"Passageiro\", \"Cliente\", \"Lead\", números, símbolos ou emojis), pergunte o nome antes de prosseguir:\n\n  > \"Olá! 😊 Sou a Bia, assistente do Bus-System. Como posso te chamar para te ajudar direitinho?\"\n\n* Se o nome for válido:\n\n  > \"Olá {{ $('Edit Fields').item.json.userName }}! 😊 Sou a Bia, assistente do Bus-System. Posso te ajudar a encontrar uma linha, descobrir pontos turísticos ou ver onde o ônibus está agora?\"\n\n---\n\n### 🧭 Fluxo de Atendimento\n\n1. **Cumprimento e identificação**\n   Sempre inicie cumprimentando o passageiro.\n   Identifique o que ele deseja: **itinerários**, **viagens**, **pontos turísticos**, **pontos de parada** ou **progresso em tempo real**.\n   \n   Quando faltar alguma informação essencial, pergunte:\n   > \"Claro! Pode me informar o nome da **cidade**, por favor?\"\n\n2. **Análise de intenção**\n   Determine automaticamente o tipo de consulta, conforme as palavras-chave:\n\n   * Se o passageiro mencionar **linhas, rotas, itinerários** → `endpoint = \"itinerarios\"`\n   * Se mencionar **viagens ativas, ônibus rodando** → `endpoint = \"viagens\"`\n   * Se mencionar **onde está o ônibus, progresso, tempo real** → `endpoint = \"viagens/ultimo-progresso\"` (necessário: cidade + nome da linha)\n   * Se mencionar **pontos turísticos próximos de uma parada** → `endpoint = \"pontos-turisticos\"` (necessário: cidade + nome da parada)\n   * Se mencionar **paradas próximas de um ponto turístico** → `endpoint = \"pontos-parada\"` (necessário: cidade + nome do ponto turístico)\n\n   Caso a intenção não esteja clara:\n   > \"Você quer saber os **itinerários**, as **viagens ativas**, o **progresso em tempo real**, os **pontos turísticos** ou as **paradas próximas**?\"\n\n3. **Chamada obrigatória da API Call**\n   \n   **IMPORTANTE:** Cada endpoint tem parâmetros específicos obrigatórios:\n\n   **a) Itinerários por cidade:**\n```json\n   {\n     \"endpoint\": \"itinerarios\",\n     \"cidade\": \"<nome_da_cidade>\"\n   }\n```\n\n   **b) Viagens ativas por cidade:**\n```json\n   {\n     \"endpoint\": \"viagens\",\n     \"cidade\": \"<nome_da_cidade>\"\n   }\n```\n\n   **c) Último progresso de uma linha (tempo real):**\n```json\n   {\n     \"endpoint\": \"viagens/ultimo-progresso\",\n     \"cidade\": \"<nome_da_cidade>\",\n     \"linhaNome\": \"<nome_da_linha>\"\n   }\n```\n   ⚠️ Se o usuário não informar o nome da linha, pergunte:\n   > \"Para ver onde o ônibus está agora, preciso saber qual é a linha. Pode me informar?\"\n\n   **d) Pontos turísticos próximos a uma parada:**\n```json\n   {\n     \"endpoint\": \"pontos-turisticos\",\n     \"cidade\": \"<nome_da_cidade>\",\n     \"pontoParadaNome\": \"<nome_da_parada>\"\n   }\n```\n   ⚠️ Se o usuário não informar a parada, pergunte:\n   > \"Qual é o nome da parada que você quer saber os pontos turísticos próximos?\"\n\n   **e) Paradas próximas a um ponto turístico:**\n```json\n   {\n     \"endpoint\": \"pontos-parada\",\n     \"cidade\": \"<nome_da_cidade>\",\n     \"pontoTuristicoNome\": \"<nome_do_ponto_turistico>\"\n   }\n```\n   ⚠️ Se o usuário não informar o ponto turístico, pergunte:\n   > \"Qual ponto turístico você quer saber as paradas próximas?\"\n\n   > **Nunca** forneça respostas sem antes acionar a ferramenta **API Call**.\n   > Todas as informações devem vir do backend do Bus-System.\n\n4. **Interpretação e resposta humanizada**\n   Converta os dados retornados pela API em frases claras e fluidas.\n   **Jamais** exiba JSON ou códigos.\n   \n   Se não houver resultados:\n   > \"Não encontrei informações para essa consulta agora. Pode confirmar os dados, por favor?\"\n\n---\n\n### 💡 Exemplos de Respostas\n\n* **Itinerários:**\n  > \"Na cidade de **Serra Dourada**, a linha **Centro—UFSC** passa pelos pontos **Terminal Central**, **Avenida Getúlio Vargas** e **UFSC Jardim das Avenidas**.\"\n\n* **Viagens ativas:**\n  > \"Agora mesmo em **Serra Dourada** tem 3 ônibus rodando: linha **Centro—UFSC**, **Cidade Alta—Centro** e **Praia Sul—Terminal**. 🚌\"\n\n* **Progresso em tempo real:**\n  > \"O ônibus da linha **Centro—UFSC** passou pelo ponto **Terminal Central** às **09h15** e está a caminho da **Avenida Getúlio Vargas**. 🚌\"\n\n* **Pontos turísticos próximos:**\n  > \"Perto da parada **Terminal Central** tem dois pontos turísticos: **Praça da Matriz** e **Museu Histórico**. 🏛️\"\n\n* **Paradas próximas de ponto turístico:**\n  > \"Perto do **Morro dos Conventos** há duas paradas: **Praia Sul** e **Mirante Principal**. 🏖️\"\n\n---\n\n### ⚠️ Tratamento de Erros e Ambiguidades\n\n* Se a API não retornar dados:\n  > \"Não encontrei informações para essa cidade/linha agora. Pode confirmar o nome, por favor?\"\n\n* Se o passageiro não deixar claro o tipo de consulta:\n  > \"Você quer saber os **itinerários**, as **viagens ativas**, o **progresso em tempo real**, os **pontos turísticos** ou as **paradas próximas**?\"\n\n* Se faltar parâmetro obrigatório:\n  > \"Para essa consulta, preciso que me informe [nome da linha / nome da parada / nome do ponto turístico].\"\n\n* Se houver falha técnica:\n  > \"Parece que o sistema está temporariamente indisponível. Pode tentar novamente daqui a pouco?\"\n\n---\n\n### 🤝 Encerramento\n\n> \"Perfeito, {{ $('Edit Fields').item.json.userName }}! Espero ter ajudado. Se quiser, posso te avisar quando o ônibus estiver chegando. 😊\"\n\n---\n\n### 📘 Regras Gerais\n\n* Seja sempre empática, educada e objetiva.\n* Nunca revele JSON, parâmetros ou termos técnicos.\n* Sempre valide a **cidade** antes da consulta.\n* Use a **API Call** obrigatoriamente para obter dados reais.\n* Nunca adivinhe respostas.\n* Use apenas **1 emoji** por mensagem.\n* Responda **uma dúvida por vez**, aguardando a próxima interação.\n\n---\n\n### 🔧 Instrução Final\n\nIdentifique automaticamente o tipo de consulta e os parâmetros necessários.\nMonte a chamada **API Call** conforme o formato específico de cada endpoint e aguarde a resposta para formular sua mensagem natural.\n\nTodas as respostas devem refletir exatamente os dados retornados pelo **Bus-System**, sem invenções ou extrapolações.\nA BIA deve agir com empatia, naturalidade e profissionalismo em todas as interações."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        304
+      ],
+      "id": "8526de74-d598-4d40-9c6a-8a8800c3750f",
+      "name": "AI Agent",
+      "notes": "> Se o usuário mencionar palavras como “minha loja”, “lojista”, “aluguel”, “condomínio” ou “comissão”, considere que ele é **lojista** e utilize os endpoints com o parâmetro `CNPJsouLojista`.\n>\n> Se mencionar “minha empresa”, “cliente”, “limite”, “compras” ou “parcelas”, considere que ele é **cliente** e utilize os endpoints com o parâmetro `CNPJsouCliente`.\n>\n> Antes de qualquer consulta, sempre confirme se o CNPJ informado existe usando `/validaCliente` ou `/validaLojista`."
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Edit Fields').item.json.dialogId }}",
+        "sessionTTL": 600,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        528,
+        560
+      ],
+      "id": "087cd015-8673-44e4-80dc-7337dec778c2",
+      "name": "Memory",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Use essa ferramenta para verificar a disponibilidade do horário que o LEAD está querendo marcar a demonstração. Se o horário estiver válido use a ferramenta de agendamento e crie, caso não esteja disponível sugira outro horário para o LEAD.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "mikatchuflayn@gmail.com",
+          "mode": "list",
+          "cachedResultName": "mikatchuflayn@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        560
+      ],
+      "id": "387f8e15-8c2b-4533-8cd0-01b219288111",
+      "name": "Get Calendar",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Utilize para criar um agendamento de demonstração do SPAIK",
+        "calendar": {
+          "__rl": true,
+          "value": "mikatchuflayn@gmail.com",
+          "mode": "list",
+          "cachedResultName": "mikatchuflayn@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        560
+      ],
+      "id": "9dd9a8fe-e970-41ba-85eb-34bf88b3607e",
+      "name": "Create Calendar",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const dialogId = $('Edit Fields').item.json.dialogId;\nconst message = $json.output;\nconst id = $('Edit Fields').item.json.id;\nconst timestamp = $('Edit Fields').item.json.timestamp;\nconst url = $('Edit Fields').item.json.url;\n\nreturn {\n  body: {\n    dialogId,\n    message: { message, id, file: { url }, timestamp }\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        816,
+        304
+      ],
+      "id": "fe6c2e3f-6a0c-4e59-b40a-fe66d8e9fc86",
+      "name": "Build"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://stg.app.spaik.com.br/api/thirdparty/omnichannel/rooms/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "=application/json"
+            },
+            {
+              "name": "x-api-key",
+              "value": "=6d17187e-c814-4431134a4f-2a57-4eb4-b1b1-aef656387035"
+            },
+            {
+              "name": "Accept",
+              "value": "=application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.body ? $json.body : $json.messageBody}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1216,
+        304
+      ],
+      "id": "36fe864f-2958-4aa4-b2e3-0d461d8a5248",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "queue": "spaik.status",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1232
+      ],
+      "id": "09f1e0ba-8c49-413f-8cce-c1f1bdaec33f",
+      "name": "RabbitMQ Callback Trigger",
+      "credentials": {
+        "rabbitmq": {
+          "id": "uJx68wN9OxdoLeLL",
+          "name": "RabbitMQ account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json.content;\nconst parsed = JSON.parse(raw);\n\nreturn parsed;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -304,
+        1232
+      ],
+      "id": "f2036164-42ba-461d-817c-0cfe69e2c2f8",
+      "name": "Parsing Callback"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "16439934-8a49-4ebe-8bad-f36a29b3b842",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "ERROR",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "6cded410-f982-4a7e-ad85-bf41fe017fc5",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "UNDELIVERED",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -144,
+        1232
+      ],
+      "id": "856446e8-b1cf-4c6b-8524-be9e90fa6263",
+      "name": "If Error"
+    },
+    {
+      "parameters": {
+        "operation": "incr",
+        "key": "={{ 'retry:' + $json.messageId }}",
+        "expire": true,
+        "ttl": 600
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1152
+      ],
+      "id": "0865afdc-5678-41de-b819-d7a5481c0256",
+      "name": "Counter",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f6145bf0-773b-4bc0-962d-31afd10835e8",
+              "leftValue": "={{ Object.values($json)[0] }}",
+              "rightValue": 3,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        1152
+      ],
+      "id": "a818221d-3900-451e-9776-dc7fc9cbb9ff",
+      "name": "If Counter"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "propertyName": "messageBody",
+        "key": "={{ 'msg:' + $('Parsing Callback').item.json.messageId}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        944,
+        1024
+      ],
+      "id": "9e39eefb-685d-4d7a-94d2-588eb772178e",
+      "name": "Get History",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        944,
+        1248
+      ],
+      "id": "512e0e0a-3725-4489-9eaf-308e06dfb07b",
+      "name": "Close"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rule": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e0a2c736-f5ab-4d1d-90da-af5cc4305643",
+                    "leftValue": "={{ $('Edit Fields').item.json.model }}",
+                    "rightValue": 0,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "modelIndex": 2,
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "baebfa30-d7f5-4a93-b431-de0d8c15ed39",
+                    "leftValue": "={{ $('Edit Fields').item.json.model }}",
+                    "rightValue": 2,
+                    "operator": {
+                      "type": "number",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.modelSelector",
+      "typeVersion": 1,
+      "position": [
+        256,
+        544
+      ],
+      "id": "0dd56de3-d33f-487d-bf91-944c8f5d1d81",
+      "name": "Model Selector"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Após criar um agendamento no google agenda, crie também um card no trello sobre esse agendamento",
+        "listId": "=6797d8a800b76dbcd0f97756",
+        "name": "=Demonstração  {{ $json.userName }}",
+        "description": "=",
+        "additionalFields": {
+          "due": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Due_Date', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.trelloTool",
+      "typeVersion": 1,
+      "position": [
+        912,
+        560
+      ],
+      "id": "f0ae9249-4c28-41fa-9dfe-7109277cc5d4",
+      "name": "Create Card",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ 'msg:' + $json.body.message.id }}",
+        "value": "={{ JSON.stringify($json.body) }}",
+        "expire": true,
+        "ttl": 600
+      },
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        304
+      ],
+      "id": "af711f42-7688-410c-acd0-5a29b84bc6a9",
+      "name": "Redis - Set History",
+      "credentials": {
+        "redis": {
+          "id": "kzyfZNTJi7SfhxqR",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        464,
+        848
+      ],
+      "id": "a59e06ec-7b19-42d9-a0e4-f57f201bf95c",
+      "name": "OpenAI",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        128,
+        848
+      ],
+      "id": "c85090b4-36b5-47a8-afa1-1fdb8869fd83",
+      "name": "Groq",
+      "credentials": {
+        "groqApi": {
+          "id": "FjxZBNzsZAoWT5zh",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        352,
+        848
+      ],
+      "id": "652b1bc8-ce07-4902-b7e6-90cf78a308b9",
+      "name": "DeepSeek",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        848
+      ],
+      "id": "c83b0b93-b1f8-4b20-8896-65fc69ed3a91",
+      "name": "Anthropic",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-lite-latest",
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.4
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        16,
+        848
+      ],
+      "id": "e5ac3c65-8ef7-4837-bbae-5d3ed3ed68e9",
+      "name": "Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VdwVyE79q9wZjlpb",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Use esta ferramenta para consultar a API do Bus-System. \nIdentifique automaticamente qual endpoint usar baseado na pergunta do usuário:\n- itinerarios: lista todas as rotas/linhas de uma cidade (apenas cidade)\n- viagens: mostra ônibus rodando agora (apenas cidade)  \n- viagens/ultimo-progresso: onde está o ônibus em tempo real (cidade + linhaNome)\n- pontos-turisticos: pontos turísticos perto de uma parada (cidade + pontoParadaNome)\n- pontos-parada: paradas perto de ponto turístico (cidade + pontoTuristicoNome)\n\nIMPORTANTE: Sempre extraia a cidade da mensagem do usuário. Se faltar parâmetro obrigatório, NÃO faça a chamada.",
+        "url": "=https://fruity-rice-make.loca.lt/spaik/{{ $fromAI('endpoint', '', 'string') }}?{{ $fromAI('params', '', 'string') }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        784,
+        560
+      ],
+      "id": "02d0892e-b4e5-41fc-ac16-cca84ce4ddbf",
+      "name": "API Call",
+      "notes": "Tool para consultar endpoints do Spaik (itinerario, PontoParadaTuristico, ProgressoViagem, etc). Retorna JSON com dados da API."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RabbitMQ - Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parsing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Redis - Spam Incr",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Spam Incr": {
+      "main": [
+        [
+          {
+            "node": "If Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Spam": {
+      "main": [
+        [
+          {
+            "node": "Redis - Get Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis - AddToQueue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - AddToQueue": {
+      "main": [
+        [
+          {
+            "node": "Redis - Get Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Set Block": {
+      "main": [
+        [
+          {
+            "node": "Build Spam",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Get Block": {
+      "main": [
+        [
+          {
+            "node": "If Blocked",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Blocked": {
+      "main": [
+        [
+          {
+            "node": "Redis - Set Block",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Pass",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build Spam": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Get Messages": {
+      "main": [
+        [
+          {
+            "node": "Window Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Switch": {
+      "main": [
+        [
+          {
+            "node": "Pass",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis - Final Get",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Redis - Recheck Messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Recheck Messages": {
+      "main": [
+        [
+          {
+            "node": "Message Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message Check": {
+      "main": [
+        [
+          {
+            "node": "Window Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Final Get": {
+      "main": [
+        [
+          {
+            "node": "Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Output": {
+      "main": [
+        [
+          {
+            "node": "Redis - Cleanup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Cleanup": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Build",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build": {
+      "main": [
+        [
+          {
+            "node": "Redis - Set History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Pass",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RabbitMQ Callback Trigger": {
+      "main": [
+        [
+          {
+            "node": "Parsing Callback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parsing Callback": {
+      "main": [
+        [
+          {
+            "node": "If Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Error": {
+      "main": [
+        [
+          {
+            "node": "Counter",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Close",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Counter": {
+      "main": [
+        [
+          {
+            "node": "If Counter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Counter": {
+      "main": [
+        [
+          {
+            "node": "Get History",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Close",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get History": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model Selector": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Card": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis - Set History": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Model Selector",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Gemini": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Model Selector",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "API Call": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4cb91bd4-d04d-4dea-9139-46b40f97df51",
+  "meta": {
+    "instanceId": "b77bec5364124c371a46f56bf9320d3497b5ae9c545b1715a080987f66277837"
+  },
+  "id": "oXiT4catovwXYJmm",
+  "tags": []
+}

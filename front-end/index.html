@@ -36,5 +36,18 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stg.app.spaik.com.br/livechat/main.css"
+    />
+    <script>
+      (() => {
+        window.icwToken = "6ac3c987-3304-495e-9fd3-7436946a4a60";
+        const script = document.createElement("script");
+        script.src = "https://stg.app.spaik.com.br/livechat/main.js";
+        document.head.appendChild(script);
+      })();
+    </script>
   </body>
 </html>
