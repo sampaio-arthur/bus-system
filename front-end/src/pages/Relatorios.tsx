@@ -158,30 +158,27 @@ export default function Relatorios() {
                     Sem dados para exibir
                   </div>
                 ) : (
-                  <PieChart>
-                    <Pie
-                      data={pontosData}
-                      dataKey="value"
-                      nameKey="name"
-                      innerRadius={70}
-                      outerRadius={140}
-                      paddingAngle={2}
-                      stroke="none"
-                    >
-                      {pontosData.map((item, idx) => (
-                        <Cell key={idx} fill={item.color} />
-                      ))}
-                    </Pie>
+                  <BarChart
+                    data={pontosData}
+                    margin={{ top: 12, right: 12, left: 0, bottom: 24 }}
+                  >
+                    <CartesianGrid vertical={false} strokeDasharray="3 3" />
+                    <XAxis dataKey="name" tick={false} axisLine={false} />
+                    <YAxis allowDecimals={false} />
                     <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                     <Legend
                       verticalAlign="bottom"
                       align="center"
-                      layout="horizontal"
-                      height={32}
+                      height={28}
                       iconType="circle"
                       payload={pontosLegend}
                     />
-                  </PieChart>
+                    <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                      {pontosData.map((item, idx) => (
+                        <Cell key={idx} fill={item.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
                 )}
               </ChartContainer>
             </CardContent>
@@ -288,14 +285,7 @@ export default function Relatorios() {
                   margin={{ top: 12, right: 12, left: 0, bottom: 24 }}
                 >
                   <CartesianGrid vertical={false} strokeDasharray="3 3" />
-                  <XAxis
-                    dataKey="name"
-                    tickMargin={8}
-                    interval={0}
-                    angle={-20}
-                    textAnchor="end"
-                    height={60}
-                  />
+                  <XAxis dataKey="name" tick={false} axisLine={false} />
                   <YAxis allowDecimals={false} />
                   <ChartTooltip content={<ChartTooltipContent hideLabel />} />
                   <Legend
