@@ -158,7 +158,7 @@ public class Pessoa extends PanacheEntityBase {
     }
 
     public void setCnh(String cnh) {
-        this.cnh = cnh;
+        this.cnh = normalizeBlankToNull(cnh);
     }
 
     public String getCategoriaCnh() {
@@ -174,7 +174,7 @@ public class Pessoa extends PanacheEntityBase {
     }
 
     public void setNumeroCarteirinha(String numeroCarteirinha) {
-        this.numeroCarteirinha = numeroCarteirinha;
+        this.numeroCarteirinha = normalizeBlankToNull(numeroCarteirinha);
     }
 
     public LocalDateTime getValidadeCnh() {
@@ -221,9 +221,16 @@ public class Pessoa extends PanacheEntityBase {
         return passagens;
     }
 
-    public void setPassagens(List<Passagem> passagens) {
-        this.passagens = passagens;
+
+    private String normalizeBlankToNull(String value) {
+        if (value == null) {
+            return null;
+        }
+
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
+
 
     @Override
     public boolean equals(Object o) {
