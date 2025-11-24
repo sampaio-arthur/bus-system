@@ -1,0 +1,122 @@
+{
+  "name": "SPAIK - Inbound",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "spaik/webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "2e37aea4-4b3c-42fc-980c-e223aa8209e1",
+      "name": "Webhook (Spaik In)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "e9e0b711-b20e-4612-9851-03725b730780"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"ACCEPTED\",\n  \"receivedAt\": \"{{$now}}\"\n}\n",
+        "options": {
+          "responseCode": 202
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        -80
+      ],
+      "id": "fc547622-8e1d-448e-8bf7-78041ed2664c",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        432,
+        -16
+      ],
+      "id": "5103b166-6164-4350-b6af-3f501f3b5640",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "queue": "spaik.messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rabbitmq",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        64
+      ],
+      "id": "00bbbf26-b283-4e37-b9f6-3f1d84a0887b",
+      "name": "RabbitMQ",
+      "credentials": {
+        "rabbitmq": {
+          "id": "uJx68wN9OxdoLeLL",
+          "name": "RabbitMQ account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook (Spaik In)": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RabbitMQ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RabbitMQ": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8dc2f1a9-bf5e-45ba-8228-7b1ae500a8a4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b77bec5364124c371a46f56bf9320d3497b5ae9c545b1715a080987f66277837"
+  },
+  "id": "bTattgmE9FrteI9J",
+  "tags": []
+}

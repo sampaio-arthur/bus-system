@@ -8,11 +8,9 @@ public class PassagemDTO {
     private Long id;
     private LocalDateTime dataEmissao;
     private BigDecimal valor;
-    private BigDecimal descontoAplicado;
     private Boolean ativo = true;
     private PessoaDTO pessoa;
     private ViagemDTO viagem;
-    private Short numeroAssento;
     private TipoPassagemDTO tipoPassagem;
     private MetodoPagamentoDTO metodoPagamento;
     
@@ -28,8 +26,6 @@ public class PassagemDTO {
 	public BigDecimal getValor() { return valor; }
     public void setValor(BigDecimal valor) { this.valor = valor; }
 
-    public BigDecimal getDescontoAplicado() { return descontoAplicado; }
-    public void setDescontoAplicado(BigDecimal descontoAplicado) { this.descontoAplicado = descontoAplicado; }
 
     public Boolean getAtivo() { return ativo; }
     public void setAtivo(Boolean ativo) { this.ativo = ativo; }
@@ -45,12 +41,5 @@ public class PassagemDTO {
 
     public MetodoPagamentoDTO getMetodoPagamento() { return metodoPagamento; }
     public void setMetodoPagamento(MetodoPagamentoDTO metodoPagamento) { this.metodoPagamento = metodoPagamento; }
-	
-    public Short getNumeroAssento() {
-		return numeroAssento;
-	}
-	public void setNumeroAssento(Short numeroAssento) {
-		this.numeroAssento = numeroAssento;
-	}
     
 }

@@ -1,5 +1,6 @@
 package br.com.bus.domain;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -32,23 +33,28 @@ public class Linha extends PanacheEntityBase {
     private String codigo;
 
     @NotNull
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal tarifa;
+
+    @NotNull
     @Column(nullable = false)
     private Boolean ativo = true;
 
+    @Column(name = "tempo_percurso_estimado")
     private Integer tempoPercursoEstimado;
 
     @Version
     private int version;
 
     public int getVersion() {
-		return version;
-	}
+        return version;
+    }
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -70,6 +76,14 @@ public class Linha extends PanacheEntityBase {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public BigDecimal getTarifa() {
+        return tarifa;
+    }
+
+    public void setTarifa(BigDecimal tarifa) {
+        this.tarifa = tarifa;
     }
 
     public Boolean getAtivo() {

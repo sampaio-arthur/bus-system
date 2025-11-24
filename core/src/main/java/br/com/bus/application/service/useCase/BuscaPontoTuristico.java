@@ -29,7 +29,7 @@ public class BuscaPontoTuristico {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(PontoTuristicoMap::toSummary)
+                .map(PontoTuristicoMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

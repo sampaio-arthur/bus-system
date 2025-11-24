@@ -1,5 +1,6 @@
 package br.com.bus.domain;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -25,6 +26,9 @@ public class TipoPassagem extends PanacheEntityBase {
     @Column(name = "descricao", length = 255)
     private String descricao;
 
+    @Column(name = "porcentagem_desconto", precision = 5, scale = 2)
+    private BigDecimal porcentagemDesconto;
+
     @OneToMany(mappedBy = "tipoPassagem", fetch = FetchType.LAZY)
     private Set<Passagem> passagens = new LinkedHashSet<>();
 
@@ -40,16 +44,24 @@ public class TipoPassagem extends PanacheEntityBase {
 		return descricao;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public Set<Passagem> getPassagens() {
-		return passagens;
-	}
+    public Set<Passagem> getPassagens() {
+        return passagens;
+    }
 
-	public void setPassagens(Set<Passagem> passagens) {
-		this.passagens = passagens;
-	}
+    public void setPassagens(Set<Passagem> passagens) {
+        this.passagens = passagens;
+    }
+    
+    public BigDecimal getPorcentagemDesconto() {
+        return porcentagemDesconto;
+    }
+
+    public void setPorcentagemDesconto(BigDecimal porcentagemDesconto) {
+        this.porcentagemDesconto = porcentagemDesconto;
+    }
     
 }

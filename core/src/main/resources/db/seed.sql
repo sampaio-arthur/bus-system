@@ -1,315 +1,281 @@
-insert into cidade (nome, uf, version) values
-    ('Nova Aurora', 'SP', 0),
-    ('Vale Verde', 'RJ', 0),
-    ('Rio Azul', 'MG', 0),
-    ('Serra Dourada', 'PR', 0),
-    ('Praia Serena', 'RS', 0),
-    ('Campo Belo', 'SC', 0),
-    ('Lagoa Clara', 'BA', 0),
-    ('Bosque Alto', 'GO', 0),
-    ('Vila Horizonte', 'PE', 0),
-    ('Monte Claro', 'CE', 0);
+TRUNCATE TABLE progresso_viagem RESTART IDENTITY CASCADE;
+TRUNCATE TABLE manutencao_peca RESTART IDENTITY CASCADE;
+TRUNCATE TABLE manutencao RESTART IDENTITY CASCADE;
+TRUNCATE TABLE peca RESTART IDENTITY CASCADE;
+TRUNCATE TABLE passagem RESTART IDENTITY CASCADE;
+TRUNCATE TABLE viagem RESTART IDENTITY CASCADE;
+TRUNCATE TABLE cronograma RESTART IDENTITY CASCADE;
+TRUNCATE TABLE itinerario RESTART IDENTITY CASCADE;
+TRUNCATE TABLE ponto_parada_turistico RESTART IDENTITY CASCADE;
+TRUNCATE TABLE ponto_parada RESTART IDENTITY CASCADE;
+TRUNCATE TABLE ponto_turistico RESTART IDENTITY CASCADE;
+TRUNCATE TABLE veiculo RESTART IDENTITY CASCADE;
+TRUNCATE TABLE tipo_veiculo RESTART IDENTITY CASCADE;
+TRUNCATE TABLE linha RESTART IDENTITY CASCADE;
+TRUNCATE TABLE pessoa RESTART IDENTITY CASCADE;
+TRUNCATE TABLE cidade RESTART IDENTITY CASCADE;
+TRUNCATE TABLE metodo_pagamento RESTART IDENTITY CASCADE;
+TRUNCATE TABLE tipo_passagem RESTART IDENTITY CASCADE;
 
-insert into linha (nome, codigo, ativo, tempo_percurso_estimado, version) values
-    ('Linha Panorama', 'LX101', true, 42, 0),
-    ('Linha Horizonte', 'LX102', true, 55, 0),
-    ('Linha Litorânea', 'LX103', true, 38, 0),
-    ('Linha Montanha', 'LX104', true, 60, 0),
-    ('Linha Urbana A', 'LX105', true, 45, 0),
-    ('Linha Urbana B', 'LX106', true, 48, 0),
-    ('Linha Interbairros', 'LX107', true, 52, 0),
-    ('Linha Aeroporto Plus', 'LX108', true, 70, 0),
-    ('Linha Noturna Azul', 'LX109', true, 80, 0),
-    ('Linha Expresso Verde', 'LX110', true, 65, 0);
+-- DADOS ESTÁTICOS
+-- CIDADES
+INSERT INTO cidade (nome, uf, version) VALUES
+('Araranguá', 'SC', 0),       
+('Criciúma', 'SC', 0),        
+('Tubarão', 'SC', 0),         
+('Florianópolis', 'SC', 0),   
+('Laguna', 'SC', 0);
 
-insert into ponto_turistico (nome, descricao, latitude, longitude, ativo, version) values
-    ('Orla das Palmeiras', 'Passeio à beira-mar com ciclovia', -23.57120000, -46.65430000, true, 0),
-    ('Mirante do Horizonte', 'Mirante com vista para a cidade', -22.91540000, -43.18260000, true, 0),
-    ('Cachoeira Cristal', 'Queda d''água em parque ecológico', -19.92340000, -43.94080000, true, 0),
-    ('Bosque Encantado', 'Reserva natural com trilhas', -25.43100000, -49.27850000, true, 0),
-    ('Praça das Flores', 'Praça central com feira de artesanato', -30.03240000, -51.21430000, true, 0),
-    ('Museu do Transporte', 'História do transporte urbano', -27.59210000, -48.54520000, true, 0),
-    ('Farol das Dunas', 'Farol histórico à beira-mar', -12.96840000, -38.50520000, true, 0),
-    ('Parque das Lagoas', 'Parque com lagos e pedalinhos', -16.68910000, -49.27010000, true, 0),
-    ('Centro Cultural Marítimo', 'Exposição sobre cultura costeira', -8.05120000, -34.87350000, true, 0),
-    ('Serra das Estrelas', 'Trilhas e observação astronômica', -3.71280000, -38.54010000, true, 0);
+-- TIPOS DE VEÍCULO
+INSERT INTO tipo_veiculo (descricao, ativo, version) VALUES
+('Micro-ônibus Urbano', true, 0),
+('Ônibus Padron', true, 0),
+('Ônibus Articulado', true, 0),
+('Executivo Rodoviário', true, 0);
 
-insert into ponto_parada (nome, latitude, longitude, ativo, cidade_id, version) values
-    ('Parada Aurora 1', -23.57200000, -46.65300000, true, (select id from cidade where nome = 'Nova Aurora'), 0),
-    ('Parada Aurora 2', -23.57350000, -46.65550000, true, (select id from cidade where nome = 'Nova Aurora'), 0),
-    ('Parada Horizonte 1', -22.91680000, -43.18520000, true, (select id from cidade where nome = 'Vale Verde'), 0),
-    ('Parada Horizonte 2', -22.91420000, -43.17980000, true, (select id from cidade where nome = 'Vale Verde'), 0),
-    ('Parada Azul 1', -19.92480000, -43.93820000, true, (select id from cidade where nome = 'Rio Azul'), 0),
-    ('Parada Azul 2', -19.92260000, -43.94240000, true, (select id from cidade where nome = 'Rio Azul'), 0),
-    ('Parada Serra 1', -25.43240000, -49.27410000, true, (select id from cidade where nome = 'Serra Dourada'), 0),
-    ('Parada Praia 1', -30.03380000, -51.21670000, true, (select id from cidade where nome = 'Praia Serena'), 0),
-    ('Parada Lagoa 1', -27.59340000, -48.54660000, true, (select id from cidade where nome = 'Campo Belo'), 0),
-    ('Parada Aeroporto Plus', -12.96980000, -38.50310000, true, (select id from cidade where nome = 'Lagoa Clara'), 0);
+-- VEÍCULOS
+INSERT INTO veiculo (placa, chassi, modelo, ano_fabricacao, capacidade, ativo, tipo_veiculo_id, version) VALUES
+-- Frota Nova
+('RLA1A11', '9BW12345678901234', 'Marcopolo Torino 2023', 2023, 45, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Ônibus Padron'), 0),
+('RLB2B22', '9BW12345678901235', 'Marcopolo Torino 2023', 2023, 45, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Ônibus Padron'), 0),
+('RLC3C33', '9BW12345678901236', 'Caio Apache Vip V', 2022, 80, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Ônibus Articulado'), 0),
+('RLD4D44', '9BW12345678901237', 'Volare Fly 10', 2024, 30, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Micro-ônibus Urbano'), 0),
+-- Frota Antiga
+('MBC1990', '9BW00000000000001', 'Mercedes-Benz OF-1721', 2015, 40, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Ônibus Padron'), 0),
+('LYS5544', '9BW00000000000002', 'Marcopolo Viale', 2014, 40, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Ônibus Padron'), 0),
+('MKE1234', '9BW00000000000003', 'Busscar Urbanuss', 2012, 35, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Micro-ônibus Urbano'), 0),
+('JKA9988', '9BW00000000000004', 'Scania K310', 2016, 50, true, (SELECT id FROM tipo_veiculo WHERE descricao = 'Executivo Rodoviário'), 0);
 
-insert into ponto_parada_turistico (id_ponto_parada, id_ponto_turistico) values
-    ((select id from ponto_parada where nome = 'Parada Aurora 1'), (select id from ponto_turistico where nome = 'Orla das Palmeiras')),
-    ((select id from ponto_parada where nome = 'Parada Aurora 2'), (select id from ponto_turistico where nome = 'Museu do Transporte')),
-    ((select id from ponto_parada where nome = 'Parada Horizonte 1'), (select id from ponto_turistico where nome = 'Mirante do Horizonte')),
-    ((select id from ponto_parada where nome = 'Parada Horizonte 2'), (select id from ponto_turistico where nome = 'Praça das Flores')),
-    ((select id from ponto_parada where nome = 'Parada Azul 1'), (select id from ponto_turistico where nome = 'Cachoeira Cristal')),
-    ((select id from ponto_parada where nome = 'Parada Azul 2'), (select id from ponto_turistico where nome = 'Parque das Lagoas')),
-    ((select id from ponto_parada where nome = 'Parada Serra 1'), (select id from ponto_turistico where nome = 'Bosque Encantado')),
-    ((select id from ponto_parada where nome = 'Parada Praia 1'), (select id from ponto_turistico where nome = 'Centro Cultural Marítimo')),
-    ((select id from ponto_parada where nome = 'Parada Lagoa 1'), (select id from ponto_turistico where nome = 'Museu do Transporte')),
-    ((select id from ponto_parada where nome = 'Parada Aeroporto Plus'), (select id from ponto_turistico where nome = 'Farol das Dunas'));
+-- FUNCIONÁRIOS
+INSERT INTO pessoa (cpf, nome, email, telefone, data_nascimento, ativo, tipo_pessoa, cnh, validade_cnh, categoria_cnh, created_at, version) VALUES
+('111.222.333-44', 'João da Silva', 'joao.silva@transportesc.com.br', '(48) 99999-1111', '1980-05-15', true, 'MOTORISTA', '12345678901', '2026-05-15', 'AD', NOW(), 0),
+('222.333.444-55', 'Pedro Ferreira', 'pedro.ferreira@transportesc.com.br', '(48) 99999-2222', '1985-08-20', true, 'MOTORISTA', '12345678902', '2025-10-10', 'AE', NOW(), 0),
+('333.444.555-66', 'Mariana Santos', 'mariana.santos@transportesc.com.br', '(48) 99999-3333', '1990-01-30', true, 'MOTORISTA', '12345678903', '2027-01-30', 'AD', NOW(), 0),
+('444.555.666-77', 'Roberto Machado', 'roberto.mec@transportesc.com.br', '(48) 99999-4444', '1975-12-12', true, 'MECANICO', NULL, NULL, NULL, NOW(), 0),
+('555.666.777-88', 'Carlos Souza', 'carlos.mec@transportesc.com.br', '(48) 99999-5555', '1995-07-07', true, 'MECANICO', NULL, NULL, NULL, NOW(), 0);
 
-insert into itinerario (ordem, id_linha, id_ponto_parada) values
-    (1, (select id from linha where codigo = 'LX101'), (select id from ponto_parada where nome = 'Parada Aurora 1')),
-    (2, (select id from linha where codigo = 'LX101'), (select id from ponto_parada where nome = 'Parada Aurora 2')),
-    (1, (select id from linha where codigo = 'LX102'), (select id from ponto_parada where nome = 'Parada Horizonte 1')),
-    (2, (select id from linha where codigo = 'LX102'), (select id from ponto_parada where nome = 'Parada Horizonte 2')),
-    (1, (select id from linha where codigo = 'LX103'), (select id from ponto_parada where nome = 'Parada Azul 1')),
-    (2, (select id from linha where codigo = 'LX103'), (select id from ponto_parada where nome = 'Parada Azul 2')),
-    (1, (select id from linha where codigo = 'LX104'), (select id from ponto_parada where nome = 'Parada Serra 1')),
-    (1, (select id from linha where codigo = 'LX105'), (select id from ponto_parada where nome = 'Parada Praia 1')),
-    (1, (select id from linha where codigo = 'LX106'), (select id from ponto_parada where nome = 'Parada Lagoa 1')),
-    (1, (select id from linha where codigo = 'LX108'), (select id from ponto_parada where nome = 'Parada Aeroporto Plus'));
+-- PASSAGEIROS (150 Passageiros)
+INSERT INTO pessoa (cpf, nome, email, telefone, data_nascimento, ativo, tipo_pessoa, created_at, version)
+SELECT 
+    lpad(i::text, 3, '0') || '.000.000-' || lpad((i%99)::text, 2, '0'),
+    'Passageiro ' || (ARRAY['Silva', 'Santos', 'Oliveira', 'Souza', 'Pereira', 'Lima', 'Carvalho', 'Ferreira', 'Costa', 'Almeida'])[floor(random()*10)+1] || ' ' || i,
+    'usuario' || i || '@email.com',
+    '(48) 9' || floor(random()*100000000)::text,
+    '1980-01-01'::timestamp + random() * (timestamp '2005-12-31' - timestamp '1980-01-01'),
+    true,
+    'PASSAGEIRO',
+    NOW(),
+    0
+FROM generate_series(1, 150) as i;
 
-insert into tipo_veiculo (descricao, ativo, version) values
-    ('City Bus Comfort', true, 0),
-    ('City Bus Compact', true, 0),
-    ('City Bus Premium', true, 0),
-    ('Shuttle Urbano', true, 0),
-    ('Intercity Max', true, 0),
-    ('Intercity Light', true, 0),
-    ('Tour Master', true, 0),
-    ('Eco Line', true, 0),
-    ('Night Rider', true, 0),
-    ('Airport Connect', true, 0);
+-- LINHAS
+INSERT INTO linha (nome, codigo, ativo, tempo_percurso_estimado, version, tarifa) VALUES
+('Araranguá - Morro dos Conventos', 'ARA-101', true, 45, 0, 10),
+('Criciúma - UNESC/Próspera', 'CRI-200', true, 50, 0, 15),      
+('Florianópolis - Volta à Ilha', 'FLN-001', true, 120, 0, 8.50),     
+('Interbairros Criciúma (Rio Maina)', 'CRI-205', true, 35, 0, 10),
+('Tubarão - Unisul/Centro', 'TUB-300', true, 30, 0, 12);
 
-insert into veiculo (placa, chassi, modelo, ano_fabricacao, capacidade, ativo, tipo_veiculo_id, version) values
-    ('EFG1H23', 'CHASSI1011', 'Modelo K', 2019, 44, true, (select id from tipo_veiculo where descricao = 'City Bus Comfort'), 0),
-    ('HIJ4K56', 'CHASSI1012', 'Modelo L', 2020, 32, true, (select id from tipo_veiculo where descricao = 'City Bus Compact'), 0),
-    ('KLM7N89', 'CHASSI1013', 'Modelo M', 2021, 50, true, (select id from tipo_veiculo where descricao = 'City Bus Premium'), 0),
-    ('NOP0Q12', 'CHASSI1014', 'Modelo N', 2018, 28, true, (select id from tipo_veiculo where descricao = 'Shuttle Urbano'), 0),
-    ('QRS3T45', 'CHASSI1015', 'Modelo O', 2022, 60, true, (select id from tipo_veiculo where descricao = 'Intercity Max'), 0),
-    ('TUV6W78', 'CHASSI1016', 'Modelo P', 2023, 64, true, (select id from tipo_veiculo where descricao = 'Intercity Light'), 0),
-    ('WXY9Z01', 'CHASSI1017', 'Modelo Q', 2020, 52, true, (select id from tipo_veiculo where descricao = 'Tour Master'), 0),
-    ('ZAB2C34', 'CHASSI1018', 'Modelo R', 2017, 54, true, (select id from tipo_veiculo where descricao = 'Eco Line'), 0),
-    ('CDE5F67', 'CHASSI1019', 'Modelo S', 2016, 36, true, (select id from tipo_veiculo where descricao = 'Night Rider'), 0),
-    ('FGH8I90', 'CHASSI1020', 'Modelo T', 2021, 48, true, (select id from tipo_veiculo where descricao = 'Airport Connect'), 0);
+-- PONTOS DE PARADA
+INSERT INTO ponto_parada (nome, latitude, longitude, ativo, cidade_id, version) VALUES
+-- Araranguá
+('Terminal Urbano Araranguá', -28.935655, -49.492043, true, (SELECT id FROM cidade WHERE nome='Araranguá'), 0),
+('UFSC Araranguá - Mato Alto', -28.945000, -49.470000, true, (SELECT id FROM cidade WHERE nome='Araranguá'), 0),
+('Hospital Regional Araranguá', -28.940000, -49.480000, true, (SELECT id FROM cidade WHERE nome='Araranguá'), 0),
+('Praia Morro dos Conventos', -28.936400, -49.363800, true, (SELECT id FROM cidade WHERE nome='Araranguá'), 0),
 
-insert into pessoa (cpf, nome, email, telefone, data_nascimento, ativo, tipo_pessoa, cnh, validade_cnh, categoria_cnh, numero_carteirinha, created_at, updated_at, version) values
-    ('123.456.789-10', 'Maria Condutora', 'maria.condutora@bus.com', '(11)91000-0001', '1986-02-05 00:00:00', true, 'MOTORISTA', '45678912300', '2027-08-31 00:00:00', 'D', null, now(), now(), 0),
-    ('234.567.890-21', 'Paulo Condutor', 'paulo.condutor@bus.com', '(11)91000-0002', '1984-04-12 00:00:00', true, 'MOTORISTA', '56789123400', '2026-06-30 00:00:00', 'D', null, now(), now(), 0),
-    ('345.678.901-32', 'Renata Condutora', 'renata.condutora@bus.com', '(11)91000-0003', '1991-10-22 00:00:00', true, 'MOTORISTA', '67891234500', '2028-01-31 00:00:00', 'D', null, now(), now(), 0),
-    ('456.789.012-43', 'Silvia Passageira', 'silvia.passageira@bus.com', '(11)91000-0004', '1996-09-09 00:00:00', true, 'PASSAGEIRO', null, null, null, 'PX101', now(), now(), 0),
-    ('567.890.123-54', 'Thiago Passageiro', 'thiago.passageiro@bus.com', '(11)91000-0005', '1998-12-15 00:00:00', true, 'PASSAGEIRO', null, null, null, 'PX102', now(), now(), 0),
-    ('678.901.234-65', 'Ursula Passageira', 'ursula.passageira@bus.com', '(11)91000-0006', '2001-03-30 00:00:00', true, 'PASSAGEIRO', null, null, null, 'PX103', now(), now(), 0),
-    ('789.012.345-76', 'Vitor Passageiro', 'vitor.passageiro@bus.com', '(11)91000-0007', '1993-07-18 00:00:00', true, 'PASSAGEIRO', null, null, null, 'PX104', now(), now(), 0),
-    ('890.123.456-87', 'Wilson Mecanico', 'wilson.mecanico@bus.com', '(11)91000-0008', '1981-05-25 00:00:00', true, 'MECANICO', null, null, null, null, now(), now(), 0),
-    ('901.234.567-98', 'Xenia Mecanica', 'xenia.mecanica@bus.com', '(11)91000-0009', '1985-11-02 00:00:00', true, 'MECANICO', null, null, null, null, now(), now(), 0),
-    ('012.345.678-99', 'Yuri Passageiro', 'yuri.passageiro@bus.com', '(11)91000-0010', '1994-01-11 00:00:00', true, 'PASSAGEIRO', null, null, null, 'PX105', now(), now(), 0);
+-- Criciúma
+('Terminal Central Criciúma', -28.678363, -49.370375, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('Hospital São José', -28.680000, -49.372000, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('Parque das Nações', -28.690000, -49.390000, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('Shopping Nações', -28.685000, -49.360000, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('UNESC Campus', -28.703286, -49.406602, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('Terminal Rio Maina', -28.660000, -49.420000, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
+('SATC', -28.695000, -49.400000, true, (SELECT id FROM cidade WHERE nome='Criciúma'), 0),
 
-insert into cronograma (id_linha, hora_partida, tipo_dia) values
-    ((select id from linha where codigo = 'LX101'), '05:40:00', 1),
-    ((select id from linha where codigo = 'LX102'), '06:10:00', 1),
-    ((select id from linha where codigo = 'LX103'), '06:30:00', 1),
-    ((select id from linha where codigo = 'LX104'), '07:00:00', 2),
-    ((select id from linha where codigo = 'LX105'), '07:20:00', 2),
-    ((select id from linha where codigo = 'LX106'), '07:50:00', 3),
-    ((select id from linha where codigo = 'LX107'), '08:15:00', 3),
-    ((select id from linha where codigo = 'LX108'), '08:45:00', 4),
-    ((select id from linha where codigo = 'LX109'), '09:05:00', 4),
-    ((select id from linha where codigo = 'LX110'), '09:35:00', 5);
+-- Florianópolis
+('TICEN - Terminal Centro', -27.596890, -48.556440, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
+('Rodoviária Rita Maria', -27.594000, -48.558000, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
+('Beira Mar Norte - Shopping', -27.585000, -48.545000, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
+('UFSC Trindade', -27.601450, -48.519280, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
+('Lagoa da Conceição - Centrinho', -27.605000, -48.460000, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
+('Praia da Joaquina', -27.630000, -48.445000, true, (SELECT id FROM cidade WHERE nome='Florianópolis'), 0),
 
-insert into metodo_pagamento (descricao) values
-    ('Dinheiro Embarque'),
-    ('Cartão Mobilidade'),
-    ('Cartão Crédito Premium'),
-    ('Cartão Débito Gold'),
-    ('Voucher Empresa'),
-    ('Carteira Virtual Urbana'),
-    ('Transferência Bancária'),
-    ('PIX Corporativo'),
-    ('QR Code Embarque'),
-    ('Pagamento Antecipado Web');
+-- Tubarão
+('Terminal Tubarão', -28.470000, -49.010000, true, (SELECT id FROM cidade WHERE nome='Tubarão'), 0),
+('Farol Shopping', -28.475000, -49.020000, true, (SELECT id FROM cidade WHERE nome='Tubarão'), 0),
+('Unisul Tubarão', -28.485000, -49.015000, true, (SELECT id FROM cidade WHERE nome='Tubarão'), 0);
 
-insert into tipo_passagem (descricao) values
-    ('Bilhete Único'),
-    ('Passe Universitário'),
-    ('Passe Sênior'),
-    ('Passe Trabalhador'),
-    ('Passe Turístico Plus'),
-    ('Passe Executivo'),
-    ('Passe Aeroporto'),
-    ('Passe Madrugada'),
-    ('Passe Corporativo Premium'),
-    ('Passe Evento Especial');
 
-insert into viagem (data_partida_real, data_partida_prevista, data_chegada_prevista, data_chegada_real, linha_id, veiculo_id, motorista_id, status, version) values
-    ('2024-06-01 05:45:00', '2024-06-01 05:40:00', '2024-06-01 06:40:00', '2024-06-01 06:45:00',
-        (select id from linha where codigo = 'LX101'),
-        (select id from veiculo where placa = 'EFG1H23'),
-        (select id from pessoa where nome = 'Maria Condutora'),
-        1, 0),
-    ('2024-06-01 06:15:00', '2024-06-01 06:10:00', '2024-06-01 07:05:00', '2024-06-01 07:10:00',
-        (select id from linha where codigo = 'LX102'),
-        (select id from veiculo where placa = 'HIJ4K56'),
-        (select id from pessoa where nome = 'Paulo Condutor'),
-        1, 0),
-    ('2024-06-01 06:35:00', '2024-06-01 06:30:00', '2024-06-01 07:25:00', '2024-06-01 07:30:00',
-        (select id from linha where codigo = 'LX103'),
-        (select id from veiculo where placa = 'KLM7N89'),
-        (select id from pessoa where nome = 'Renata Condutora'),
-        1, 0),
-    ('2024-06-01 07:05:00', '2024-06-01 07:00:00', '2024-06-01 08:10:00', '2024-06-01 08:15:00',
-        (select id from linha where codigo = 'LX104'),
-        (select id from veiculo where placa = 'NOP0Q12'),
-        (select id from pessoa where nome = 'Maria Condutora'),
-        1, 0),
-    ('2024-06-01 07:25:00', '2024-06-01 07:20:00', '2024-06-01 08:20:00', '2024-06-01 08:30:00',
-        (select id from linha where codigo = 'LX105'),
-        (select id from veiculo where placa = 'QRS3T45'),
-        (select id from pessoa where nome = 'Paulo Condutor'),
-        1, 0),
-    ('2024-06-01 07:55:00', '2024-06-01 07:50:00', '2024-06-01 08:45:00', '2024-06-01 08:55:00',
-        (select id from linha where codigo = 'LX106'),
-        (select id from veiculo where placa = 'TUV6W78'),
-        (select id from pessoa where nome = 'Renata Condutora'),
-        1, 0),
-    ('2024-06-01 08:20:00', '2024-06-01 08:15:00', '2024-06-01 09:10:00', '2024-06-01 09:15:00',
-        (select id from linha where codigo = 'LX107'),
-        (select id from veiculo where placa = 'WXY9Z01'),
-        (select id from pessoa where nome = 'Maria Condutora'),
-        1, 0),
-    ('2024-06-01 08:50:00', '2024-06-01 08:45:00', '2024-06-01 10:00:00', '2024-06-01 10:05:00',
-        (select id from linha where codigo = 'LX108'),
-        (select id from veiculo where placa = 'ZAB2C34'),
-        (select id from pessoa where nome = 'Paulo Condutor'),
-        1, 0),
-    ('2024-06-01 09:10:00', '2024-06-01 09:05:00', '2024-06-01 10:20:00', '2024-06-01 10:25:00',
-        (select id from linha where codigo = 'LX109'),
-        (select id from veiculo where placa = 'CDE5F67'),
-        (select id from pessoa where nome = 'Renata Condutora'),
-        1, 0),
-    ('2024-06-01 09:40:00', '2024-06-01 09:35:00', '2024-06-01 10:45:00', '2024-06-01 10:50:00',
-        (select id from linha where codigo = 'LX110'),
-        (select id from veiculo where placa = 'FGH8I90'),
-        (select id from pessoa where nome = 'Maria Condutora'),
-        1, 0);
+-- PONTOS TURÍSTICOS
+INSERT INTO ponto_turistico (nome, descricao, latitude, longitude, ativo, version) VALUES
+('Morro dos Conventos', 'Falésias e dunas com vista para o mar.', -28.936400, -49.363800, true, 0),
+('Mina de Visitação Octávio Fontana', 'Mina de carvão turística subterrânea.', -28.658500, -49.359000, true, 0),
+('Ponte Hercílio Luz', 'Cartão postal histórico de Floripa.', -27.593500, -48.564500, true, 0),
+('Parque das Nações Cincinato Naspolini', 'Parque urbano com réplica de trem.', -28.690000, -49.390000, true, 0),
+('Lagoa da Conceição', 'Lagoa famosa por esportes náuticos e gastronomia.', -27.605000, -48.460000, true, 0);
 
-insert into passagem (data_emissao, valor, desconto_aplicado, ativo, numero_assento, pessoa_id, viagem_id, tipo_passagem_id, metodo_pagamento_id) values
-    ('2024-05-31 09:00:00', 8.50, null, true, 1,
-        (select id from pessoa where nome = 'Silvia Passageira'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX101')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Bilhete Único'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Cartão Mobilidade')),
-    ('2024-05-31 09:05:00', 4.25, 4.25, true, 2,
-        (select id from pessoa where nome = 'Thiago Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX101')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Universitário'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Carteira Virtual Urbana')),
-    ('2024-05-31 09:10:00', 6.80, 1.20, true, 3,
-        (select id from pessoa where nome = 'Ursula Passageira'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX102')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Trabalhador'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Dinheiro Embarque')),
-    ('2024-05-31 09:15:00', 14.00, null, true, 4,
-        (select id from pessoa where nome = 'Vitor Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX103')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Executivo'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'PIX Corporativo')),
-    ('2024-05-31 09:20:00', 18.00, null, true, 5,
-        (select id from pessoa where nome = 'Yuri Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX104')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Aeroporto'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Cartão Crédito Premium')),
-    ('2024-05-31 09:25:00', 9.10, 2.00, true, 6,
-        (select id from pessoa where nome = 'Silvia Passageira'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX105')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Turístico Plus'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Cartão Débito Gold')),
-    ('2024-05-31 09:30:00', 7.90, null, true, 7,
-        (select id from pessoa where nome = 'Thiago Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX106')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Bilhete Único'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Transferência Bancária')),
-    ('2024-05-31 09:35:00', 21.00, null, true, 8,
-        (select id from pessoa where nome = 'Ursula Passageira'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX107')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Madrugada'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'QR Code Embarque')),
-    ('2024-05-31 09:40:00', 24.00, 4.00, true, 9,
-        (select id from pessoa where nome = 'Vitor Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX108')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Corporativo Premium'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Voucher Empresa')),
-    ('2024-05-31 09:45:00', 28.00, null, true, 10,
-        (select id from pessoa where nome = 'Yuri Passageiro'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX109')),
-        (select id_tipo_passagem from tipo_passagem where descricao = 'Passe Evento Especial'),
-        (select id_metodo_pagamento from metodo_pagamento where descricao = 'Pagamento Antecipado Web'));
+-- VINCULO PONTO PARADA x TURISTICO
+INSERT INTO ponto_parada_turistico (id_ponto_parada, id_ponto_turistico) VALUES
+((SELECT id FROM ponto_parada WHERE nome='Praia Morro dos Conventos'), (SELECT id FROM ponto_turistico WHERE nome='Morro dos Conventos')),
+((SELECT id FROM ponto_parada WHERE nome='TICEN - Terminal Centro'), (SELECT id FROM ponto_turistico WHERE nome='Ponte Hercílio Luz')),
+((SELECT id FROM ponto_parada WHERE nome='Parque das Nações'), (SELECT id FROM ponto_turistico WHERE nome='Parque das Nações Cincinato Naspolini')),
+((SELECT id FROM ponto_parada WHERE nome='Terminal Central Criciúma'), (SELECT id FROM ponto_turistico WHERE nome='Mina de Visitação Octávio Fontana')),
+((SELECT id FROM ponto_parada WHERE nome='Lagoa da Conceição - Centrinho'), (SELECT id FROM ponto_turistico WHERE nome='Lagoa da Conceição'));
 
-insert into peca (valor_unitario, nome, fabricante, quantidade) values
-    (130.00, 'Filtro de Ar Plus', 'Fabricante L', 55),
-    (85.00, 'Pastilha Cerâmica', 'Fabricante M', 95),
-    (160.00, 'Amortecedor Heavy', 'Fabricante N', 42),
-    (65.00, 'Correia Reforçada', 'Fabricante O', 72),
-    (210.00, 'Embreagem Power', 'Fabricante P', 32),
-    (95.00, 'Filtro de Óleo Premium', 'Fabricante Q', 115),
-    (50.00, 'Lâmpada LED Ultra', 'Fabricante R', 205),
-    (320.00, 'Bateria LongLife', 'Fabricante S', 28),
-    (38.00, 'Palheta Silicone', 'Fabricante T', 160),
-    (520.00, 'Sistema ABS Pro', 'Fabricante U', 18);
+-- ITINERÁRIOS (MAIS PONTOS POR LINHA)
+INSERT INTO itinerario (ordem, id_linha, id_ponto_parada) VALUES
+-- ARA-101 (Araranguá - Morro)
+(1, (SELECT id FROM linha WHERE codigo='ARA-101'), (SELECT id FROM ponto_parada WHERE nome='Terminal Urbano Araranguá')),
+(2, (SELECT id FROM linha WHERE codigo='ARA-101'), (SELECT id FROM ponto_parada WHERE nome='Hospital Regional Araranguá')),
+(3, (SELECT id FROM linha WHERE codigo='ARA-101'), (SELECT id FROM ponto_parada WHERE nome='UFSC Araranguá - Mato Alto')),
+(4, (SELECT id FROM linha WHERE codigo='ARA-101'), (SELECT id FROM ponto_parada WHERE nome='Praia Morro dos Conventos')),
 
-insert into manutencao (id_veiculo, id_pessoa, descricao, custo_total, data_inicio, data_fim) values
-    ((select id from veiculo where placa = 'EFG1H23'), (select id from pessoa where nome = 'Wilson Mecanico'), 'Revisão completa de freios', 330.00, '2024-05-20 08:00:00', '2024-05-20 13:00:00'),
-    ((select id from veiculo where placa = 'HIJ4K56'), (select id from pessoa where nome = 'Xenia Mecanica'), 'Troca de amortecedores', 610.00, '2024-05-21 09:00:00', '2024-05-21 17:00:00'),
-    ((select id from veiculo where placa = 'KLM7N89'), (select id from pessoa where nome = 'Wilson Mecanico'), 'Substituição de correia', 170.00, '2024-05-22 10:00:00', '2024-05-22 14:00:00'),
-    ((select id from veiculo where placa = 'NOP0Q12'), (select id from pessoa where nome = 'Xenia Mecanica'), 'Troca de óleo premium', 220.00, '2024-05-23 08:30:00', '2024-05-23 11:30:00'),
-    ((select id from veiculo where placa = 'QRS3T45'), (select id from pessoa where nome = 'Wilson Mecanico'), 'Manutenção preventiva geral', 420.00, '2024-05-24 07:45:00', '2024-05-24 16:00:00'),
-    ((select id from veiculo where placa = 'TUV6W78'), (select id from pessoa where nome = 'Xenia Mecanica'), 'Troca de bateria e cabos', 360.00, '2024-05-25 09:15:00', '2024-05-25 12:45:00'),
-    ((select id from veiculo where placa = 'WXY9Z01'), (select id from pessoa where nome = 'Wilson Mecanico'), 'Ajuste de suspensão', 510.00, '2024-05-26 13:00:00', '2024-05-26 19:00:00'),
-    ((select id from veiculo where placa = 'ZAB2C34'), (select id from pessoa where nome = 'Xenia Mecanica'), 'Revisão do sistema elétrico', 540.00, '2024-05-27 08:00:00', '2024-05-27 14:30:00'),
-    ((select id from veiculo where placa = 'CDE5F67'), (select id from pessoa where nome = 'Wilson Mecanico'), 'Substituição de iluminação interna', 120.00, '2024-05-28 10:30:00', '2024-05-28 15:00:00'),
-    ((select id from veiculo where placa = 'FGH8I90'), (select id from pessoa where nome = 'Xenia Mecanica'), 'Revisão completa pré-viagem', 780.00, '2024-05-29 07:30:00', '2024-05-29 18:30:00');
+-- CRI-200 (Criciúma - UNESC)
+(1, (SELECT id FROM linha WHERE codigo='CRI-200'), (SELECT id FROM ponto_parada WHERE nome='Terminal Central Criciúma')),
+(2, (SELECT id FROM linha WHERE codigo='CRI-200'), (SELECT id FROM ponto_parada WHERE nome='Hospital São José')),
+(3, (SELECT id FROM linha WHERE codigo='CRI-200'), (SELECT id FROM ponto_parada WHERE nome='Shopping Nações')),
+(4, (SELECT id FROM linha WHERE codigo='CRI-200'), (SELECT id FROM ponto_parada WHERE nome='Parque das Nações')),
+(5, (SELECT id FROM linha WHERE codigo='CRI-200'), (SELECT id FROM ponto_parada WHERE nome='UNESC Campus')),
 
-insert into manutencao_peca (id_manutencao, id_peca, quantidade_utilizada, valor_unitario) values
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'EFG1H23'),
-        (select id_peca from peca where nome = 'Pastilha Cerâmica'), 4, 85.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'HIJ4K56'),
-        (select id_peca from peca where nome = 'Amortecedor Heavy'), 4, 160.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'KLM7N89'),
-        (select id_peca from peca where nome = 'Correia Reforçada'), 1, 65.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'NOP0Q12'),
-        (select id_peca from peca where nome = 'Filtro de Óleo Premium'), 1, 95.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'QRS3T45'),
-        (select id_peca from peca where nome = 'Palheta Silicone'), 2, 38.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'TUV6W78'),
-        (select id_peca from peca where nome = 'Bateria LongLife'), 1, 320.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'WXY9Z01'),
-        (select id_peca from peca where nome = 'Filtro de Ar Plus'), 1, 130.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'ZAB2C34'),
-        (select id_peca from peca where nome = 'Sistema ABS Pro'), 1, 520.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'CDE5F67'),
-        (select id_peca from peca where nome = 'Lâmpada LED Ultra'), 6, 50.00),
-    ((select m.id_manutencao from manutencao m join veiculo v on m.id_veiculo = v.id where v.placa = 'FGH8I90'),
-        (select id_peca from peca where nome = 'Embreagem Power'), 1, 210.00);
+-- FLN-001 (Floripa - Volta à Ilha Parcial)
+(1, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='Rodoviária Rita Maria')),
+(2, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='TICEN - Terminal Centro')),
+(3, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='Beira Mar Norte - Shopping')),
+(4, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='UFSC Trindade')),
+(5, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='Lagoa da Conceição - Centrinho')),
+(6, (SELECT id FROM linha WHERE codigo='FLN-001'), (SELECT id FROM ponto_parada WHERE nome='Praia da Joaquina')),
 
-insert into progresso_viagem (data, id_ponto_parada, id_viagem) values
-    ('2024-06-01 05:55:00', (select id from ponto_parada where nome = 'Parada Aurora 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX101'))),
-    ('2024-06-01 06:25:00', (select id from ponto_parada where nome = 'Parada Aurora 2'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX101'))),
-    ('2024-06-01 06:45:00', (select id from ponto_parada where nome = 'Parada Horizonte 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX102'))),
-    ('2024-06-01 07:20:00', (select id from ponto_parada where nome = 'Parada Horizonte 2'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX102'))),
-    ('2024-06-01 06:50:00', (select id from ponto_parada where nome = 'Parada Azul 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX103'))),
-    ('2024-06-01 07:35:00', (select id from ponto_parada where nome = 'Parada Azul 2'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX103'))),
-    ('2024-06-01 07:25:00', (select id from ponto_parada where nome = 'Parada Serra 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX104'))),
-    ('2024-06-01 08:00:00', (select id from ponto_parada where nome = 'Parada Praia 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX105'))),
-    ('2024-06-01 08:25:00', (select id from ponto_parada where nome = 'Parada Lagoa 1'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX106'))),
-    ('2024-06-01 09:15:00', (select id from ponto_parada where nome = 'Parada Aeroporto Plus'),
-        (select id from viagem where linha_id = (select id from linha where codigo = 'LX108')));
+-- CRI-205 (Rio Maina)
+(1, (SELECT id FROM linha WHERE codigo='CRI-205'), (SELECT id FROM ponto_parada WHERE nome='Terminal Central Criciúma')),
+(2, (SELECT id FROM linha WHERE codigo='CRI-205'), (SELECT id FROM ponto_parada WHERE nome='SATC')),
+(3, (SELECT id FROM linha WHERE codigo='CRI-205'), (SELECT id FROM ponto_parada WHERE nome='Terminal Rio Maina')),
+
+-- TUB-300 (Tubarão)
+(1, (SELECT id FROM linha WHERE codigo='TUB-300'), (SELECT id FROM ponto_parada WHERE nome='Terminal Tubarão')),
+(2, (SELECT id FROM linha WHERE codigo='TUB-300'), (SELECT id FROM ponto_parada WHERE nome='Farol Shopping')),
+(3, (SELECT id FROM linha WHERE codigo='TUB-300'), (SELECT id FROM ponto_parada WHERE nome='Unisul Tubarão'));
+
+-- FINANCEIRO
+INSERT INTO metodo_pagamento (descricao) VALUES
+('Dinheiro'), ('Cartão Cidadão'), ('Cartão Estudante'), ('PIX'), ('Vale Transporte');
+
+-- TIPO DE PASSAGEM COM DESCONTO
+INSERT INTO tipo_passagem (descricao, porcentagem_desconto) VALUES
+('Inteira', 0.00),
+('Estudante', 50.00),
+('Idoso', 100.00),
+('PNE', 100.00),
+('Professor', 25.00);
+
+-- PEÇAS PARA MANUTENÇÃO
+INSERT INTO peca (nome, fabricante, valor_unitario, quantidade) VALUES
+('Pneu 275/80R22.5', 'Michelin', 2800.00, 20),
+('Filtro de Óleo', 'Tecfil', 85.90, 50),
+('Pastilha de Freio', 'Fras-le', 450.00, 30),
+('Bateria 150Ah', 'Moura', 1200.00, 10),
+('Turbina', 'Garrett', 4500.00, 3),
+('Alternador 24V', 'Bosch', 1800.00, 5),
+('Correia Dentada', 'Continental', 120.00, 40);
+
+
+-- Inserir viagem podemos alterar a quantidade
+INSERT INTO viagem (data_partida_real, data_partida_prevista, data_chegada_prevista, data_chegada_real, linha_id, veiculo_id, motorista_id, status, version)
+SELECT
+    d.day + h.hora + (random() * interval '10 minutes'), -- partida real
+    d.day + h.hora, -- partida prevista
+    d.day + h.hora + (l.tempo_percurso_estimado || ' minutes')::interval, -- chegada prev
+    d.day + h.hora + (l.tempo_percurso_estimado || ' minutes')::interval + (random() * interval '15 minutes'), -- chegada real
+    l.id,
+    (SELECT id FROM veiculo ORDER BY random() LIMIT 1),
+    (SELECT id FROM pessoa WHERE tipo_pessoa = 'MOTORISTA' ORDER BY random() LIMIT 1),
+    1,
+    0
+FROM generate_series(CURRENT_DATE - interval '1 months', CURRENT_DATE, interval '20 day') as d(day)
+CROSS JOIN (SELECT unnest(ARRAY['07:00:00', '11:30:00', '17:30:00']::time[]) as hora) as h
+CROSS JOIN linha l
+WHERE
+    -- Regra Fim de Semana menos
+    NOT (EXTRACT(DOW FROM d.day) = 0 AND h.hora NOT IN ('11:30:00'))
+    AND
+    NOT (EXTRACT(DOW FROM d.day) = 6 AND h.hora IN ('07:00:00'));
+
+-- INSERIR PASSAGENS COM DIVERSIDADE DE OCUPAÇÃO POR LINHA E VIAGEM
+INSERT INTO passagem (data_emissao, valor, ativo, pessoa_id, viagem_id, tipo_passagem_id, metodo_pagamento_id)
+SELECT
+    v.data_partida_prevista - (random() * interval '45 minutes'), -- data emissao
+    -- Cálculo Valor Final
+    ROUND(
+        (l.tarifa * (1 - (tp.porcentagem_desconto / 100.0)))::numeric, 
+        2
+    ),
+    true,
+    (floor(random() * 150) + 6)::bigint,
+    v.id,
+    (floor(random() * 5)+1)::bigint,
+    (SELECT id_metodo_pagamento FROM metodo_pagamento ORDER BY random() LIMIT 1)
+FROM viagem v
+JOIN linha l ON v.linha_id = l.id
+JOIN veiculo vec ON v.veiculo_id = vec.id
+CROSS JOIN LATERAL (
+    SELECT id_tipo_passagem, porcentagem_desconto FROM tipo_passagem ORDER BY random() LIMIT 1
+) tp
+CROSS JOIN LATERAL generate_series(1,
+    LEAST(
+        (vec.capacidade * 1.2)::int, -- Limite físico máximo
+        (CASE
+            -- 1. Linha (CRI-200)
+            WHEN l.codigo = 'CRI-200' AND v.data_partida_prevista::time IN ('17:30:00') THEN floor(vec.capacidade * (0.9 + random() * 0.3))
+            WHEN l.codigo = 'CRI-200' AND v.data_partida_prevista::time IN ('11:30:00') THEN floor(vec.capacidade * (0.2 + random() * 0.2))
+            
+            -- 2. Linha (FLN-001)
+            WHEN l.codigo LIKE 'FLN%' AND EXTRACT(MONTH FROM v.data_partida_prevista) IN (12, 1, 2) THEN floor(vec.capacidade * (0.9 + random() * 0.3))
+            WHEN l.codigo LIKE 'FLN%' THEN floor(vec.capacidade * (0.6 + random() * 0.3))
+
+            -- 3. Linha (ARA-101)
+            WHEN l.codigo = 'ARA-101' THEN floor(vec.capacidade * (0.2 + random() * 0.4))
+
+            -- 4. Padrão Geral
+            WHEN v.data_partida_prevista::time BETWEEN '06:00:00' AND '08:00:00' OR v.data_partida_prevista::time BETWEEN '17:30:00' AND '18:30:00' THEN floor(vec.capacidade * (0.5 + random() * 0.4))
+            
+            -- 5. Padrão Geral
+            ELSE floor(vec.capacidade * (0.05 + random() * 0.25))
+        END)::int
+    )
+) as gs(seat);
+
+-- 3. GERAÇÃO DE MANUTENÇÃO (ÚLTIMOS 12 MESES)
+INSERT INTO manutencao (id_veiculo, id_pessoa, descricao, custo_total, data_inicio, data_fim)
+SELECT 
+    v.id,
+    (SELECT id FROM pessoa WHERE tipo_pessoa = 'MECANICO' ORDER BY random() LIMIT 1),
+    CASE 
+        WHEN v.ano_fabricacao < 2018 THEN 'Manutenção Corretiva Sistema de Freios' 
+        ELSE 'Revisão Periódica (10.000km)' 
+    END,
+    CASE 
+        WHEN v.ano_fabricacao < 2018 THEN random() * 3000 + 1500
+        ELSE random() * 500 + 200 
+    END,
+    d_data,
+    d_data + (random() * interval '8 hours')
+FROM veiculo v
+CROSS JOIN generate_series(CURRENT_DATE - interval '1 year', CURRENT_DATE, interval '3 months') as d_data -- 1 manutenção a cada 3 meses
+WHERE random() < 0.8; -- 80% chance de ocorrer
+
+-- Vincular peças
+WITH manutencao_random_peca AS (
+    SELECT 
+        id_manutencao,
+        -- Seleciona aleatoriamente um ID do array de peças existentes
+        (ARRAY[1,2,3,4,5,6,7])[floor(random() * 7 + 1)] as id_peca_selecionada
+    FROM manutencao
+)
+INSERT INTO manutencao_peca (id_manutencao, id_peca, quantidade_utilizada, valor_unitario)
+SELECT 
+    mrp.id_manutencao,
+    p.id_peca,
+    floor(random() * 2) + 1,
+    p.valor_unitario
+FROM manutencao_random_peca mrp
+JOIN peca p ON p.id_peca = mrp.id_peca_selecionada;

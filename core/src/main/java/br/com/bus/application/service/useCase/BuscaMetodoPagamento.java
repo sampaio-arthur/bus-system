@@ -29,7 +29,7 @@ public class BuscaMetodoPagamento {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(MetodoPagamentoMap::toSummary)
+                .map(MetodoPagamentoMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

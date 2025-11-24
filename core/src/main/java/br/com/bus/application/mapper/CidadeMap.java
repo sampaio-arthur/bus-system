@@ -34,7 +34,7 @@ public final class CidadeMap {
         dto.setVersion(entity.getVersion());
         if (entity.getPontosParada() != null) {
             List<PontoParadaDTO> pontos = entity.getPontosParada().stream()
-                    .map(PontoParadaMap::toSummary)
+                    .map(PontoParadaMap::toDTO)
                     .collect(Collectors.toList());
             dto.setPontosParada(pontos);
         }
@@ -67,6 +67,7 @@ public final class CidadeMap {
         CidadeDTO dto = new CidadeDTO();
         dto.setId(entity.getId());
         dto.setNome(entity.getNome());
+        dto.setUf(entity.getUf());
         return dto;
     }
 

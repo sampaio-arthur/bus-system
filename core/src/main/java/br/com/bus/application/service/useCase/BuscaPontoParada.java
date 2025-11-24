@@ -7,6 +7,7 @@ import br.com.bus.application.dto.PontoParadaDTO;
 import br.com.bus.application.mapper.PontoParadaMap;
 import br.com.bus.repository.PontoParadaRepository;
 import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.NotFoundException;
@@ -25,11 +26,11 @@ public class BuscaPontoParada {
     }
 
     public List<PontoParadaDTO> listar(int page, int size) {
-        return repository.findAll()
+        return repository.findAll(Sort.by("id"))
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(PontoParadaMap::toSummary)
+                .map(PontoParadaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

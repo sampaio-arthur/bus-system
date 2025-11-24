@@ -29,7 +29,7 @@ public class BuscaLinha {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(LinhaMap::toSummary)
+                .map(LinhaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

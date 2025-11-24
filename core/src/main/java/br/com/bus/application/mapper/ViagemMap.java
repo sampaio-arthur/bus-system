@@ -29,7 +29,7 @@ public final class ViagemMap {
         }
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
-        dto.setDataPartidaPrevista(dto.getDataPartidaPrevista());
+        dto.setDataPartidaPrevista(entity.getDataPartidaPrevista());
         dto.setDataPartidaReal(entity.getDataPartidaReal());
         dto.setDataChegadaPrevista(entity.getDataChegadaPrevista());
         dto.setDataChegadaReal(entity.getDataChegadaReal());
@@ -79,6 +79,9 @@ public final class ViagemMap {
         ViagemDTO dto = new ViagemDTO();
         dto.setId(entity.getId());
         dto.setDataPartidaReal(entity.getDataPartidaReal());
+        dto.setDataChegadaReal(entity.getDataChegadaReal());
+        dto.setDataPartidaPrevista(entity.getDataPartidaPrevista());
+        dto.setDataChegadaPrevista(entity.getDataChegadaPrevista());
         dto.setStatus(entity.getStatus());
         return dto;
     }

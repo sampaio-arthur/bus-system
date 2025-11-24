@@ -30,9 +30,7 @@ public final class PassagemMap {
         PassagemDTO dto = new PassagemDTO();
         dto.setId(entity.getId());
         dto.setDataEmissao(entity.getDataEmissao());
-        dto.setNumeroAssento(entity.getNumeroAssento());
         dto.setValor(entity.getValor());
-        dto.setDescontoAplicado(entity.getDescontoAplicado());
         dto.setAtivo(entity.getAtivo());
         dto.setPessoa(PessoaMap.toSummary(entity.getPessoa()));
         dto.setTipoPassagem(TipoPassagemMap.toSummary(entity.getTipoPassagem()));
@@ -51,8 +49,6 @@ public final class PassagemMap {
     private static void entityFromDTO(PassagemDTO dto, Passagem entity) {
         entity.setDataEmissao(dto.getDataEmissao());
         entity.setValor(dto.getValor());
-        entity.setNumeroAssento(dto.getNumeroAssento());
-        entity.setDescontoAplicado(dto.getDescontoAplicado());
         entity.setAtivo(dto.getAtivo());
         entity.setPessoa(PessoaMap.fromSummary(dto.getPessoa()));
         entity.setTipoPassagem(TipoPassagemMap.fromSummary(dto.getTipoPassagem()));

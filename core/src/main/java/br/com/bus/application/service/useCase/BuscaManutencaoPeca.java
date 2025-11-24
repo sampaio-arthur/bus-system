@@ -32,7 +32,7 @@ public class BuscaManutencaoPeca {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(ManutencaoPecaMap::toSummary)
+                .map(ManutencaoPecaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }

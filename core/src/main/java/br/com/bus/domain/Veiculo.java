@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
@@ -27,10 +28,13 @@ public class Veiculo extends PanacheEntityBase {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(name = "placa", nullable = false, unique = true, length = 50)
     private String placa;
 
+    @Column(name = "chassi", length = 100, unique = true)
     private String chassi;
+
+    @Column(name = "modelo", length = 100)
     private String modelo;
 
     @NotNull
@@ -46,6 +50,7 @@ public class Veiculo extends PanacheEntityBase {
     private Boolean ativo = true;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tipo_veiculo_id", nullable = false)
     private TipoVeiculo tipoVeiculo;
 
     @OneToMany(mappedBy = "veiculo", fetch = FetchType.LAZY)

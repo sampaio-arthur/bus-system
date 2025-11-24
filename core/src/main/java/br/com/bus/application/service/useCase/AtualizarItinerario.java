@@ -24,20 +24,39 @@ public class AtualizarItinerario {
 
     @Transactional
     public ItinerarioDTO executar(Short ordem, Long idLinha, Long idPontoParada, ItinerarioDTO dto) {
-        ItinerarioId id = new ItinerarioId();
-        id.setOrdem(ordem);
-        id.setIdLinha(idLinha);
-        id.setIdPontoParada(idPontoParada);
-        Itinerario entity = repository.findByIdOptional(id)
-                .orElseThrow(() -> new NotFoundException(
-                        "Itinerário não encontrado: ordem=" + ordem + ", linha=" + idLinha + ", ponto=" + idPontoParada));
-        aplicarAtualizacoes(entity, id);
-        return ItinerarioMap.toDTO(entity);
-    }
+        ItinerarioId idAntigo = new ItinerarioId();
+        idAntigo.setOrdem(ordem);
+        idAntigo.setIdLinha(idLinha);
+        idAntigo.setIdPontoParada(idPontoParada);
 
-    private void aplicarAtualizacoes(Itinerario entity, ItinerarioId id) {
-        entity.setId(id);
-        entity.setLinha(entityManager.getReference(Linha.class, id.getIdLinha()));
-        entity.setPontoParada(entityManager.getReference(PontoParada.class, id.getIdPontoParada()));
+        Itinerario existente = repository.findByIdOptional(idAntigo)
+                .orElseThrow(() -> new NotFoundException(
+                        "Itinerario nao encontrado: ordem=" + ordem + ", linha=" + idLinha + ", ponto=" + idPontoParada));
+
+        Short novaOrdem = dto != null && dto.getOrdem() != null ? dto.getOrdem() : idAntigo.getOrdem();
+        Long novaLinha = dto != null && dto.getIdLinha() != null ? dto.getIdLinha() : idAntigo.getIdLinha();
+        Long novoPonto = dto != null && dto.getIdPontoParada() != null ? dto.getIdPontoParada() : idAntigo.getIdPontoParada();
+
+        boolean mudouChave = !idAntigo.getOrdem().equals(novaOrdem)
+                || !idAntigo.getIdLinha().equals(novaLinha)
+                || !idAntigo.getIdPontoParada().equals(novoPonto);
+
+        if (mudouChave) {
+            repository.delete(existente);
+            ItinerarioDTO novoDto = new ItinerarioDTO();
+            novoDto.setOrdem(novaOrdem);
+            novoDto.setIdLinha(novaLinha);
+            novoDto.setIdPontoParada(novoPonto);
+
+            Itinerario novo = ItinerarioMap.toEntity(novoDto);
+            novo.setLinha(entityManager.getReference(Linha.class, novaLinha));
+            novo.setPontoParada(entityManager.getReference(PontoParada.class, novoPonto));
+            repository.persist(novo);
+            return ItinerarioMap.toDTO(novo);
+        }
+
+        existente.setLinha(entityManager.getReference(Linha.class, novaLinha));
+        existente.setPontoParada(entityManager.getReference(PontoParada.class, novoPonto));
+        return ItinerarioMap.toDTO(existente);
     }
 }

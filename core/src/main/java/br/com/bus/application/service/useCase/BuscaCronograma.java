@@ -29,7 +29,7 @@ public class BuscaCronograma {
                 .page(Page.of(page, size))
                 .list()
                 .stream()
-                .map(CronogramaMap::toSummary)
+                .map(CronogramaMap::toDTO)
                 .collect(Collectors.toList());
     }
 }
