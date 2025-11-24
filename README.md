@@ -1,80 +1,303 @@
-# bus-system
+# 🚌 Bus System – Sistema Integrado de Gerenciamento de Transporte Coletivo (SIGTC)
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+### Projeto desenvolvido para a disciplina **DEC7588 – Banco de Dados**  
+**Universidade Federal de Santa Catarina – Campus Araranguá**  
+**Professor:** Alexandre Leopoldo Gonçalves  
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+**Autores:**  
+- Arthur Silveira Sampaio (24103786)  
+- Diego Nyland Bloemer (24103789)  
+---
 
-## Running the application in dev mode
+# 📌 Visão Geral
 
-You can run your application in dev mode that enables live coding using:
+O **Bus System** é um sistema completo para **gerenciamento de transporte coletivo**, permitindo às empresas controlarem:
 
-```shell script
-./mvnw quarkus:dev
+- Frota e manutenção  
+- Motoristas, mecânicos e passageiros  
+- Linhas, itinerários e pontos de parada  
+- Pontos turísticos próximos aos pontos  
+- Cronogramas de viagens  
+- Execução e monitoramento de viagens  
+- Vendas de passagens  
+- Geração de insights via IA (módulo opcional)  
+
+Toda a execução é **100% em containers**, sem necessidade de instalar Java, Node ou PostgreSQL na máquina.
+
+O projeto foi pensado academicamente, mas com arquitetura profissional escalável e pronta para futura oferta **SaaS**.
+
+---
+
+# 🧱 Estrutura do Projeto
+
+```
+bus-system/
+│
+├── core/                        → Back-end Quarkus (API REST + Panache + JWT)
+│   ├── src/
+│   └── pom.xml
+│
+├── front/                       → Front-end (Vite + React + TypeScript)
+│   ├── src/
+│   └── package.json
+│
+├── bot/                         → Módulo de IA e automações
+│   ├── ai-compose.yml           → Sobe RabbitMQ + Redis + n8n
+│   ├── n8n-flows/               → Fluxos JSON para importação
+│   └── README.md                → Instruções opcionais
+│
+│
+├── docker-compose.yml           → Compose principal (core + front + postgres)
+├── .env.example                 → Modelo de variáveis de ambiente
+└── README.md                    → Este documento
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+---
 
-## Packaging and running the application
+# 🐳 Execução do Sistema (100% via Docker)
 
-The application can be packaged using:
+### ▶️ Passo 1 — Configurar variáveis
 
-```shell script
-./mvnw package
+Na raiz do projeto:
+
+```
+cp .env.example .env
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### ▶️ Passo 2 — Subir o sistema completo (core + front + banco)
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```
+docker compose up -d
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+Isso automaticamente inicia:
 
-## Creating a native executable
+- Back-end Quarkus  
+- Front-end React/Vite  
+- PostgreSQL  
 
-You can create a native executable using:
+Não é necessário instalar dependência alguma no computador.
 
-```shell script
-./mvnw package -Dnative
+---
+
+# 🤖 Módulo de IA (Opcional)
+
+Entre na pasta:
+
+```
+/bot
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+E suba:
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+```
+docker compose -f ai-compose.yml up -d
 ```
 
-You can then execute your native executable with: `./target/bus-system-1.0.0-SNAPSHOT-runner`
+Isso sobe:
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+- RabbitMQ  
+- Redis  
+- n8n  
 
-## Related Guides
+Os fluxos prontos para importação estão em:
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- LangChain4j OpenAI ([guide](https://docs.quarkiverse.io/quarkus-langchain4j/dev/index.html)): Provides the basic integration with LangChain4j
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- SmallRye JWT ([guide](https://quarkus.io/guides/security-jwt)): Secure your applications with JSON Web Token
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+```
+/bot/n8n-flows/*.json
+```
 
-## Provided Code
+---
 
-### Hibernate ORM
+# 🛢️ Banco de Dados
 
-Create your first JPA entity
+O banco é **PostgreSQL** e contém:
 
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+- Modelagem Conceitual  
+- Modelagem Lógica  
+- Script DDL completo  
+- Scripts de Seed (RF15)  
+- Consultas SQL analíticas  
 
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
+Esses scripts são acionados **automaticamente via endpoints administrativos** (abaixo).
 
+---
 
-### REST
+# 🔧 Endpoints Administrativos (DDL, DML, CLEAN, RELOAD)
 
-Easily start your REST Web Services
+### Header obrigatório:
 
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+```
+X-Admin-Token: X05D5wziCBb8kIvctd5Bq5IZBJp9abYM0HePXKvVKSyScLecZLAAHwiUs0RdtzgcfCK
+```
+
+A variável usada é:
+
+```
+DB_ADMIN_TOKEN
+```
+
+---
+
+## ▶️ 1. Executar Migrations (DDL)  
+**POST** `/admin/db/migrate`
+
+Resposta:
+
+```json
+{
+  "action": "migrate",
+  "status": "applied",
+  "count": <qtd_migrations>
+}
+```
+
+---
+
+## ▶️ 2. Popular o Banco (Seed – DML inicial)  
+**POST** `/admin/db/seed`
+
+Resposta:
+
+```json
+{
+  "action": "seed",
+  "status": "executed",
+  "count": <qtd_statements>
+}
+```
+
+---
+
+## ▶️ 3. Limpar o Banco (truncate total)  
+**POST** `/admin/db/clean`
+
+Resposta:
+
+```json
+{
+  "action": "clean",
+  "status": "done",
+  "count": 0
+}
+```
+
+---
+
+## ▶️ 4. Resetar completamente o banco (clean + migrate + seed)  
+**POST** `/admin/db/reload`
+
+Resposta:
+
+```json
+{
+  "action": "reload",
+  "status": "migrated+seeded",
+  "count": <total>
+}
+```
+
+---
+
+# 🧭 Implementação dos Endpoints (para documentação)
+
+```java
+@Path("/admin/db")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class DatabaseAdminController {
+
+    @Inject
+    DatabaseAdminService service;
+
+    private void authorize(String token) {
+        String expected = System.getenv("DB_ADMIN_TOKEN");
+        if (expected != null && !expected.isBlank()) {
+            if (token == null || !expected.equals(token)) {
+                throw new jakarta.ws.rs.ForbiddenException("Invalid admin token");
+            }
+        }
+    }
+
+    @POST
+    @Path("/migrate")
+    public Response migrate(@HeaderParam("X-Admin-Token") String token) {
+        authorize(token);
+        int migrations = service.migrate();
+        return Response.ok().entity(new Result("migrate", "applied", migrations)).build();
+    }
+
+    @POST
+    @Path("/seed")
+    public Response seed(@HeaderParam("X-Admin-Token") String token) {
+        authorize(token);
+        int statements = service.seed();
+        return Response.ok().entity(new Result("seed", "executed", statements)).build();
+    }
+
+    @POST
+    @Path("/clean")
+    public Response clean(@HeaderParam("X-Admin-Token") String token) {
+        authorize(token);
+        service.clean();
+        return Response.ok().entity(new Result("clean", "done", 0)).build();
+    }
+
+    @POST
+    @Path("/reload")
+    public Response reload(@HeaderParam("X-Admin-Token") String token) {
+        authorize(token);
+        service.clean();
+        int migrations = service.migrate();
+        int statements = service.seed();
+        return Response.ok().entity(new Result("reload", "migrated+seeded", migrations + statements)).build();
+    }
+
+    public static class Result {
+        public String action;
+        public String status;
+        public int count;
+        public Result() {}
+        public Result(String action, String status, int count) {
+            this.action = action;
+            this.status = status;
+            this.count = count;
+        }
+    }
+}
+```
+
+---
+
+# 📊 Consultas Analíticas
+
+As consultas SQL usadas no relatório estão em:
+
+```
+/database/analytics/
+```
+
+Incluindo:
+
+1. Valor total gasto em peças por manutenção (últimos 12 meses)  
+2. Pontos turísticos acessíveis por cidade  
+3. Média de passageiros por viagem  
+
+---
+
+# 🌐 Repositório Oficial
+
+👉 https://github.com/sampaio-arthur/bus-system/
+
+---
+
+# 🧾 Conclusão
+
+O **Bus System** apresenta uma arquitetura moderna, modular, escalável e totalmente containerizada, possibilitando:
+
+- Demonstrações rápidas  
+- Ambiente de desenvolvimento simples  
+- Expansão futura para SaaS  
+- Integração direta com IA através do módulo **bot**  
+- Administração completa do banco via endpoints internos  
+
+O projeto integra conhecimentos de banco de dados, arquitetura e engenharia de software, seguindo boas práticas aplicadas no mercado atual.
