@@ -23,15 +23,15 @@ const navItems = [
   { path: "/", icon: LayoutDashboard, label: "Dashboard" },
   { path: "/cidades", icon: MapPin, label: "Cidades" },
   { path: "/pontos-parada", icon: Map, label: "Pontos de Parada" },
-  { path: "/pontos-turisticos", icon: Map, label: "Pontos Turisticos" },
+  { path: "/pontos-turisticos", icon: Map, label: "Pontos Turísticos" },
   { path: "/linhas", icon: Route, label: "Linhas" },
-  { path: "/itinerarios", icon: Route, label: "Itinerarios" },
-  { path: "/veiculos", icon: Bus, label: "Veiculos" },
+  { path: "/itinerarios", icon: Route, label: "Itinerários" },
+  { path: "/veiculos", icon: Bus, label: "Veículos" },
   { path: "/pessoas", icon: Users, label: "Pessoas" },
   { path: "/viagens", icon: Calendar, label: "Viagens" },
   { path: "/passagens", icon: Ticket, label: "Passagens" },
-  { path: "/manutencoes", icon: Wrench, label: "Manutencoes" },
-  { path: "/relatorios", icon: BarChart3, label: "Relatorios" },
+  { path: "/manutencoes", icon: Wrench, label: "Manutenções" },
+  { path: "/relatorios", icon: BarChart3, label: "Relatórios" },
 ];
 
 export const Layout = ({ children }: LayoutProps) => {
@@ -47,7 +47,7 @@ export const Layout = ({ children }: LayoutProps) => {
             Bus-Sys
           </h1>
           <p className="text-sm text-sidebar-foreground/70 mt-1">
-            Sistema de Gestao
+            Sistema de Gestão
           </p>
         </div>
 
@@ -79,7 +79,7 @@ export const Layout = ({ children }: LayoutProps) => {
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all"
           >
             <Settings className="h-5 w-5" />
-            <span>Configuracoes</span>
+            <span>Configurações</span>
           </Link>
         </div>
       </aside>

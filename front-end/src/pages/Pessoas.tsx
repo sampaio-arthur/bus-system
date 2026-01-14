@@ -15,7 +15,7 @@ import { toast } from "@/hooks/use-toast";
 const tipoPessoaOptions = [
   { value: "PASSAGEIRO", label: "Passageiro" },
   { value: "MOTORISTA", label: "Motorista" },
-  { value: "MECANICO", label: "Mecanico" },
+  { value: "MECANICO", label: "Mecânico" },
 ];
 
 const toInputDate = (value?: string) => {
@@ -83,7 +83,7 @@ export default function Pessoas() {
     mutationFn: (id: number) => api.delete(`/pessoas/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pessoas"] });
-      toast({ title: "Pessoa excluida com sucesso!" });
+      toast({ title: "Pessoa excluída com sucesso!" });
     },
     onError: () => toast({ title: "Erro ao excluir pessoa", variant: "destructive" }),
   });
@@ -187,7 +187,7 @@ export default function Pessoas() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Pessoas</h1>
-          <p className="text-muted-foreground mt-1">Cadastre passageiros, motoristas e mecanicos</p>
+          <p className="text-muted-foreground mt-1">Cadastre passageiros, motoristas e mecânicos</p>
         </div>
         <Button onClick={() => openDialog()} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -314,7 +314,7 @@ export default function Pessoas() {
                 />
               </div>
               <div>
-                <Label htmlFor="numeroCarteirinha">Numero da carteirinha</Label>
+                <Label htmlFor="numeroCarteirinha">Número da carteirinha</Label>
                 <Input
                   id="numeroCarteirinha"
                   value={formData.numeroCarteirinha}

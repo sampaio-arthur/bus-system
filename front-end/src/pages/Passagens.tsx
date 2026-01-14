@@ -110,7 +110,7 @@ export default function Passagens() {
     mutationFn: (id: number) => api.delete(`/passagens/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["passagens"] });
-      toast({ title: "Passagem excluida com sucesso!" });
+      toast({ title: "Passagem excluída com sucesso!" });
     },
     onError: () => toast({ title: "Erro ao excluir passagem", variant: "destructive" }),
   });
@@ -190,7 +190,7 @@ export default function Passagens() {
       { key: "valor", label: "Valor", render: (val: number) => `R$ ${Number(val ?? 0).toFixed(2)}` },
       {
         key: "dataEmissao",
-        label: "Data de emissao",
+        label: "Data de emissão",
         render: (val: string) => (val ? new Date(val).toLocaleString("pt-BR") : "-"),
       },
       { key: "ativo", label: "Status", render: (val: boolean) => <ActiveBadge ativo={val} /> },
@@ -286,13 +286,13 @@ export default function Passagens() {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="metodoPagamentoId">Metodo de pagamento</Label>
+                <Label htmlFor="metodoPagamentoId">Método de pagamento</Label>
                 <Select
                   value={formData.metodoPagamentoId}
                   onValueChange={(val) => setFormData({ ...formData, metodoPagamentoId: val })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o metodo" />
+                    <SelectValue placeholder="Selecione o método" />
                   </SelectTrigger>
                   <SelectContent>
                     {metodosPagamento.map((metodo: any) => (
@@ -315,7 +315,7 @@ export default function Passagens() {
                 />
               </div>
               <div>
-                <Label htmlFor="dataEmissao">Data de emissao</Label>
+                <Label htmlFor="dataEmissao">Data de emissão</Label>
                 <Input
                   id="dataEmissao"
                   type="datetime-local"

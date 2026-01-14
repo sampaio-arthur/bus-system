@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { Viagem } from "@/types";
@@ -152,18 +152,18 @@ export default function Viagens() {
     { key: "linha.nome", label: "Nome Linha" },
     { key: "veiculo.placa", label: "Veículo" },
     { key: "motorista.nome", label: "Motorista" },
-    { 
-      key: "dataPartidaPrevista", 
+    {
+      key: "dataPartidaPrevista",
       label: "Partida Prevista",
-      render: (val: string) => new Date(val).toLocaleString('pt-BR')
+      render: (val: string) => new Date(val).toLocaleString("pt-BR"),
     },
-    { 
-      key: "status", 
+    {
+      key: "status",
       label: "Status",
       render: (val: number) => {
         const status = statusOptions.find(s => s.value === val);
         return status ? <Badge className={status.color}>{status.label}</Badge> : null;
-      }
+      },
     },
   ];
 

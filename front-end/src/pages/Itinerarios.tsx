@@ -47,10 +47,10 @@ export default function Itinerarios() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["itinerarios"] });
-      toast({ title: "Itinerario criado com sucesso!" });
+      toast({ title: "Itinerário criado com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao criar itinerario", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao criar itinerário", variant: "destructive" }),
   });
 
   const updateMutation = useMutation({
@@ -80,10 +80,10 @@ export default function Itinerarios() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["itinerarios"] });
-      toast({ title: "Itinerario atualizado com sucesso!" });
+      toast({ title: "Itinerário atualizado com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao atualizar itinerario", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao atualizar itinerário", variant: "destructive" }),
   });
 
   const deleteMutation = useMutation({
@@ -91,9 +91,9 @@ export default function Itinerarios() {
       api.delete(`/itinerarios/${item.ordem}/${item.idLinha}/${item.idPontoParada}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["itinerarios"] });
-      toast({ title: "Itinerario excluido com sucesso!" });
+      toast({ title: "Itinerário excluído com sucesso!" });
     },
-    onError: () => toast({ title: "Erro ao excluir itinerario", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao excluir itinerário", variant: "destructive" }),
   });
 
   const normalizedItinerarios = useMemo(() => {
@@ -175,12 +175,12 @@ export default function Itinerarios() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Itinerarios</h1>
+          <h1 className="text-3xl font-bold">Itinerários</h1>
           <p className="text-muted-foreground mt-1">Defina a ordem dos pontos nas linhas</p>
         </div>
         <Button onClick={() => openDialog()} className="gap-2">
           <Plus className="h-4 w-4" />
-          Novo itinerario
+          Novo itinerário
         </Button>
       </div>
 
@@ -204,7 +204,7 @@ export default function Itinerarios() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-xl">
           <DialogHeader>
-            <DialogTitle>{editingItem ? "Editar itinerario" : "Novo itinerario"}</DialogTitle>
+            <DialogTitle>{editingItem ? "Editar itinerário" : "Novo itinerário"}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
