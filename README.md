@@ -5,8 +5,7 @@
 **Professor:** Alexandre Leopoldo Gonçalves  
 
 **Autores:**  
-- Arthur Silveira Sampaio (24103786)  
-- Diego Nyland Bloemer (24103789)  
+- Arthur Silveira Sampaio (24103786)
 ---
 
 # 📌 Visão Geral
