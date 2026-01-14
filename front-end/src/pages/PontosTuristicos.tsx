@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { PontoTuristico } from "@/types";
@@ -53,10 +53,10 @@ export default function PontosTuristicos() {
       api.post("/pontos-turisticos", buildPayload(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pontos-turisticos"] });
-      toast({ title: "Ponto turistico criado com sucesso!" });
+      toast({ title: "Ponto turístico criado com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao criar ponto turistico", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao criar ponto turístico", variant: "destructive" }),
   });
 
   const updateMutation = useMutation({
@@ -64,19 +64,19 @@ export default function PontosTuristicos() {
       api.put(`/pontos-turisticos/${data.id}`, buildPayload(data, editingItem)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pontos-turisticos"] });
-      toast({ title: "Ponto turistico atualizado com sucesso!" });
+      toast({ title: "Ponto turístico atualizado com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao atualizar ponto turistico", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao atualizar ponto turístico", variant: "destructive" }),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.delete(`/pontos-turisticos/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["pontos-turisticos"] });
-      toast({ title: "Ponto turistico excluido com sucesso!" });
+      toast({ title: "Ponto turístico excluído com sucesso!" });
     },
-    onError: () => toast({ title: "Erro ao excluir ponto turistico", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao excluir ponto turístico", variant: "destructive" }),
   });
 
   const normalizedPontos = pontosTuristicos.map((ponto: PontoTuristico) => ({
@@ -155,12 +155,12 @@ export default function PontosTuristicos() {
     { key: "nome", label: "Nome" },
     {
       key: "descricao",
-      label: "Descricao",
+      label: "Descrição",
       render: (val: string) => (val && val.length > 70 ? `${val.slice(0, 70)}...` : val),
     },
     {
       key: "pontosParadaProximos",
-      label: "Paradas proximas",
+      label: "Paradas próximas",
       render: (val: any[]) => (val && val.length ? val.map((p) => p.nome).join(", ") : "-"),
     },
     { key: "latitude", label: "Latitude", render: (val: number) => Number(val ?? 0).toFixed(6) },
@@ -172,8 +172,8 @@ export default function PontosTuristicos() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Pontos turisticos</h1>
-          <p className="text-muted-foreground mt-1">Cadastre e vincule pontos turisticos aos pontos de parada</p>
+          <h1 className="text-3xl font-bold">Pontos turísticos</h1>
+          <p className="text-muted-foreground mt-1">Cadastre e vincule pontos turísticos aos pontos de parada</p>
         </div>
         <Button onClick={() => openDialog()} className="gap-2">
           <Plus className="h-4 w-4" />
@@ -184,7 +184,7 @@ export default function PontosTuristicos() {
       <div className="flex items-center gap-2 max-w-sm">
         <Search className="h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Buscar por nome ou descricao..."
+          placeholder="Buscar por nome ou descrição..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -200,7 +200,7 @@ export default function PontosTuristicos() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>{editingItem ? "Editar ponto turistico" : "Novo ponto turistico"}</DialogTitle>
+            <DialogTitle>{editingItem ? "Editar ponto turístico" : "Novo ponto turístico"}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -214,7 +214,7 @@ export default function PontosTuristicos() {
                 />
               </div>
               <div className="col-span-2">
-                <Label htmlFor="descricao">Descricao</Label>
+                <Label htmlFor="descricao">Descrição</Label>
                 <Textarea
                   id="descricao"
                   value={formData.descricao}
@@ -254,7 +254,7 @@ export default function PontosTuristicos() {
                 <Label htmlFor="ativo">Ativo</Label>
               </div>
               <div className="col-span-2 space-y-2">
-                <Label>Pontos de parada proximos</Label>
+                <Label>Pontos de parada próximos</Label>
                 <div className="grid grid-cols-2 gap-2 max-h-48 overflow-auto border rounded-md p-2">
                   {pontosParada.map((ponto: any) => (
                     <label key={ponto.id} className="flex items-center space-x-2 text-sm">

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { Manutencao } from "@/types";
@@ -62,10 +62,10 @@ export default function Manutencoes() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["manutencoes"] });
-      toast({ title: "Manutencao criada com sucesso!" });
+      toast({ title: "Manutenção criada com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao criar manutencao", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao criar manutenção", variant: "destructive" }),
   });
 
   const updateMutation = useMutation({
@@ -80,19 +80,19 @@ export default function Manutencoes() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["manutencoes"] });
-      toast({ title: "Manutencao atualizada com sucesso!" });
+      toast({ title: "Manutenção atualizada com sucesso!" });
       closeDialog();
     },
-    onError: () => toast({ title: "Erro ao atualizar manutencao", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao atualizar manutenção", variant: "destructive" }),
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) => api.delete(`/manutencoes/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["manutencoes"] });
-      toast({ title: "Manutencao excluida com sucesso!" });
+      toast({ title: "Manutenção excluída com sucesso!" });
     },
-    onError: () => toast({ title: "Erro ao excluir manutencao", variant: "destructive" }),
+    onError: () => toast({ title: "Erro ao excluir manutenção", variant: "destructive" }),
   });
 
   const normalizedManutencoes = manutencoes.map((manutencao: Manutencao) => ({
@@ -159,11 +159,11 @@ export default function Manutencoes() {
   const columns = useMemo(
     () => [
       { key: "id", label: "ID" },
-      { key: "veiculo.placa", label: "Veiculo" },
-      { key: "mecanico.nome", label: "Mecanico" },
-      { key: "descricao", label: "Descricao", render: (val: string) => (val && val.length > 60 ? `${val.slice(0, 60)}...` : val) },
+      { key: "veiculo.placa", label: "Veículo" },
+      { key: "mecanico.nome", label: "Mecânico" },
+      { key: "descricao", label: "Descrição", render: (val: string) => (val && val.length > 60 ? `${val.slice(0, 60)}...` : val) },
       { key: "custoTotal", label: "Custo", render: (val: number) => `R$ ${Number(val ?? 0).toFixed(2)}` },
-      { key: "dataInicio", label: "Inicio", render: (val: string) => (val ? new Date(val).toLocaleString("pt-BR") : "-") },
+      { key: "dataInicio", label: "Início", render: (val: string) => (val ? new Date(val).toLocaleString("pt-BR") : "-") },
       { key: "dataFim", label: "Fim", render: (val: string) => (val ? new Date(val).toLocaleString("pt-BR") : "-") },
     ],
     []
@@ -173,19 +173,19 @@ export default function Manutencoes() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Manutencoes</h1>
-          <p className="text-muted-foreground mt-1">Controle manutencoes, mecanicos e custos</p>
+          <h1 className="text-3xl font-bold">Manutenções</h1>
+          <p className="text-muted-foreground mt-1">Controle manutenções, mecânicos e custos</p>
         </div>
         <Button onClick={() => openDialog()} className="gap-2">
           <Plus className="h-4 w-4" />
-          Nova manutencao
+          Nova manutenção
         </Button>
       </div>
 
       <div className="flex items-center gap-2 max-w-sm">
         <Search className="h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Buscar por placa, mecanico ou descricao..."
+          placeholder="Buscar por placa, mecânico ou descrição..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -201,15 +201,15 @@ export default function Manutencoes() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle>{editingItem ? "Editar manutencao" : "Nova manutencao"}</DialogTitle>
+            <DialogTitle>{editingItem ? "Editar manutenção" : "Nova manutenção"}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="veiculoId">Veiculo</Label>
+                <Label htmlFor="veiculoId">Veículo</Label>
                 <Select value={formData.veiculoId} onValueChange={(val) => setFormData({ ...formData, veiculoId: val })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o veiculo" />
+                    <SelectValue placeholder="Selecione o veículo" />
                   </SelectTrigger>
                   <SelectContent>
                     {veiculos.map((veiculo: any) => (
@@ -221,10 +221,10 @@ export default function Manutencoes() {
                 </Select>
               </div>
               <div>
-                <Label htmlFor="mecanicoId">Mecanico</Label>
+                <Label htmlFor="mecanicoId">Mecânico</Label>
                 <Select value={formData.mecanicoId} onValueChange={(val) => setFormData({ ...formData, mecanicoId: val })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o mecanico" />
+                    <SelectValue placeholder="Selecione o mecânico" />
                   </SelectTrigger>
                   <SelectContent>
                     {mecanicos.map((mecanico: any) => (
@@ -236,7 +236,7 @@ export default function Manutencoes() {
                 </Select>
               </div>
               <div className="col-span-2">
-                <Label htmlFor="descricao">Descricao</Label>
+                <Label htmlFor="descricao">Descrição</Label>
                 <Textarea
                   id="descricao"
                   value={formData.descricao}
@@ -256,7 +256,7 @@ export default function Manutencoes() {
                 />
               </div>
               <div>
-                <Label htmlFor="dataInicio">Data de inicio</Label>
+                <Label htmlFor="dataInicio">Data de início</Label>
                 <Input
                   id="dataInicio"
                   type="datetime-local"
@@ -266,7 +266,7 @@ export default function Manutencoes() {
                 />
               </div>
               <div>
-                <Label htmlFor="dataFim">Data de conclusao</Label>
+                <Label htmlFor="dataFim">Data de conclusão</Label>
                 <Input
                   id="dataFim"
                   type="datetime-local"

@@ -1,4 +1,4 @@
-import {
+﻿import {
   Card,
   CardContent,
   CardDescription,
@@ -131,9 +131,9 @@ export default function Relatorios() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Relatorios</h1>
+        <h1 className="text-3xl font-bold">Relatórios</h1>
         <p className="text-muted-foreground mt-1">
-          Visoes consolidadas de manutencao, pontos turisticos e passageiros.
+          Visões consolidadas de manutenção, pontos turísticos e passageiros.
         </p>
       </div>
 
@@ -141,7 +141,7 @@ export default function Relatorios() {
         <div className="xl:col-span-2 flex justify-center">
           <Card className="w-full max-w-5xl">
             <CardHeader className="pb-2">
-              <CardTitle>Pontos turisticos por cidade</CardTitle>
+              <CardTitle>Pontos turísticos por cidade</CardTitle>
               <CardDescription>
                 Quantidade de pontos cadastrados
               </CardDescription>
@@ -189,9 +189,9 @@ export default function Relatorios() {
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Gasto de manutencao por veiculo</CardTitle>
+            <CardTitle>Gasto de manutenção por veículo</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados (padrao 24 meses)
+              Informe os últimos meses considerados (padrão 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesGasto" className="text-xs">
@@ -217,7 +217,7 @@ export default function Relatorios() {
             >
               {gastosData.length === 0 ? (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                  Sem dados para o periodo
+                  Sem dados para o período
                 </div>
               ) : (
                 <PieChart>
@@ -249,9 +249,9 @@ export default function Relatorios() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Media de passageiros por linha</CardTitle>
+            <CardTitle>Média de passageiros por linha</CardTitle>
             <CardDescription>
-              Informe os ultimos meses considerados (padrao 24 meses)
+              Informe os últimos meses considerados (padrão 24 meses)
             </CardDescription>
             <div className="flex items-center gap-3">
               <Label htmlFor="mesesMedia" className="text-xs">
@@ -277,7 +277,7 @@ export default function Relatorios() {
             >
               {mediasData.length === 0 ? (
                 <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-                  Sem dados para o periodo
+                  Sem dados para o período
                 </div>
               ) : (
                 <BarChart
